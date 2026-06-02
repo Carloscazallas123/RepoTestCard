@@ -22,12 +22,12 @@ public class GameEntity implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Card1", referencedColumnName = "id_carta")
+    @JoinColumn(name = "Card1", referencedColumnName = "IdCard")
     private CardsEntity Card1; 
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Card2", referencedColumnName = "id_carta")
+    @JoinColumn(name = "Card2", referencedColumnName = "IdCard")
     private CardsEntity Card2;
 
 
