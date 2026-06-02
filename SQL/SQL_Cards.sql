@@ -4,59 +4,65 @@ DROP DATABASE IF EXISTS railway;
 CREATE DATABASE railway ;
 USE railway;
 
-create table baraja (
-	id_baraja int not null auto_increment comment 'identificador de la carta',
-	nombre varchar(25) not null comment 'nombre de la baraja',
-    constraint pkbaraja primary key (id_baraja)
+create table TableDesk (
+	IdDesk int not null auto_increment,
+	NameDesk varchar(25) not null,
+    constraint PkDesk primary key (IdDesk)
 );
 
-create table carta (
-	id_carta int not null auto_increment comment 'identificador de la carta',
-    valor int null comment 'nombre del usuario',
-    id_barajac int null comment 'identificador de la carta',
-    constraint pkcarta primary key (id_carta),
-    constraint fkbarajac foreign key (id_barajac) references baraja(id_baraja)
+create table TableCard (
+	IdCard int not null auto_increment,
+    Valour int null,
+    DeskCard int null,
+    constraint PkIdCard primary key (IdCard),
+    constraint FkDeskCard foreign key (DeskCard) references TableDesk(IdDesk)
 );
 
-create table usuario (
-	id_usuario int not null auto_increment comment 'identificador de la carta',
-    nombre varchar(250) null comment 'nombre del usuario',
-    puntos int null comment 'puntos del usuario',
-    id_baraja int null comment 'baraja del usuario',
-    constraint pkusuario primary key (id_usuario),
-    constraint fkbaraja foreign key (id_baraja) references baraja(id_baraja)
+create table TableUser (
+	IdUser int not null auto_increment,
+    UserName varchar(250) null,
+    DeskUser int null,
+    constraint PkIdUser primary key (IdUser),
+    constraint FkDeskUser foreign key (DeskUser) references TableDesk(IdDesk)
 );
 
-create table partida (
-	id_partida int not null auto_increment comment 'identificador de la partida',
-    usuario1 int null comment 'primer jugador',
-    usuario2 int null comment 'segundo jugador',
-    constraint pkpartida primary key (id_partida),
-    constraint fkusuario1 foreign key (usuario1) references usuario(id_usuario),
-    constraint fkusuario2 foreign key (usuario2) references usuario(id_usuario)
+create table TableMatch (
+	IdMatch int not null auto_increment,
+    Player1 int null,
+    Player2 int null,
+    State varchar(25) null,
+    Points1 int null comment 'puntos del jugador 1',
+    Points2 int null comment 'puntos del jugador 2',
+    constraint PkIdMatch primary key (IdMatch),
+    constraint FkPlayer1 foreign key (Player1) references TableUser(IdUser),
+    constraint FkPlayer2 foreign key (Player2) references TableUser(IdUser)
 );
 
-create table estadopartida (
-	id_jugada int not null auto_increment comment 'identificador de la partida',
-    id_partida int null comment 'identificador de la partida',
-    estado varchar(25) null comment 'estado de la jugada',
-    carta1 int null comment 'carta del jugador 2',
-    carta2 int null comment 'carta del jugador 2',
-    puntos1 int null comment 'puntos del jugador 1',
-    puntos2 int null comment 'puntos del jugador 2',
-    constraint pkjugada primary key (id_jugada),
-    constraint fpartida foreign key (id_partida) references partida(id_partida),
-    constraint fcarta1 foreign key (carta1) references carta(id_carta),
-    constraint fcarta2 foreign key (carta2) references carta(id_carta)
+create table TableGame (
+	IdGame int not null auto_increment,
+    GameMatch int null,
+    Card1 int null,
+    Card2 int null,
+    constraint PkIdGame primary key (IdGame),
+    constraint FkGameMatch foreign key (GameMatch) references TableMatch(IdMatch),
+    constraint FkCard1 foreign key (Card1) references TableCard(IdCard),
+    constraint FkCard2 foreign key (Card2) references TableCard(IdCard)
 );
 
 
 -- Insertación de Datos
-INSERT INTO baraja (id_baraja, nombre) 
-VALUES (1, 'Mazo Inicial Básico');
-INSERT INTO carta (valor, id_barajac) VALUES (1, 1);
-INSERT INTO carta (valor, id_barajac) VALUES (2, 1);
-INSERT INTO carta (valor, id_barajac) VALUES (3, 1);
-INSERT INTO carta (valor, id_barajac) VALUES (4, 1);
-INSERT INTO carta (valor, id_barajac) VALUES (5, 1);
+INSERT INTO TableDesk (IdDesk, NameDesk) 
+VALUES (1, 'Desk Initial');
+INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
+INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
+INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
+INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
+INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
+
+INSERT INTO TableUser (UserName, DeskUser) VALUES 
+('Jugador1', 1),
+('Jugador2', 1);
+
+
+SELECT * FROM TableCard;
 

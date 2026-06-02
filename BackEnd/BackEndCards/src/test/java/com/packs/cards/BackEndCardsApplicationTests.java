@@ -1,4 +1,4 @@
-package com.text.demo;
+package com.packs.cards;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
