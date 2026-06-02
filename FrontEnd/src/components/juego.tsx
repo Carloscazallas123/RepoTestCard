@@ -1,164 +1,154 @@
-import React, { useState, useRef } from 'react';
-import { Client } from '@stomp/stompjs';
+import { useEffect, useState } from 'react';
+import webSocketService from './../service/Service';
 import type { MatchDTO, GameDTO } from './../Interface/Interfaces';
 
-export const Juego: React.FC = () => {
-    // Estados del formulario y partida
-    const [userName, setUserName] = useState<string>('');
-    const [buscando, setBuscando] = useState<boolean>(false);
-    const [partida, setPartida] = useState<MatchDTO | null>(null);
-    const [mensajeTurno, setMensajeTurno] = useState<string>('Esperando jugadas...');
+export const TableroJuego = () => {
+  const [nombreUsuario, setNombreUsuario] = useState<string>('');
+  const [partida, setPartida] = useState<MatchDTO | null>(null);
+  const [estadoJuego, setEstadoJuego] = useState<string>('Desconectado');
+  
+  // Guardamos la carta que ha seleccionado el jugador en el turno actual
+  const [cartaSeleccionada, setCartaSeleccionada] = useState<number | null>(null);
 
-    // Estado local para simular las cartas elegidas en el cliente antes de enviarlas
-    const [cartaSeleccionada, setCartaSeleccionada] = useState<number | null>(null);
+  // 2. CICLO DE VIDA: Conectar al entrar, Desconectar al salir
+  useEffect(() => {
+    // Usamos tus interfaces MatchDTO para mapear los canales A y B
+    webSocketService.conectar<MatchDTO, MatchDTO>(
+      (matchDto) => {
+        // Alerta de seguridad por si tu Java sigue devolviendo 'return null;' en CreateMatch
+        if (!matchDto) {
+          setEstadoJuego("Esperando a que se una el segundo jugador...");
+          return;
+        }
 
-    // Referencia para mantener la conexión del WebSocket activa
-    const stompClientRef = useRef<Client | null>(null);
-
-    // 1. Función para conectarse e iniciar Matchmaking
-    const unirseALaCola = () => {
-        if (!userName.trim()) return alert("Escribe tu nombre de usuario");
-
-        setBuscando(true);
-
-        // Configuración del cliente WebSocket (Ajusta la URL si usas Railway)
-        const client = new Client({
-            brokerURL: 'ws://localhost:8080/ws-endpoint', // Cambia '/ws-endpoint' por tu configuración de Spring
-            onConnect: () => {
-                console.log('¡Conectado al servidor de WebSockets!');
-
-                // Suscribirse al canal de emparejamiento general
-                client.subscribe('/topic/partida', (mensaje) => {
-                    const datosMatch: MatchDTO = JSON.parse(mensaje.body);
-                    if (datosMatch) {
-                        setPartida(datosMatch);
-                        setBuscando(false);
-                    }
-                });
-
-                // Suscribirse al canal de los resultados de las jugadas
-                client.subscribe('/topic/Jugada', (mensaje) => {
-                    const datosActualizados: MatchDTO = JSON.parse(mensaje.body);
-                    setPartida(prev => prev ? { ...prev, ...datosActualizados } : null);
-                    if (datosActualizados.state) {
-                        setMensajeTurno(datosActualizados.state);
-                    }
-                });
-
-                // Enviar nuestro nombre para que el Backend nos meta en la Queue
-                client.publish({
-                    destination: '/app/empezarpartida',
-                    body: userName
-                });
-            },
-            onDisconnect: () => {
-                console.log('Desconectado');
-            }
+        console.log("¡Partida Iniciada!", matchDto);
+        setPartida(matchDto);
+        setEstadoJuego(matchDto.state);
+      },
+      (objectMatchDto) => {
+        console.log("Turno resuelto por el servidor:", objectMatchDto);
+        
+        // Actualizamos los puntos, el estado y las cartas restadas usando tus interfaces
+        setPartida((prev) => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            points1: objectMatchDto.points1,
+            points2: objectMatchDto.points2,
+            state: objectMatchDto.state,
+            player1: objectMatchDto.player1 ?? prev.player1,
+            player2: objectMatchDto.player2 ?? prev.player2
+          };
         });
-
-        client.activate();
-        stompClientRef.current = client;
-    };
-
-    // 2. Función para enviar la jugada al servidor
-    const enviarJugada = () => {
-        if (!partida || cartaSeleccionada === null || !stompClientRef.current) return;
-
-        // Estructuramos el GameDTO que espera tu método 'GameMatch(GameDTO game)'
-        const jugada: GameDTO = {
-            idMatch: partida.idMatch,
-            // Aquí un ejemplo simplificado: Dependiendo de si eres Player1 o Player2, seteas tu carta.
-            // Para la prueba, enviaremos la carta seleccionada como card1 y una fija en card2 si juegas solo.
-            card1: cartaSeleccionada, 
-            card2: 2 // Id de carta dummy o del rival para simular la lógica de tu controlador
-        };
-
-        stompClientRef.current.publish({
-            destination: '/app/JugadaRealizada',
-            body: JSON.stringify(jugada)
-        });
-
-        setCartaSeleccionada(null); // Limpiar selección
-    };
-
-    return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-            <h2>🃏 Juego de Cartas Multiplayer</h2>
-
-            {/* FASE 1: LOGIN / MATCHMAKING */}
-            {!partida && (
-                <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '8px' }}>
-                    <h3>Ingresar a la Sala de Espera</h3>
-                    <input
-                        type="text"
-                        placeholder="Tu Nickname..."
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        disabled={buscando}
-                        style={{ padding: '8px', marginRight: '10px' }}
-                    />
-                    <button onClick={unirseALaCola} disabled={buscando} style={{ padding: '8px 16px' }}>
-                        {buscando ? 'Buscando partida en la nube...' : 'Buscar Partida'}
-                    </button>
-                </div>
-            )}
-
-            {/* FASE 2: TABLERO DE JUEGO EN VIVO */}
-            {partida && (
-                <div style={{ marginTop: '20px', border: '2px solid #000', padding: '20px', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: '#ddd', padding: '10px' }}>
-                        <div>
-                            <h4>🔴 Jugador 1: {partida.player1?.userName || userName}</h4>
-                            <p>Puntos: <strong>{partida.points1 || 0}</strong></p>
-                        </div>
-                        <div style={{ textAlign: 'center', alignSelf: 'center' }}>
-                            <h3>VS</h3>
-                            <p style={{ color: 'blue', fontWeight: 'bold' }}>{mensajeTurno}</p>
-                        </div>
-                        <div>
-                            <h4>🔵 Jugador 2: {partida.player2?.userName || 'Rival'}</h4>
-                            <p>Puntos: <strong>{partida.points2 || 0}</strong></p>
-                        </div>
-                    </div>
-
-                    {/* ZONA DE CARTAS DEL USUARIO CONECTADO */}
-                    <div style={{ marginTop: '30px' }}>
-                        <h3>Tus Cartas Disponibles:</h3>
-                        <p style={{ fontSize: '12px', color: '#666' }}>Selecciona una carta de tu mazo (IDs simulados de tu Desk):</p>
-                        
-                        <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                            {/* Simulamos que el mazo del jugador tiene cartas con IDs del 1 al 4 para clickear */}
-                            {[1, 2, 3, 4].map((idCarta) => (
-                                <button
-                                    key={idCarta}
-                                    onClick={() => setCartaSeleccionada(idCarta)}
-                                    style={{
-                                        width: '70px',
-                                        height: '100px',
-                                        backgroundColor: cartaSeleccionada === idCarta ? '#4CAF50' : '#fff',
-                                        color: cartaSeleccionada === idCarta ? '#fff' : '#000',
-                                        border: '2px solid #333',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    Carta ID: {idCarta}
-                                </button>
-                            ))}
-                        </div>
-
-                        <div style={{ marginTop: '20px' }}>
-                            <button 
-                                onClick={enviarJugada} 
-                                disabled={cartaSeleccionada === null}
-                                style={{ padding: '10px 20px', backgroundColor: '#008CBA', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                            >
-                                Confirmar y lanzar carta al Servidor
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
+        
+        setEstadoJuego(objectMatchDto.state);
+        setCartaSeleccionada(null); // Liberamos el botón para el siguiente turno
+      },
+      (error) => {
+        setEstadoJuego("Error de comunicación con Railway");
+      }
     );
+
+    // Al desmontar la pantalla, apagamos todo el WebSocket de golpe
+    return () => {
+      webSocketService.desactivar();
+    };
+  }, []);
+
+  // 3. FLUJO: Enviar nombre a la cola de Matchmaking
+  const handleBuscarPartida = () => {
+    if (!nombreUsuario.trim()) return;
+    setEstadoJuego("Entrando en la cola de espera...");
+    webSocketService.enviarCrearPartida(nombreUsuario);
+  };
+
+  // 4. FLUJO: El jugador lanza una carta (Se construye el GameDTO)
+  const handleEnviarJugada = (idCarta: number) => {
+    if (!partida) return;
+
+    setCartaSeleccionada(idCarta);
+
+    // Construimos el GameDTO exacto que exige tu interfaz
+    const jugada: GameDTO = {
+      idMatch: partida.idMatch,
+      card1: idCarta, // La carta que seleccionas tú
+      card2: 0        // El rival enviará la suya desde su propia pantalla
+    };
+
+    // Mandamos el GameDTO estructurado por el WebSocket
+    webSocketService.enviarJugadaRealizada<GameDTO>(jugada);
+  };
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <h2>Mesa de Cartas — <span style={{ color: '#007bff' }}>{estadoJuego}</span></h2>
+
+      {/* VISTA 1: MENÚ DE INGRESO (Si no hay partida activa todavía) */}
+      {!partida && (
+        <div style={{ marginTop: '20px' }}>
+          <input
+            type="text"
+            placeholder="Introduce tu nombre de usuario"
+            value={nombreUsuario}
+            onChange={(e) => setNombreUsuario(e.target.value)}
+            style={{ padding: '10px', width: '250px', marginRight: '10px' }}
+          />
+          <button onClick={handleBuscarPartida} style={{ padding: '10px 20px', cursor: 'pointer' }}>
+            Unirse a la Cola
+          </button>
+        </div>
+      )}
+
+      {/* VISTA 2: TABLERO DE JUEGO ACTIVO */}
+      {partida && (
+        <div style={{ marginTop: '20px', border: '1px solid #ddd', padding: '20px', borderRadius: '8px' }}>
+          <h3>ID Partida: #{partida.idMatch}</h3>
+          
+          {/* Marcador de Puntuaciones */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', margin: '20px 0', background: '#f9f9f9', padding: '15px', borderRadius: '5px' }}>
+            <div>
+              <p style={{ margin: 0, fontWeight: 'bold' }}>{partida.player1.userName}</p>
+              <p style={{ margin: '5px 0 0 0', color: 'green' }}>Puntos: {partida.points1}</p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <p style={{ margin: 0, fontWeight: 'bold' }}>{partida.player2.userName}</p>
+              <p style={{ margin: '5px 0 0 0', color: 'green' }}>Puntos: {partida.points2}</p>
+            </div>
+          </div>
+
+          <hr style={{ border: '0', borderTop: '1px solid #eee' }} />
+
+          {/* Renderizado de las cartas disponibles del Jugador 1 */}
+          <h4 style={{ marginTop: '20px' }}>Tus Cartas en Mano:</h4>
+          <div style={{ display: 'flex', gap: '12px', marginTop: '10px' }}>
+            {partida.player1.deskUser?.cards?.map((idCarta) => (
+              <button
+                key={idCarta}
+                disabled={cartaSeleccionada !== null}
+                onClick={() => handleEnviarJugada(idCarta)}
+                style={{
+                  padding: '25px 20px',
+                  fontSize: '16px',
+                  backgroundColor: cartaSeleccionada === idCarta ? '#28a745' : '#fff',
+                  color: cartaSeleccionada === idCarta ? '#fff' : '#333',
+                  border: '2px solid #ccc',
+                  borderRadius: '6px',
+                  cursor: cartaSeleccionada !== null ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                }}
+              >
+                🃏 ID: {idCarta}
+              </button>
+            ))}
+          </div>
+
+          {cartaSeleccionada && (
+            <p style={{ marginTop: '15px', color: '#28a745', fontWeight: '5px' }}>
+              Has lanzado la carta #{cartaSeleccionada}. Esperando movimiento del oponente...
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
 };

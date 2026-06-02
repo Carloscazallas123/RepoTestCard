@@ -23,7 +23,7 @@ public class PrincipalController {
 
 	private static final ConcurrentLinkedQueue<String> MatchMaking = new ConcurrentLinkedQueue<>();
 
-	@MessageMapping("/empezarpartida")
+	@MessageMapping("/CrearPartida")
 	@SendTo("/topic/partida")
 	public MatchDTO realizarjugada(String NameUser) {
 		MatchMaking.add(NameUser);
