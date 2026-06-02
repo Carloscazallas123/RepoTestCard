@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.packs.cards.entitys.CardsEntity;
@@ -14,6 +15,6 @@ public interface RepoCards extends JpaRepository<CardsEntity, Integer> {
 	@Query("SELECT c FROM CardsEntity c")
 	List<CardsEntity> Obtenertodaslascartas();
 	
-	@Query("SELECT c FROM CardsEntity c WHERE c.idcarta=:idcarta")
-	CardsEntity ObtenerporId(int idcarta);
+	@Query("SELECT c FROM CardsEntity c WHERE c.IdCard=:IdCard")
+	CardsEntity ObtenerporId(@Param("IdCard")int IdCard);
 }
