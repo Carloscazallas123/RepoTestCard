@@ -11,6 +11,6 @@ import com.packs.cards.entitys.UserEntity;
 @Repository
 public interface RepoUser extends JpaRepository<UserEntity, Integer> {
 	
-	@Query("SELECT u FROM UserEntity u WHERE c.idUser=:idUser")
+	@Query("SELECT u FROM UserEntity u WHERE u.idUser=:idUser")
 	UserEntity ObtenerporId(int idUser);
 }

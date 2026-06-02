@@ -10,6 +10,6 @@ import com.packs.cards.entitys.GameEntity;
 @Repository
 public interface RepoGame extends JpaRepository<GameEntity, Integer> {
 	
-	@Query("SELECT g FROM GameEntity g WHERE e.partida.idpartida=:idpartida")
+	@Query("SELECT g FROM GameEntity g WHERE g.partida.idpartida=:idpartida")
 	GameEntity Obtenerporpartida(int idpartida);
 }

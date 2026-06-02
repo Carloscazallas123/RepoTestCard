@@ -8,6 +8,6 @@ import com.packs.cards.entitys.DeskEntity;
 @Repository
 public interface RepoDesk extends JpaRepository<DeskEntity, Integer> { 
 	
-	@Query("SELECT D FROM DeskEntity c WHERE c.IdDesk=:IdDesk")
+	@Query("SELECT d FROM DeskEntity d WHERE d.IdDesk=:IdDesk")
 	DeskEntity ObtenerporId(int IdDesk);
 }
