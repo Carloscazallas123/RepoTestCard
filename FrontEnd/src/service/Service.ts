@@ -9,7 +9,7 @@ class WebSocketService {
   private subJugada: StompSubscription | null = null;
   
   // URL de tu backend en Railway
-  private readonly socketUrl = 'https://backendcards-production.up.railway.app/ws';
+  private readonly socketUrl = `${import.meta.env.VITE_API_URL}`;
 
   constructor() { }
 
