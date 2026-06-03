@@ -17,7 +17,7 @@ export const TableroJuego = () => {
         // 🌟 CONDICIÓN CORREGIDA: Si llega un null del backend
         if (!matchDto) {
           setEstadoJuego("Esperando a que se una el segundo jugador...");
-          console.log("Esperando..");
+          console.log("Falta un Jugador...");
           return;
         }
 
@@ -64,7 +64,7 @@ export const TableroJuego = () => {
     setEstadoJuego("Entrando en la cola de espera...");
     console.log("Entrando...");
     webSocketService.enviarCrearPartida(nombreUsuario);
-    activarConexion();
+    webSocketService.conectar;
   };
 
   // FLUJO: El jugador lanza una carta (Se construye el GameDTO)
