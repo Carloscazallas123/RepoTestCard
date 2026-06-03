@@ -17,9 +17,8 @@ class WebSocketService {
    * Levanta la conexión y, en cuanto se estabiliza, te suscribe automáticamente 
    * a los dos canales de tu controlador (@SendTo).
    */
-  public conectar<T, K>(
+  public conectar<T>(
     onMatchReceived: (partida: T) => void,
-    onJugadaReceived: (resultado: K) => void,
     onError?: (error: any) => void
   ): void {
     
@@ -40,11 +39,6 @@ class WebSocketService {
           // A) Sintonizamos automáticamente el canal de Matchmaking (/topic/partida)
           this.subPartida = this.stompClient.subscribe('/topic/partida', (mensaje: Message) => {
             if (mensaje.body) onMatchReceived(JSON.parse(mensaje.body));
-          });
-
-          // B) Sintonizamos automáticamente el canal de Juego (/topic/Jugada)
-          this.subJugada = this.stompClient.subscribe('/topic/Jugada', (mensaje: Message) => {
-            if (mensaje.body) onJugadaReceived(JSON.parse(mensaje.body));
           });
           
           console.log('Suscripciones a /topic/partida y /topic/Jugada activadas.');

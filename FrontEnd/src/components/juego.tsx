@@ -12,7 +12,7 @@ export const TableroJuego = () => {
   const activarConexion = () => {
     setEstadoJuego("Conectando...");
     
-    webSocketService.conectar<MatchDTO, MatchDTO>(
+    webSocketService.conectar<MatchDTO>(
       (matchDto) => {
         // 🌟 CONDICIÓN CORREGIDA: Si llega un null del backend
         if (!matchDto) {
@@ -64,7 +64,7 @@ export const TableroJuego = () => {
     setEstadoJuego("Entrando en la cola de espera...");
     console.log("Entrando...");
     webSocketService.enviarCrearPartida(nombreUsuario);
-    webSocketService.conectar;
+    webSocketService.conectar(webSocketService.enviarCrearPartida(nombreUsuario));
   };
 
   // FLUJO: El jugador lanza una carta (Se construye el GameDTO)
