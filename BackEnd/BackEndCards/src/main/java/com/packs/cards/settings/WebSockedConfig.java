@@ -13,7 +13,7 @@ public class WebSockedConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/juego")
-                .setAllowedOrigins("backend-cards-production.up.railway.app").withSockJS();
+                .setAllowedOrigins("*");
     }
 
     @Override
