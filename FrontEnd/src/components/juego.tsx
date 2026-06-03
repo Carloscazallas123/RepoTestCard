@@ -6,45 +6,24 @@ export const TableroJuego = () => {
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
   const [partida, setPartida] = useState<MatchDTO | null>(null);
   const [estadoJuego, setEstadoJuego] = useState<string>('Desconectado');
-  
-  // Guardamos si el WebSocket está activo o apagado en el Front
   const [isSocketActivo, setIsSocketActivo] = useState<boolean>(false);
-  
-  // Guardamos la carta que ha seleccionado el jugador en el turno actual
   const [cartaSeleccionada, setCartaSeleccionada] = useState<number | null>(null);
 
-  // Función exclusiva para encender el Socket y configurar las escuchas
   const activarConexion = () => {
     setEstadoJuego("Conectando...");
     
     webSocketService.conectar<MatchDTO, MatchDTO>(
       (matchDto) => {
+        // 🌟 CONDICIÓN CORREGIDA: Si llega un null del backend
         if (!matchDto) {
           setEstadoJuego("Esperando a que se una el segundo jugador...");
           return;
         }
 
+        // Cuando por fin llega el segundo jugador, matchDto ya NO es null:
         console.log("¡Partida Iniciada!", matchDto);
         setPartida(matchDto);
         setEstadoJuego(matchDto.state);
-      },
-      (objectMatchDto) => {
-        console.log("Turno resuelto por el servidor:", objectMatchDto);
-        
-        setPartida((prev) => {
-          if (!prev) return null;
-          return {
-            ...prev,
-            points1: objectMatchDto.points1,
-            points2: objectMatchDto.points2,
-            state: objectMatchDto.state,
-            player1: objectMatchDto.player1 ?? prev.player1,
-            player2: objectMatchDto.player2 ?? prev.player2
-          };
-        });
-        
-        setEstadoJuego(objectMatchDto.state);
-        setCartaSeleccionada(null);
       },
       () => {
         setEstadoJuego("Error de comunicación con Railway");
