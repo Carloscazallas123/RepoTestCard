@@ -17,6 +17,7 @@ export const TableroJuego = () => {
         // 🌟 CONDICIÓN CORREGIDA: Si llega un null del backend
         if (!matchDto) {
           setEstadoJuego("Esperando a que se una el segundo jugador...");
+          console.log("Esperando..");
           return;
         }
 
