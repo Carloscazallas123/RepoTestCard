@@ -44,7 +44,7 @@ export const TableroJuego = () => {
         setEstadoJuego(objectMatchDto.state);
         setCartaSeleccionada(null); // Liberamos el botón para el siguiente turno
       },
-      (error) => {
+      () => {
         setEstadoJuego("Error de comunicación con Railway");
       }
     );
