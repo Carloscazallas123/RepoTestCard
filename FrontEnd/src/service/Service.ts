@@ -30,8 +30,10 @@ class WebSocketService {
     }
 
     this.stompClient = new Client({
-      webSocketFactory: () => new SockJS(this.socketUrl),
-      
+      brokerURL: this.socketUrl, // 🔥 Conexión directa nativa sin pasar por /info
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
       onConnect: () => {
         console.log('--- WebSocket Conectado y Listo ---');
         
