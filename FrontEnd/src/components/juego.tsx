@@ -62,7 +62,9 @@ export const TableroJuego = () => {
       return;
     }
     setEstadoJuego("Entrando en la cola de espera...");
+    console.log("Entrando...");
     webSocketService.enviarCrearPartida(nombreUsuario);
+    activarConexion();
   };
 
   // FLUJO: El jugador lanza una carta (Se construye el GameDTO)
