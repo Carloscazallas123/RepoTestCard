@@ -1,4 +1,3 @@
-import SockJS from 'sockjs-client';
 import { Client, type Message, type StompSubscription } from '@stomp/stompjs';
 
 class WebSocketService {
