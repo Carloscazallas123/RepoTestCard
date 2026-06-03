@@ -55,7 +55,7 @@ export const TableroJuego = () => {
   }, []);
 
   // FLUJO: Enviar nombre a la cola de Matchmaking
-  const handleBuscarPartida = () => {
+  const handleBuscarPartida = (nombreUsuario:string) => {
     if (!nombreUsuario.trim()) return;
     if (!isSocketActivo) {
       alert("Debes encender el WebSocket antes de buscar partida.");
@@ -123,7 +123,7 @@ export const TableroJuego = () => {
           />
           <button 
             disabled={!isSocketActivo} 
-            onClick={handleBuscarPartida} 
+            onClick={() => handleBuscarPartida(nombreUsuario)} 
             style={{ padding: '10px 20px', cursor: isSocketActivo ? 'pointer' : 'not-allowed' }}
           >
             Unirse a la Cola
