@@ -1,5 +1,6 @@
 import type { Message, StompSubscription } from '@stomp/stompjs';
 import { stompClient } from './SocketCliente';
+import type { MatchDTO } from '../Interface/Interfaces';
 
 let suscripcionPartida: StompSubscription | null = null;
 
@@ -41,8 +42,10 @@ const ServicioAcceso = {
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         if (mensaje.body) {
-          const datos = JSON.parse(mensaje.body);
+          const datos: MatchDTO = JSON.parse(mensaje.body);
           console.log(datos);
+          if(datos===null){ console.log("Aun esperando a jugador..."); 
+          } else { localStorage.setItem('partido',JSON.stringify(datos))}
         }
       });
       console.log('📡 Escuchando canal: /topic/partida');

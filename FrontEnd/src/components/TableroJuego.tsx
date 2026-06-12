@@ -2,7 +2,18 @@ import { useState } from 'react';
 import type { MatchDTO, GameDTO, Card } from './../Interface/Interfaces';
 import juegoService from '../service/ServiceJuego';
 
-export const TableroJuego = (Partida: MatchDTO )=> {
+export const TableroJuego = ()=> {
+  
+  //Obtener el partido
+  const [Partida] = useState<MatchDTO>(() => {
+    const Partido = localStorage.getItem('partido');
+    try { return Partido ? JSON.parse(Partido) : null;
+        } catch (e) {
+            console.error("Error al parsear el partido del localStorage", e);
+            return null;
+        }
+    });
+    
   const [cartaSeleccionada, SetCartaSeleccionada]=useState(0);
   juegoService.escucharJugada;
   const Lanzarjugada = (Carta: Card) => {

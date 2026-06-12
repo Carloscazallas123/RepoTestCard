@@ -9,9 +9,9 @@ export const InicioJuego = ({ isSocketActivo }: { isSocketActivo: boolean; }) =>
 
   const apagarSocket = () => { ServicioAcceso.apagarSocket()};
 
-  const enviarNombre = (Nombre: string) => { 
-    ServicioAcceso.escucharCanal();
-    ServicioAcceso.IntroducirNombre(Nombre)};
+  const enviarNombre = (Nombre: string) => { ServicioAcceso.IntroducirNombre(Nombre)};
+
+  const escucharcanalPartida = () =>{ ServicioAcceso.escucharCanal()}
 
   return (
     <div style={{ marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>
@@ -96,6 +96,22 @@ export const InicioJuego = ({ isSocketActivo }: { isSocketActivo: boolean; }) =>
                 cursor: (!isSocketActivo || !nombreUsuario.trim()) ? 'not-allowed' : 'pointer'
               }}
             > 📝 Validar Nombre </button>
+
+            {/* Botón 4: Activar el Canal */}
+            <button 
+              type="button"
+              disabled={!isSocketActivo || !nombreUsuario.trim()} 
+              onClick={escucharcanalPartida} 
+              style={{
+                padding: '10px',
+                backgroundColor: (!isSocketActivo || !nombreUsuario.trim()) ? '#ccc' : '#007bff',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '4px',
+                fontWeight: 'bold',
+                cursor: (!isSocketActivo || !nombreUsuario.trim()) ? 'not-allowed' : 'pointer'
+              }}
+            > 🚀 Buscar Partida </button>
 
           </div>
         </div>
