@@ -59,10 +59,5 @@ INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
 INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
 INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
 
-INSERT INTO TableUser (UserName, DeskUser) VALUES 
-('Jugador1', 1),
-('Jugador2', 1);
-
-
 SELECT * FROM TableCard;
 

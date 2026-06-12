@@ -49,6 +49,18 @@ public class PrincipalController {
 		CardsEntity Card2 = CardsRepo.ObtenerporId(game.getCard2());
 		MatchEntity EntityMatch = MatchRepo.ObtenerporId(game.getIdMatch());
 		MatchDTO ObjectMatch = new MatchDTO();
+		ObjectMatch.setIdMatch(EntityMatch.getIdMatch());
+		
+		//No han tirado carta
+		if (game.getCard1() == null || game.getCard2()==null) {
+			ObjectMatch.setState(" Preparen sus Cartas!!!");
+			UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo);
+			UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo);
+			ObjectMatch.setPlayer1(Player1); ObjectMatch.setPlayer2(Player2);
+			ObjectMatch.setPoints1(EntityMatch.getPoints1()); 
+			ObjectMatch.setPoints2(EntityMatch.getPoints2());
+			return ObjectMatch;
+		}
 
 		// Gana el Jugador 1
 		if (Card1.getValour() < Card2.getValour()) {
@@ -60,6 +72,7 @@ public class PrincipalController {
 
 			ObjectMatch.getPlayer2().getDeskUser().getCards().remove(Card2.getIdCard());
 		}
+		
 		// Gana el Jugador 2
 		if (Card1.getValour() > Card2.getValour()) {
 			EntityMatch.setPoints1(EntityMatch.getPoints1() + 100);
@@ -70,15 +83,21 @@ public class PrincipalController {
 
 			ObjectMatch.getPlayer1().getDeskUser().getCards().remove(Card1.getIdCard());
 		}
+		
 		// Empate
-		if (Card1.getValour() == Card2.getValour()) {
-			EntityMatch.setState("Nothing");
-		}
+		if (Card1.getValour() == Card2.getValour()) { EntityMatch.setState("Nothing"); }
 
+		//Partida Terminada
 		if (ObjectMatch.getPlayer1().getDeskUser().getCards().size() == 0
-				|| ObjectMatch.getPlayer2().getDeskUser().getCards().size() == 0) {
+			|| ObjectMatch.getPlayer2().getDeskUser().getCards().size() == 0) {
 			ObjectMatch.setState("Partida Acabada");
 		}
+		
+		UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo);
+		UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo);
+		ObjectMatch.setPlayer1(Player1); ObjectMatch.setPlayer2(Player2);
+		ObjectMatch.setPoints1(EntityMatch.getPoints1()); 
+		ObjectMatch.setPoints2(EntityMatch.getPoints2());
 
 		return ObjectMatch;
 
@@ -125,7 +144,7 @@ public class PrincipalController {
 		ObjectMatch.setPoints2(EntityMatch.getPoints2());
 		ObjectMatch.setState(EntityMatch.getState());
 
-		return null;
+		return ObjectMatch;
 
 	}
 }
