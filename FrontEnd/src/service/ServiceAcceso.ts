@@ -53,6 +53,7 @@ const ServicioAcceso = {
       });
       console.log('📡 Escuchando canal: /topic/partida');
     };
+    suscribir();
 
     if (stompClient.connected) {
       suscribir();
