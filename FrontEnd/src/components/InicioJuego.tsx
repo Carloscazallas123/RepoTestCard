@@ -7,7 +7,7 @@ export const InicioJuego = () => {
 
   const encenderSocket = () =>{ ServicioAcceso.encenderSocket(); SetisSocketActivo(true); };
 
-  const apagarSocket = () => { ServicioAcceso.apagarSocket()};
+  const apagarSocket = () => { ServicioAcceso.apagarSocket(); SetisSocketActivo(false);};
 
   const enviarNombre = (Nombre: string) => { ServicioAcceso.IntroducirNombre(Nombre)};
 
