@@ -13,6 +13,8 @@ const ServicioAcceso = {
     if (!stompClient.active) {
       stompClient.activate();
       console.log('⚡ Conectando el cable del WebSocket...');
+    } else {
+      console.log('Ya está activo');
     }
   },
 
