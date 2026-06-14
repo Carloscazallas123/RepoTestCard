@@ -32,7 +32,9 @@ public class PrincipalController {
 	@SendTo("/topic/partida")
 	public MatchDTO realizarjugada(String NameUser) {
 		MatchMaking.add(NameUser);
-
+		System.out.println("👤 Usuario unido a la cola: " + NameUser + 
+							" | Total en cola: " + MatchMaking.size());
+		
 		if (MatchMaking.size() < 2) {
 			System.out.println("Esperando en la nube...");
 			return null;
