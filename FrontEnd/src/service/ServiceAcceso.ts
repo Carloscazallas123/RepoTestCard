@@ -38,23 +38,24 @@ const ServicioAcceso = {
   //Metodo para escuchar el canal
   escucharCanal: () => {
   if (suscripcionPartida) { suscripcionPartida.unsubscribe(); }
-  suscripcionPartida = 
+      suscripcionPartida = 
+      stompClient.subscribe('/topic/partida', 
+        (mensaje: Message) => {
+        if (mensaje.body) {
+          
+          const datos: MatchDTO = JSON.parse(mensaje.body);
+          localStorage.setItem('partido',JSON.stringify(datos));
+        } 
+      });
+
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         if (mensaje.body) {
           console.log('Hya Body');
           const datos: MatchDTO = JSON.parse(mensaje.body);
           localStorage.setItem('partido',JSON.stringify(datos));
-        } else {
+        }else {
           console.log('No body');
-        }
-      });
-
-      stompClient.subscribe('/topic/partida', 
-        (mensaje: Message) => {
-        if (mensaje.body) {
-          const datos: MatchDTO = JSON.parse(mensaje.body);
-          localStorage.setItem('partido',JSON.stringify(datos));
         }
       })
 
