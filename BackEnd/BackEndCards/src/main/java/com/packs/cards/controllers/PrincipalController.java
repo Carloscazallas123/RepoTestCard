@@ -17,9 +17,13 @@ public class PrincipalController {
 
 	@Autowired
 	RepoDesk DeskRepo;
+	@Autowired
 	RepoUser UserRepo;
+	@Autowired
 	RepoMatch MatchRepo;
+	@Autowired
 	RepoCards CardsRepo;
+	@Autowired
 	RepoDeskCards RepoDC;
 
 	private static final ConcurrentLinkedQueue<String> MatchMaking = new ConcurrentLinkedQueue<>();
