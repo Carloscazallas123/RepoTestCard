@@ -1,10 +1,7 @@
 import type { Message, StompSubscription } from '@stomp/stompjs';
 import { stompClient } from './SocketCliente';
 import type { MatchDTO } from '../Interface/Interfaces';
-import { useNavigate } from 'react-router-dom';
-
 let suscripcionPartida: StompSubscription | null = null;
-const navegar=useNavigate();
 
 
 const ServicioAcceso = {
@@ -12,7 +9,6 @@ const ServicioAcceso = {
 
   //Metodo para encender el Socket
   encenderSocket: () => {
-    console.log('eeeeeeeeee');
     if (!stompClient.active) {
       stompClient.activate();
       console.log('⚡ Conectando el cable del WebSocket...');
