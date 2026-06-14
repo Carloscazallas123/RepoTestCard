@@ -37,14 +37,16 @@ const ServicioAcceso = {
 
   //Metodo para escuchar el canal
   escucharCanal: () => {
-  console.log('Lo le que le le está llegando:' + suscripcionPartida);
   if (suscripcionPartida) { suscripcionPartida.unsubscribe(); }
   suscripcionPartida = 
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         if (mensaje.body) {
+          console.log('Hya Body');
           const datos: MatchDTO = JSON.parse(mensaje.body);
           localStorage.setItem('partido',JSON.stringify(datos));
+        } else {
+          console.log('No body');
         }
       });
 
@@ -58,7 +60,6 @@ const ServicioAcceso = {
 
       const token= localStorage.getItem('partido');
       console.log(token);
-
     console.log(suscripcionPartida);
 
     console.log('📡 Escuchando canal: /topic/partida');
