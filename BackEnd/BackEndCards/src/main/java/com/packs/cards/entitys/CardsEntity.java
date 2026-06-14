@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,10 +22,6 @@ public class CardsEntity implements Serializable{
     
 	@Column(name="Valour")
     private int Valour;
-	
-	@ManyToOne
-    @JoinColumn(name = "DeskCard", nullable = true) 
-    private DeskEntity DeskCard;
 
 	public int getIdCard() {
 		return IdCard;
@@ -43,14 +37,6 @@ public class CardsEntity implements Serializable{
 
 	public void setValour(int valour) {
 		Valour = valour;
-	}
-
-	public DeskEntity getDeskCard() {
-		return DeskCard;
-	}
-
-	public void setDeskCard(DeskEntity deskCard) {
-		DeskCard = deskCard;
 	}
 	
 }

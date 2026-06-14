@@ -25,6 +25,9 @@ public class DeskEntity implements Serializable{
     
 	@Column(name="NameDesk")
 	private String NameDesk;
+	
+	@OneToMany(mappedBy = "DeskCard", cascade = CascadeType.ALL)
+    private List<CardsEntity> ListCards;
 
 	public int getIdDesk() {
 		return IdDesk;
@@ -40,5 +43,13 @@ public class DeskEntity implements Serializable{
 
 	public void setNameDesk(String nameDesk) {
 		NameDesk = nameDesk;
+	}
+
+	public List<CardsEntity> getListCards() {
+		return ListCards;
+	}
+
+	public void setListCards(List<CardsEntity> listCards) {
+		ListCards = listCards;
 	}
 }

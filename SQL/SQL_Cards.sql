@@ -4,18 +4,19 @@ DROP DATABASE IF EXISTS railway;
 CREATE DATABASE railway ;
 USE railway;
 
-create table TableDesk (
-	IdDesk int not null auto_increment,
-	NameDesk varchar(25) not null,
-    constraint PkDesk primary key (IdDesk)
-);
-
 create table TableCard (
 	IdCard int not null auto_increment,
     Valour int null,
     DeskCard int null,
-    constraint PkIdCard primary key (IdCard),
-    constraint FkDeskCard foreign key (DeskCard) references TableDesk(IdDesk)
+    constraint PkIdCard primary key (IdCard)
+);
+
+create table TableDesk (
+	IdDesk int not null auto_increment,
+	NameDesk varchar(25) not null,
+    idCards int null,
+    constraint PkDesk primary key (IdDesk),
+    constraint FkidCards foreign key (idCards) References TableCard(idCard)
 );
 
 create table TableUser (
