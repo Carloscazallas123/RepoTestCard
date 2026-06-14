@@ -9,6 +9,7 @@ const ServicioAcceso = {
 
   //Metodo para encender el Socket
   encenderSocket: () => {
+    console.log('eeeeeeeeee');
     if (!stompClient.active) {
       stompClient.activate();
       console.log('⚡ Conectando el cable del WebSocket...');
