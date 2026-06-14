@@ -49,19 +49,13 @@ const ServicioAcceso = {
           const datos: MatchDTO = JSON.parse(mensaje.body);
           console.log(datos);
           if(datos===null){ console.log("Aun esperando a jugador..."); 
-          } else { localStorage.setItem('partido',JSON.stringify(datos))}
+          } else { localStorage.setItem('partido',JSON.stringify(datos))
+          }
         }
       });
       console.log('📡 Escuchando canal: /topic/partida');
     };
     suscribir();
-
-    if (stompClient.connected) {
-      suscribir();
-    } else {
-    // Si el socket se está encendiendo, esperamos a que termine de conectar
-      stompClient.onConnect = suscribir;
-    }
   },
 
   //Metodo para Que el Usuario Introduzca su nombre
