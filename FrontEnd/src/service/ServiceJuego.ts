@@ -1,7 +1,6 @@
 import { stompClient } from './SocketCliente';
 import type { Message, StompSubscription } from '@stomp/stompjs';
 import type { MatchDTO, GameDTO } from './../Interface/Interfaces';
-
 let suscripcionJugada: StompSubscription | null = null;
 
 const juegoService = {

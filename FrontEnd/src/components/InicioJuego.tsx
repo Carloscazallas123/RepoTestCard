@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import ServicioAcceso from './../service/ServiceAcceso';
-
 export const InicioJuego = () => {
 
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
   const [isSocketActivo, SetisSocketActivo] = useState<boolean>(false);
-
 
   const encenderSocket = () =>{ ServicioAcceso.encenderSocket(); SetisSocketActivo(true); };
 

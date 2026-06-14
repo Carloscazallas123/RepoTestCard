@@ -1,8 +1,11 @@
 import type { Message, StompSubscription } from '@stomp/stompjs';
 import { stompClient } from './SocketCliente';
 import type { MatchDTO } from '../Interface/Interfaces';
+import { useNavigate } from 'react-router-dom';
 
 let suscripcionPartida: StompSubscription | null = null;
+const navegar=useNavigate();
+
 
 const ServicioAcceso = {
 
@@ -38,8 +41,9 @@ const ServicioAcceso = {
 
   //Metodo para escuchar el canal
   escucharCanal: () => {
-    if (suscripcionPartida) { suscripcionPartida.unsubscribe(); }
-
+  console.log(suscripcionPartida);
+  if (suscripcionPartida) { suscripcionPartida.unsubscribe(); }
+    
     const suscribir = () => {
       suscripcionPartida = 
       stompClient.subscribe('/topic/partida', 
