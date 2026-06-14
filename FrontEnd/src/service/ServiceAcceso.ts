@@ -3,7 +3,7 @@ import { stompClient } from './SocketCliente';
 import type { MatchDTO } from '../Interface/Interfaces';
 
 let suscripcionPartida: StompSubscription | null = null;
-let Partida: MatchDTO;
+let Partida: MatchDTO|null=null;
 
 const ServicioAcceso = {
 
