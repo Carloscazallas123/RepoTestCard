@@ -12,7 +12,7 @@ import com.packs.cards.entitys.*;
 import com.packs.cards.repositorys.*;
 
 @Controller
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://backend-cards-production.up.railway.app")
 public class PrincipalController {
 
 	@Autowired
@@ -20,6 +20,7 @@ public class PrincipalController {
 	RepoUser UserRepo;
 	RepoMatch MatchRepo;
 	RepoCards CardsRepo;
+	RepoDeskCards RepoDC;
 
 	private static final ConcurrentLinkedQueue<String> MatchMaking = new ConcurrentLinkedQueue<>();
 
@@ -34,9 +35,9 @@ public class PrincipalController {
 		}
 
 		String UserName1 = MatchMaking.poll();
-		UserDTO Player1 = CreateUser(UserName1, DeskRepo, UserRepo);
+		UserDTO Player1 = CreateUser(UserName1, DeskRepo, UserRepo, RepoDC);
 		String UserName2 = MatchMaking.poll();
-		UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo);
+		UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo, RepoDC);
 		MatchDTO Match = CreateMatch(Player1, Player2, UserRepo, MatchRepo);
 
 		return Match;
@@ -54,8 +55,8 @@ public class PrincipalController {
 		//No han tirado carta
 		if (game.getCard1() == null || game.getCard2()==null) {
 			ObjectMatch.setState(" Preparen sus Cartas!!!");
-			UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo);
-			UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo);
+			UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
+			UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
 			ObjectMatch.setPlayer1(Player1); ObjectMatch.setPlayer2(Player2);
 			ObjectMatch.setPoints1(EntityMatch.getPoints1()); 
 			ObjectMatch.setPoints2(EntityMatch.getPoints2());
@@ -93,8 +94,8 @@ public class PrincipalController {
 			ObjectMatch.setState("Partida Acabada");
 		}
 		
-		UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo);
-		UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo);
+		UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
+		UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
 		ObjectMatch.setPlayer1(Player1); ObjectMatch.setPlayer2(Player2);
 		ObjectMatch.setPoints1(EntityMatch.getPoints1()); 
 		ObjectMatch.setPoints2(EntityMatch.getPoints2());
@@ -104,7 +105,10 @@ public class PrincipalController {
 	}
 
 	// Función Externa Nº1: Creacion del Usuario
-	public static UserDTO CreateUser(String Username, RepoDesk DeskRepo, RepoUser UserRepo) {
+	public static UserDTO CreateUser(String Username, 
+									RepoDesk DeskRepo, 
+									RepoUser UserRepo,
+									RepoDeskCards RepoDC) {
 
 		UserEntity EntityUser = new UserEntity();
 		EntityUser.setUserName(Username);
@@ -115,7 +119,7 @@ public class PrincipalController {
 		ObjectUser.setIduser(EntityUser.getIdUser());
 
 		List<Integer> Cards = new ArrayList<>();
-		List<CardsEntity> EntityCards = EntityUser.getDeskUser().getListCards();
+		List<CardsEntity> EntityCards =RepoDC.Obtenertodaslascartas();
 		for (int i = 0; i < EntityCards.size(); i++) {
 			Cards.add(EntityCards.get(i).getIdCard());
 		}

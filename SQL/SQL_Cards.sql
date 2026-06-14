@@ -7,17 +7,24 @@ USE railway;
 create table TableCard (
 	IdCard int not null auto_increment,
     Valour int null,
-    DeskCard int null,
     constraint PkIdCard primary key (IdCard)
 );
 
 create table TableDesk (
 	IdDesk int not null auto_increment,
 	NameDesk varchar(25) not null,
-    idCards int null,
-    constraint PkDesk primary key (IdDesk),
-    constraint FkidCards foreign key (idCards) References TableCard(idCard)
+    constraint PkDesk primary key (IdDesk)
 );
+
+create table TableDesk_Card (
+	IdDesk_Card int not null auto_increment,
+	IdDesk int null,
+    IdCard int null,
+    constraint PkDesk_Card primary key (IdDesk_Card),
+    constraint FkDesk foreign key (IdDesk) references TableDesk(IdDesk),
+    constraint FkDCard foreign key (IdCard) references TableCard(IdCard)
+);
+
 
 create table TableUser (
 	IdUser int not null auto_increment,
@@ -50,15 +57,25 @@ create table TableGame (
     constraint FkCard2 foreign key (Card2) references TableCard(IdCard)
 );
 
+-- 1. Creamos la baraja (Mazo)
+INSERT INTO TableDesk (NameDesk) 
+VALUES ('Baraja Principal');
 
--- Insertación de Datos
-INSERT INTO TableDesk (IdDesk, NameDesk) 
-VALUES (1, 'Desk Initial');
-INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
-INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
-INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
-INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
-INSERT INTO TableCard (Valour, DeskCard) VALUES (FLOOR(1 + RAND() * 40), 1);
+-- 2. Creamos las 5 cartas con valores de fuerza aleatorios (ej. entre 1 y 100)
+-- Usamos FLOOR(RAND() * 100) + 1 para generar el número aleatorio en MySQL
+INSERT INTO TableCard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
+INSERT INTO TableCard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
+INSERT INTO TableCard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
+INSERT INTO TableCard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
+INSERT INTO TableCard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
 
-SELECT * FROM TableCard;
+-- 3. Metemos las 5 cartas dentro de la baraja que acabamos de crear
+-- Como es la primera baraja, su IdDesk será 1. 
+-- Como son las primeras cartas, sus IdCard serán 1, 2, 3, 4 y 5.
+INSERT INTO TableDesk_Card (IdDesk, IdCard) VALUES (1, 1);
+INSERT INTO TableDesk_Card (IdDesk, IdCard) VALUES (1, 2);
+INSERT INTO TableDesk_Card (IdDesk, IdCard) VALUES (1, 3);
+INSERT INTO TableDesk_Card (IdDesk, IdCard) VALUES (1, 4);
+INSERT INTO TableDesk_Card (IdDesk, IdCard) VALUES (1, 5);
 
+SELECT * FROM TableUser;

@@ -9,6 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -26,8 +29,8 @@ public class DeskEntity implements Serializable{
 	@Column(name="NameDesk")
 	private String NameDesk;
 	
-	@OneToMany(mappedBy = "DeskCard", cascade = CascadeType.ALL)
-    private List<CardsEntity> ListCards;
+	@OneToMany(mappedBy = "Desk", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DeskCardEntity> deskCards;
 
 	public int getIdDesk() {
 		return IdDesk;
@@ -45,11 +48,13 @@ public class DeskEntity implements Serializable{
 		NameDesk = nameDesk;
 	}
 
-	public List<CardsEntity> getListCards() {
-		return ListCards;
+	public List<DeskCardEntity> getDeskCards() {
+		return deskCards;
 	}
 
-	public void setListCards(List<CardsEntity> listCards) {
-		ListCards = listCards;
+	public void setDeskCards(List<DeskCardEntity> deskCards) {
+		this.deskCards = deskCards;
 	}
+
+	
 }
