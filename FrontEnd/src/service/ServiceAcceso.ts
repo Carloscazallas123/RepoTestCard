@@ -41,24 +41,14 @@ const ServicioAcceso = {
       suscripcionPartida = 
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
-        if (mensaje.body) {
-          console.log('Hya Body');
-          const datos: MatchDTO = JSON.parse(mensaje.body);
-          localStorage.setItem('partido',JSON.stringify(datos));
-        } else {
-          console.log('No bosy');
-        }
+        const datos: MatchDTO = JSON.parse(mensaje.body);
+        localStorage.setItem('partido',JSON.stringify(datos));
       });
 
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
-        if (mensaje.body) {
-          console.log('Hya Body');
-          const datos: MatchDTO = JSON.parse(mensaje.body);
-          localStorage.setItem('partido',JSON.stringify(datos));
-        }else {
-          console.log('No body');
-        }
+        const datos: MatchDTO = JSON.parse(mensaje.body);
+        localStorage.setItem('partido',JSON.stringify(datos));
       })
 
       const token= localStorage.getItem('partido');
