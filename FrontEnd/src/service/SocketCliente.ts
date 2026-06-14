@@ -1,7 +1,7 @@
 import { Client } from '@stomp/stompjs';
 
 // URL de tu servidor en Railway
-const SOCKET_URL = `https://backend-cards-production.up.railway.app`;
+const SOCKET_URL = `http://backend-cards-production.up.railway.app`;
 
 export const stompClient = new Client({
   brokerURL: SOCKET_URL,
