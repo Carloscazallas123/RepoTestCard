@@ -44,12 +44,23 @@ const ServicioAcceso = {
         (mensaje: Message) => {
         if (mensaje.body) {
           const datos: MatchDTO = JSON.parse(mensaje.body);
-          console.log(datos);
-          if(datos===null){ console.log("Aun esperando a jugador..."); 
-          } else { localStorage.setItem('partido',JSON.stringify(datos))}
+          localStorage.setItem('partido',JSON.stringify(datos));
         }
       });
+
+      stompClient.subscribe('/topic/partida', 
+        (mensaje: Message) => {
+        if (mensaje.body) {
+          const datos: MatchDTO = JSON.parse(mensaje.body);
+          localStorage.setItem('partido',JSON.stringify(datos));
+        }
+      })
+
+      const token= localStorage.getItem('partido');
+      console.log(token);
+
     console.log(suscripcionPartida);
+
     console.log('📡 Escuchando canal: /topic/partida');
 },
 
