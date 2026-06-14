@@ -8,7 +8,7 @@ function App() {
       <Routes>
         <Route>
           {/* El Socket por Predeterminado esta en False */}
-          <Route path="/" element={<InicioJuego isSocketActivo={false}/>}/>
+          <Route path="/" element={<InicioJuego/>}/>
           <Route path="/juego" element={<TableroJuego/>}/>
         </Route>
       </Routes>
