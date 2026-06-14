@@ -9,8 +9,3 @@ export const stompClient = new Client({
   heartbeatIncoming: 4000,
   heartbeatOutgoing: 4000,
 });
-
-// Forzamos el encendido del cable al importar el servicio
-if (!stompClient.active) {
-  stompClient.activate();
-}

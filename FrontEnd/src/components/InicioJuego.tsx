@@ -5,7 +5,7 @@ export const InicioJuego = ({ isSocketActivo }: { isSocketActivo: boolean; }) =>
 
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
 
-  const encenderSocket = () =>{ ServicioAcceso.encenderSocket(); };
+  const encenderSocket = () =>{ ServicioAcceso.encenderSocket(); isSocketActivo=true; };
 
   const apagarSocket = () => { ServicioAcceso.apagarSocket()};
 
