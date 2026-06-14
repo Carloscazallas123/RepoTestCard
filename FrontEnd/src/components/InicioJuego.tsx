@@ -5,7 +5,9 @@ export const InicioJuego = ({ isSocketActivo }: { isSocketActivo: boolean; }) =>
 
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
 
-  const encenderSocket = () =>{ ServicioAcceso.encenderSocket(); };
+  const encenderSocket = () =>{ 
+    console.log('e');
+    ServicioAcceso.encenderSocket(); };
 
   const apagarSocket = () => { ServicioAcceso.apagarSocket()};
 
@@ -69,7 +71,7 @@ export const InicioJuego = ({ isSocketActivo }: { isSocketActivo: boolean; }) =>
             <button
               type="button"
               disabled={!isSocketActivo} // Se deshabilita si ya está apagado
-              onClick={()=>apagarSocket()}
+              onClick={()=> apagarSocket()}
               style={{
                 padding: '10px',
                 backgroundColor: !isSocketActivo ? '#ccc' : '#dc3545',
