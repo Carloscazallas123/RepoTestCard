@@ -42,10 +42,12 @@ const ServicioAcceso = {
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         if (mensaje.body) {
-          
+          console.log('Hya Body');
           const datos: MatchDTO = JSON.parse(mensaje.body);
           localStorage.setItem('partido',JSON.stringify(datos));
-        } 
+        } else {
+          console.log('No bosy');
+        }
       });
 
       stompClient.subscribe('/topic/partida', 
