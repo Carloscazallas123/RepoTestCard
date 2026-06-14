@@ -3,7 +3,7 @@ import { stompClient } from './SocketCliente';
 import type { MatchDTO } from '../Interface/Interfaces';
 
 let suscripcionPartida: StompSubscription | null = null;
-
+let Partida: MatchDTO;
 
 const ServicioAcceso = {
 
@@ -40,22 +40,13 @@ const ServicioAcceso = {
   escucharCanal: () => {
   console.log('Lo le que le le está llegando:' + suscripcionPartida);
   if (suscripcionPartida) { suscripcionPartida.unsubscribe(); }
-    
-    const suscribir = () => {
-      suscripcionPartida = 
-      stompClient.subscribe('/topic/partida', 
-        (mensaje: Message) => {
-        if (mensaje.body) {
-          const datos: MatchDTO = JSON.parse(mensaje.body);
-          console.log(datos);
-          if(datos===null){ console.log("Aun esperando a jugador..."); 
-          } else { localStorage.setItem('partido',JSON.stringify(datos))
-          }
-        }
-      });
-      console.log('📡 Escuchando canal: /topic/partida');
-    };
-    suscribir();
+  stompClient.subscribe('/topic/partida', 
+    (mensaje: Message) => {
+    if (mensaje.body) {
+    const datos: MatchDTO = JSON.parse(mensaje.body); 
+    Partida=datos;}})
+    console.log(Partida);
+    console.log('📡 Escuchando canal: /topic/partida');
   },
 
   //Metodo para Que el Usuario Introduzca su nombre
