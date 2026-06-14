@@ -53,7 +53,7 @@ export const InicioJuego = ({ isSocketActivo }: { isSocketActivo: boolean; }) =>
             <button
               type="button"
               disabled={isSocketActivo} // Se deshabilita si ya está encendido
-              onClick={encenderSocket}
+              onClick={()=>{encenderSocket()}}
               style={{
                 padding: '10px',
                 backgroundColor: isSocketActivo ? '#ccc' : '#28a745',
@@ -69,7 +69,7 @@ export const InicioJuego = ({ isSocketActivo }: { isSocketActivo: boolean; }) =>
             <button
               type="button"
               disabled={!isSocketActivo} // Se deshabilita si ya está apagado
-              onClick={apagarSocket}
+              onClick={()=>apagarSocket()}
               style={{
                 padding: '10px',
                 backgroundColor: !isSocketActivo ? '#ccc' : '#dc3545',
@@ -101,7 +101,7 @@ export const InicioJuego = ({ isSocketActivo }: { isSocketActivo: boolean; }) =>
             <button 
               type="button"
               disabled={!isSocketActivo || !nombreUsuario.trim()} 
-              onClick={escucharcanalPartida} 
+              onClick={()=>{escucharcanalPartida()}} 
               style={{
                 padding: '10px',
                 backgroundColor: (!isSocketActivo || !nombreUsuario.trim()) ? '#ccc' : '#007bff',
