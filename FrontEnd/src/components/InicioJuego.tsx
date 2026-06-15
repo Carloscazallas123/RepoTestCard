@@ -14,6 +14,7 @@ export const InicioJuego = () => {
     const token = localStorage.getItem('Partido');
     if (token===null) { return alert('No hay partido');}
     const Partido: MatchDTO = JSON.parse(token);
+    
     console.log(Partido); navegar('/juego');
   };
 
