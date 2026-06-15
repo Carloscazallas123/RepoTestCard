@@ -44,6 +44,7 @@ const ServicioAcceso = {
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         const datos: MatchDTO = JSON.parse(mensaje.body);
+        localStorage.clear();
         localStorage.setItem('partido',JSON.stringify(datos));
       });
 
