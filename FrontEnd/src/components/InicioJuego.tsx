@@ -1,13 +1,22 @@
 import { useState } from 'react';
 import ServicioAcceso from './../service/ServiceAcceso';
+import { Navigate, useNavigate } from 'react-router-dom';
+import type { MatchDTO } from '../Interface/Interfaces';
 export const InicioJuego = () => {
 
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
   const [isSocketActivo, SetisSocketActivo] = useState<boolean>(false);
-
+  const navegar=useNavigate();
   const encenderSocket = () =>{ ServicioAcceso.encenderSocket(); SetisSocketActivo(true); };
   const apagarSocket = () => { ServicioAcceso.apagarSocket(); SetisSocketActivo(false);};
-  const escucharcanalPartida = (Nombre:string) =>{ ServicioAcceso.escucharCanal(Nombre)}
+  const escucharcanalPartida = (Nombre:string) => {
+    ServicioAcceso.escucharCanal(Nombre);
+    const token = localStorage.getItem('Partido');
+    if (!token) { return alert('No hay partido');}
+    const Partido: MatchDTO = JSON.parse(token);
+    console.log(Partido);
+    navegar('/juego');
+  };
 
   return (
     <div style={{ marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>
