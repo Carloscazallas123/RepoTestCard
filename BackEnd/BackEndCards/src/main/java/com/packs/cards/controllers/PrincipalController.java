@@ -34,7 +34,6 @@ public class PrincipalController {
 		MatchMaking.add(NameUser);
 		System.out.println("👤 Usuario unido a la cola: " + NameUser + 
 							" | Total en cola: " + MatchMaking.size());
-		
 		if (MatchMaking.size() < 2) {
 			System.out.println("Esperando en la nube...");
 			return null;
@@ -46,7 +45,7 @@ public class PrincipalController {
 		UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo, RepoDC);
 		MatchDTO Match = CreateMatch(Player1, Player2, UserRepo, MatchRepo);
 		
-		if(MatchMaking.size()>2) {
+		if(MatchMaking.size()>=2) {
 		MatchMaking.clear();
 		   System.out.println("🧹 La cola de Matchmaking ha sido limpiada con éxito.");
 		}
