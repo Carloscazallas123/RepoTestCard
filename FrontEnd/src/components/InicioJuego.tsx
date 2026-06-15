@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ServicioAcceso from './../service/ServiceAcceso';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import type { MatchDTO } from '../Interface/Interfaces';
 export const InicioJuego = () => {
 
