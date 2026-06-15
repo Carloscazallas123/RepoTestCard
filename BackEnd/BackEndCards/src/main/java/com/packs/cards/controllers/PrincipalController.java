@@ -47,7 +47,8 @@ public class PrincipalController {
 		MatchDTO Match = CreateMatch(Player1, Player2, UserRepo, MatchRepo);
 		
 		if(MatchMaking.size()>2) {
-		reiniciarCola();
+		MatchMaking.clear();
+		   System.out.println("🧹 La cola de Matchmaking ha sido limpiada con éxito.");
 		}
 		return Match;
 	}
@@ -159,10 +160,5 @@ public class PrincipalController {
 
 		return ObjectMatch;
 
-	}
-	
-	public void reiniciarCola() {
-	    MatchMaking.clear();
-	    System.out.println("🧹 La cola de Matchmaking ha sido limpiada con éxito.");
 	}
 }
