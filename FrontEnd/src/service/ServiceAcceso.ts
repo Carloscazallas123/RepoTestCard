@@ -36,8 +36,9 @@ const ServicioAcceso = {
   },
 
   //Metodo para escuchar el canal
-  escucharCanal: () => {
+  escucharCanal: (Nombre: string) => {
   if (suscripcionPartida) { suscripcionPartida.unsubscribe(); }
+  ServicioAcceso.IntroducirNombre(Nombre);
 
       //Guardamos la variable de la suscripción
       suscripcionPartida = 
