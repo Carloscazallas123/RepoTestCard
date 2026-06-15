@@ -12,7 +12,7 @@ export const InicioJuego = () => {
   const escucharcanalPartida = (Nombre:string) => {
     ServicioAcceso.escucharCanal(Nombre);
     const token = localStorage.getItem('Partido');
-    if (!token) { return alert('No hay partido');}
+    if (token===null) { return alert('No hay partido');}
     const Partido: MatchDTO = JSON.parse(token);
     console.log(Partido); navegar('/juego');
   };
