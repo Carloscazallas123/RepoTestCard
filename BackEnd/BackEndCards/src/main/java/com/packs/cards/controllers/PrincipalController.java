@@ -45,7 +45,7 @@ public class PrincipalController {
 		String UserName2 = MatchMaking.poll();
 		UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo, RepoDC);
 		MatchDTO Match = CreateMatch(Player1, Player2, UserRepo, MatchRepo);
-
+		MatchMaking.clear();
 		return Match;
 	}
 
