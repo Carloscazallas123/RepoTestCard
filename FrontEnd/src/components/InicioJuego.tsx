@@ -6,9 +6,7 @@ export const InicioJuego = () => {
   const [isSocketActivo, SetisSocketActivo] = useState<boolean>(false);
 
   const encenderSocket = () =>{ ServicioAcceso.encenderSocket(); SetisSocketActivo(true); };
-
   const apagarSocket = () => { ServicioAcceso.apagarSocket(); SetisSocketActivo(false);};
-
   const escucharcanalPartida = (Nombre:string) =>{ ServicioAcceso.escucharCanal(Nombre)}
 
   return (
