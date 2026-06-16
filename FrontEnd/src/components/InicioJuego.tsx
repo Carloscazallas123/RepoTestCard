@@ -21,7 +21,10 @@ export const InicioJuego = () => {
       console.log("✅ ¡Partida encontrada en el almacenamiento local!");
       console.log(datosPartida); 
       if (datosPartida.idMatch > 0){
+        alert('Partida Econtrada');
         navigate('/juego');
+      } else {
+        console.log("Aun no");
       }
     } else {
       // 3. Si está vacío, lanzamos un aviso por consola

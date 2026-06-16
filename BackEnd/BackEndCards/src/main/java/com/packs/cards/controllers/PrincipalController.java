@@ -59,7 +59,14 @@ public class PrincipalController {
 			return Match;
 		}
 		System.out.println("Usuario Existente");
-		return null;
+		Player1.setUsername(NameUser);
+		Match.setPlayer1(Player1);
+		Match.setPlayer2(null);
+		Match.setIdMatch(0);
+		Match.setPoints1(0);
+		Match.setPoints2(0);
+		Match.setState("Esperando Jugador...");
+		return Match;
 	}
 
 	@MessageMapping("/JugadaRealizada")
