@@ -24,16 +24,7 @@ export const TableroJuego = ()=> {
       userName: Rellenar?.Player1?.userName ?? 'Jugador 1',
       deskUser: {
         idDesk: Rellenar?.Player1?.deskUser?.idDesk ?? 0,
-        Cards: Rellenar?.Player1?.deskUser.Cards ?? [
-          {
-            idCard: 1,
-            valour: 25
-          }, 
-          {
-            idCard: 1,
-            valour: 26
-          },
-        ]
+        Cards: Rellenar?.Player1?.deskUser.Cards ?? []
       }
     },
     Player2: {
@@ -41,16 +32,7 @@ export const TableroJuego = ()=> {
       userName: Rellenar?.Player2?.userName ?? 'Jugador 2',
       deskUser: {
         idDesk: Rellenar?.Player2?.deskUser.idDesk ?? 1,
-        Cards: Rellenar?.Player2?.deskUser.Cards ?? [
-          {
-            idCard: 1,
-            valour: 25
-          }, 
-          {
-            idCard: 1,
-            valour: 26
-          },
-        ]
+        Cards: Rellenar?.Player2?.deskUser.Cards ?? []
       }
     },
     State: 'Empezando la partida',
