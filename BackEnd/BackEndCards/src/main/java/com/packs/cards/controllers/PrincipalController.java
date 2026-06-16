@@ -33,7 +33,7 @@ public class PrincipalController {
 	public MatchDTO realizarjugada(String NameUser) {
 		MatchDTO Match = new MatchDTO();
 		UserDTO Player1 = null;
-		boolean existente = UserRepo.UsuarioExistente(NameUser);
+		boolean existente = usuarioexistente(NameUser,UserRepo);
 
 		// Comprobar si el usuario no existe
 		if (existente == false) {
@@ -169,6 +169,18 @@ public class PrincipalController {
 		ObjectMatch.setState(EntityMatch.getState());
 
 		return ObjectMatch;
+
+	}
+
+	public static boolean usuarioexistente(String username, RepoUser UserRepo) {
+		boolean existe = false;
+		List<UserEntity> ListaUsuarios = UserRepo.Obtenertodos();
+		for (int i = 0; i < ListaUsuarios.size(); i++) {
+			if (ListaUsuarios.get(i).getUserName().equals(username)) {
+				existe = true;
+			}
+		}
+		return existe;
 
 	}
 }

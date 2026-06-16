@@ -1,5 +1,7 @@
 package com.packs.cards.repositorys;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,7 @@ public interface RepoUser extends JpaRepository<UserEntity, Integer> {
 	@Query("SELECT u FROM UserEntity u WHERE u.IdUser=:idUser")
 	UserEntity ObtenerporId(@Param("idUser") int idUser);
 	
-	@Query("SELECT u FROM UserEntity u WHERE u.UserName=:Username")
-	boolean UsuarioExistente(@Param("Username") String username);
+	@Query("SELECT u FROM UserEntity u")
+	List<UserEntity> Obtenertodos();
+	
 }
