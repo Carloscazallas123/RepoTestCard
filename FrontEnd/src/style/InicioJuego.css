@@ -6,35 +6,37 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Contenedor Principal (Fondo Gamer Oscuro) */
 .lobby-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center;      /* 🌟 Centra horizontalmente */
-  justify-content: center;   /* 🌟 Centra verticalmente */
-  min-height: 100vh;        /* 🌟 Toma todo el alto de la pantalla */
-  width: 100vw;             /* Asegura todo el ancho */
-  background-color: #1a1d20; /* 🎨 Un fondo oscuro gamer que hace resaltar tu tarjeta blanca */
+  align-items: center;      /* Centra horizontalmente */
+  justify-content: center;   /* Centra verticalmente */
+  min-height: 100vh;        /* Toma todo el alto de la pantalla */
+  width: 100vw;             
+  background-color: #121416; /* Fondo de pantalla negro profundo */
   box-sizing: border-box;
   padding: 20px;
-  margin: 0;                /* Resetea márgenes por si acaso */
+  margin: 0;                
 }
 
 /* Monitor de Estado */
 .status-monitor {
   margin-bottom: 20px;
-  font-size: 15px;
-  background-color: #f8f9fa;
+  font-size: 14px;
+  background-color: #1c1e22; /* Fondo del monitor ligeramente más claro que el fondo general */
   padding: 10px 20px;
   border-radius: 30px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   gap: 10px;
+  border: 1px solid #2d3238; /* Borde sutil de separación */
 }
 
 .status-label {
-  color: #666;
+  color: #98a2b3; /* Gris claro suave */
   font-weight: 500;
 }
 
@@ -43,15 +45,16 @@ html, body {
   padding: 2px 10px;
   border-radius: 12px;
 }
-.status-badge.online { color: #28a745; }
-.status-badge.offline { color: #dc3545; }
+.status-badge.online { color: #2ecc71; }
+.status-badge.offline { color: #e74c3c; }
 
-/* Tarjeta Central */
+/* 🌟 Tarjeta Central (Adiós al blanco, hola al Gris Grafito) */
 .control-card {
-  background: #ffffff;
+  background-color: #24282c; /* Gris oscuro elegante */
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada e inmersiva */
+  border: 1px solid #31373e; /* Línea de borde interna premium */
   width: 100%;
   max-width: 420px;
   box-sizing: border-box;
@@ -67,29 +70,36 @@ html, body {
 
 .input-label {
   font-weight: 600;
-  color: #495057;
-  font-size: 14px;
+  color: #cbd5e1; /* Texto blanco grisáceo para leerse bien */
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .player-input {
   padding: 12px 15px;
   border-radius: 8px;
-  border: 2px solid #dee2e6;
+  border: 2px solid #3a4149;
+  background-color: #1a1d20; /* Fondo oscuro para el input */
+  color: #ffffff; /* Texto que escribes en blanco puro */
   font-size: 15px;
   outline: none;
   transition: all 0.2s ease;
 }
 
+.player-input::placeholder {
+  color: #64748b; /* Color del texto de ayuda */
+}
+
 .player-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  border-color: #3b82f6; /* Azul brillante al escribir */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
 .disabled-input {
-  background-color: #e9ecef;
-  color: #6c757d;
+  background-color: #16191b;
+  color: #475569;
+  border-color: #24282c;
   cursor: not-allowed;
 }
 
@@ -117,7 +127,7 @@ html, body {
 
 .btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  filter: brightness(1.1);
+  filter: brightness(1.15); /* Brilla un poco más al pasar el ratón */
 }
 
 .btn:active:not(:disabled) {
@@ -125,24 +135,25 @@ html, body {
 }
 
 .btn:disabled {
-  background-color: #ced4da !important;
-  color: #6c757d !important;
+  background-color: #1e2225 !important; /* Botón deshabilitado oscuro integrado */
+  color: #475569 !important;
   cursor: not-allowed;
   transform: none;
+  border: 1px solid #2d3238;
 }
 
-/* Colores de Botones */
-.btn-success { background-color: #28a745; color: white; }
-.btn-danger { background-color: #dc3545; color: white; }
-.btn-primary { background-color: #007bff; color: white; }
+/* Colores de Botones Modernizados */
+.btn-success { background-color: #218838; color: white; }
+.btn-danger { background-color: #c82333; color: white; }
+.btn-primary { background-color: #1d4ed8; color: white; }
 
-/* Hacer que el botón de buscar ocupe toda la fila inferior */
+/* Botón de Buscar Partida */
 .btn-full {
   grid-column: span 2;
   margin-top: 8px;
   padding: 14px;
   font-size: 15px;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(29, 78, 216, 0.4);
 }
 .btn-full:disabled {
   box-shadow: none;
