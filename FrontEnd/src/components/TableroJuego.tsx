@@ -3,7 +3,7 @@ import type { MatchDTO, GameDTO, Card } from './../Interface/Interfaces';
 import juegoService from '../service/ServiceJuego';
 
 export const TableroJuego = ()=> {
-  const [Rellenar,SetRellenar]=useState<MatchDTO>();
+  const [Rellenar,SetRellenar]=useState<MatchDTO | null>(null);
   const [cartaSeleccionada, SetCartaSeleccionada]=useState(0);
 
 
