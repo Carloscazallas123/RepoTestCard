@@ -45,8 +45,11 @@ const ServicioAcceso = {
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         const datos: MatchDTO = JSON.parse(mensaje.body);
-        if(!localStorage.getItem('partido')){
-        localStorage.setItem('partido',JSON.stringify(datos)); }
+        if(datos===null){
+          console.log('Partida aun no empezada');
+        } else {
+          localStorage.setItem('partido',JSON.stringify(datos));
+        }
       });
 
       
