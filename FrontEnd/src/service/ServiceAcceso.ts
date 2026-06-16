@@ -45,26 +45,24 @@ const ServicioAcceso = {
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         const datos: MatchDTO = JSON.parse(mensaje.body);
-        if(datos===null){
-          console.log('Partida aun no empezado');
-        } else {
-          localStorage.removeItem('partido');
-          localStorage.setItem('partido',JSON.stringify(datos));
-        }
-      });
-
-      
+        localStorage.setItem('partido',JSON.stringify(datos)); });
       const token = localStorage.getItem('partido');
       if (token) {
         const Partido: MatchDTO = JSON.parse(token);
         console.log(Partido);
+        if(Partido.player1.userName === Partido.player2.userName){
+        console.log('Error, el usuario sigue buscando la partida');
+        } else {
+        console.log('Partida encontrada');
+        }
       } else {
         console.warn('No hay partido almacenado en localStorage.');
       }
 
       console.log(suscripcionPartida);
+      console.log('📡 Escuchando canal: /topic/partida');
 
-    console.log('📡 Escuchando canal: /topic/partida');
+      
 },
 
   //Metodo para Que el Usuario Introduzca su nombre
