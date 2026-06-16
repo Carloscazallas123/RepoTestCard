@@ -46,8 +46,9 @@ const ServicioAcceso = {
         (mensaje: Message) => {
         const datos: MatchDTO = JSON.parse(mensaje.body);
         if(datos===null){
-          console.log('Partida aun no empezada');
+          console.log('Partida aun no empezado');
         } else {
+          localStorage.removeItem('partido');
           localStorage.setItem('partido',JSON.stringify(datos));
         }
       });
