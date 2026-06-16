@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { MatchDTO } from '../Interface/Interfaces';
 import ServicioAcceso from './../service/ServiceAcceso';
+import { useNavigate } from 'react-router-dom';
 import './../style/InicioJuego.css';
 export const InicioJuego = () => {
 
@@ -9,7 +10,7 @@ export const InicioJuego = () => {
   const encenderSocket = () =>{ ServicioAcceso.encenderSocket(); SetisSocketActivo(true); };
   const apagarSocket = () => { ServicioAcceso.apagarSocket(); SetisSocketActivo(false);};
   const escucharcanalPartida = (Nombre:string) => { ServicioAcceso.escucharCanal(Nombre); };
-  
+  const navigate = useNavigate();
   const comprobarTokenPartido = () => {
   const tokenPartido = localStorage.getItem('partido');
   console.log("============= CHEQUEO DE LOCALSTORAGE =============");
@@ -18,7 +19,11 @@ export const InicioJuego = () => {
       // 2. Si existe, lo transformamos de vuelta a un objeto JavaScript legible
       const datosPartida: MatchDTO = JSON.parse(tokenPartido);
       console.log("✅ ¡Partida encontrada en el almacenamiento local!");
-      console.dir(datosPartida); // Muestra la estructura del objeto desplegable en consola
+      console.log(datosPartida); 
+      if(datosPartida.idMatch > 0){
+      alert('Partida Encontrada');
+      navigate('/juego');
+      }
     } else {
       // 3. Si está vacío, lanzamos un aviso por consola
       console.log("❌ No hay ninguna partida guardada actualmente en 'partido'.");
