@@ -77,3 +77,5 @@ INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 2);
 INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 3);
 INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 4);
 INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 5);
+
+SELECT * FROM tabledesk;
