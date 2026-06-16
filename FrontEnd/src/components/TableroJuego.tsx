@@ -3,48 +3,72 @@ import type { MatchDTO, GameDTO, Card } from './../Interface/Interfaces';
 import juegoService from '../service/ServiceJuego';
 
 export const TableroJuego = ()=> {
-  
-  //Definicion de Partida
-  let Partida: MatchDTO ={
-    idMatch: 0,
-    Player1: {
-      idUser: 0,
-      userName: '',
-      deskUser: {
-        idDesk: 0,
-        Cards: []
-      }
-    },
-    Player2: {
-      idUser: 0,
-      userName: '',
-      deskUser: {
-        idDesk: 0,
-        Cards: []
-      }
-    },
-    State: '',
-    Points1: 0,
-    Points2: 0
-  }
+  const [Rellenar,SetRellenar]=useState<MatchDTO>();
+  const [cartaSeleccionada, SetCartaSeleccionada]=useState(0);
+
 
   //Obtener Partido
   useEffect(() => {
     const token = localStorage.getItem('partido');
-    if (token) { 
-      Partida = JSON.parse(token);
-      console.log(Partida); }
+    if (token) {
+      console.log(token);
+      SetRellenar(JSON.parse(token));
+    }
   }, []);
+
+  //Definicion de Partida
+  let Partida: MatchDTO ={
+    idMatch: Rellenar?.idMatch ?? 1,
+    Player1: {
+      idUser: Rellenar?.Player1?.idUser ?? 0,
+      userName: Rellenar?.Player1?.userName ?? 'Jugador 1',
+      deskUser: {
+        idDesk: Rellenar?.Player1?.deskUser?.idDesk ?? 0,
+        Cards: Rellenar?.Player1?.deskUser.Cards ?? [
+          {
+            idCard: 1,
+            valour: 25
+          }, 
+          {
+            idCard: 1,
+            valour: 26
+          },
+        ]
+      }
+    },
+    Player2: {
+      idUser: Rellenar?.Player2?.idUser ?? 1,
+      userName: Rellenar?.Player2?.userName ?? 'Jugador 2',
+      deskUser: {
+        idDesk: Rellenar?.Player2?.deskUser.idDesk ?? 1,
+        Cards: Rellenar?.Player2?.deskUser.Cards ?? [
+          {
+            idCard: 1,
+            valour: 25
+          }, 
+          {
+            idCard: 1,
+            valour: 26
+          },
+        ]
+      }
+    },
+    State: 'Empezando la partida',
+    Points1: 0,
+    Points2: 0
+  }
+
+  
     
-  const [cartaSeleccionada, SetCartaSeleccionada]=useState(0);
+ 
   if (!Partida) return null;
   juegoService.escucharJugada;
   const Lanzarjugada = (Carta: Card) => {
     SetCartaSeleccionada(Carta.idCard);
-    const Jugada: GameDTO = { idMatch: Partida.idMatch, 
-                             card1: Partida.cartaMesaPlayer1?.idCard ?? null, 
-                             card2: Partida.cartaMesaPlayer2?.idCard ?? null };
-    if (Jugada.card1 === null || Jugada.card2 === null){
+    const Jugada: GameDTO = { idMatch: Partida.idMatch ?? 0, 
+                             card1: Partida.cartaMesaPlayer1?.idCard ?? 0, 
+                             card2: Partida.cartaMesaPlayer2?.idCard ?? 0 };
+    if (Jugada.card1 === 0 || Jugada.card2 === 0){
       console.log('Aun Falta que uno de los jugadores lance una carta');
       juegoService.enviarJugadaRealizada(Jugada);
     } else {
@@ -81,7 +105,7 @@ export const TableroJuego = ()=> {
           <p style={{ margin: '0 0 5px 0', 
                       fontWeight: '600', 
                       color: '#4a5568', 
-                      fontSize: '14px' }}> 👤 {Partida.Player1.userName} (Tú) </p>
+                      fontSize: '14px' }}> 👤 {Partida?.Player1?.userName} (Tú) </p>
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
@@ -91,7 +115,7 @@ export const TableroJuego = ()=> {
           <p style={{ margin: '0 0 5px 0', 
                       fontWeight: '600', 
                       color: '#4a5568', 
-                      fontSize: '14px' }}> 👤 {Partida.Player2.userName} </p>
+                      fontSize: '14px' }}> 👤 {Partida?.Player2?.userName} </p>
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
@@ -105,7 +129,7 @@ export const TableroJuego = ()=> {
           Mano de {Partida.Player2?.userName} ({Partida.Player2?.deskUser?.Cards?.length} cartas || 0):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {Partida.Player2.deskUser?.Cards?.map((_, index) => (
+          {Partida?.Player2?.deskUser?.Cards?.map((_, index) => (
             <div
               key={`rival-card-${index}`}
               style={{
@@ -149,7 +173,7 @@ export const TableroJuego = ()=> {
         </div>
 
         <div style={{ flex: 1 }}>
-          <strong style={{ display: 'block', marginBottom: '8px', color: '#4a5568', fontSize: '13px' }}>Carta de {Partida.Player2.userName}:</strong>
+          <strong style={{ display: 'block', marginBottom: '8px', color: '#4a5568', fontSize: '13px' }}>Carta de {Partida?.Player2?.userName}:</strong>
           {/* Aquí obtienes dinámicamente la carta del oponente */}
           {Partida.cartaMesaPlayer2 ? (
             <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#e53e3e' }}>⚔️ {Partida.cartaMesaPlayer2.valour}</span>
@@ -162,7 +186,7 @@ export const TableroJuego = ()=> {
       {/* 🔵 TU ZONA: CARTAS EN MANO (BOCA ARRIBA) */}
       <h4 style={{ margin: '0 0 12px 0', color: '#2d3748', fontSize: '15px' }}>Tus cartas en mano:</h4>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        {Partida.Player1.deskUser?.Cards?.map((carta: Card) => {
+        {Partida?.Player1?.deskUser?.Cards?.map((carta: Card) => {
           const deshabilitado = cartaSeleccionada !== null;
           const esEstaCarta = cartaSeleccionada === carta.idCard;
           
