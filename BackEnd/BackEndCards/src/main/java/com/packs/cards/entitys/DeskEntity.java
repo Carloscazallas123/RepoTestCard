@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="TableDesk")
+@Table(name="tabledesk")
 public class DeskEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;

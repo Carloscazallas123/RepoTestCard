@@ -3,7 +3,7 @@ package com.packs.cards.entitys;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "TableDesk_Card")
+@Table(name = "tabledesk_card")
 public class DeskCardEntity {
 
     @Id
