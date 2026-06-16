@@ -24,7 +24,7 @@ export const InicioJuego = () => {
 
     if (tokenPartido) {
       // 2. Si existe, lo transformamos de vuelta a un objeto JavaScript legible
-      const datosPartida = JSON.parse(tokenPartido);
+      const datosPartida: MatchDTO = JSON.parse(tokenPartido);
       console.log("✅ ¡Partida encontrada en el almacenamiento local!");
       console.dir(datosPartida); // Muestra la estructura del objeto desplegable en consola
     } else {
