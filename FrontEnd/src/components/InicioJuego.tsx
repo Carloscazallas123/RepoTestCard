@@ -15,22 +15,12 @@ export const InicioJuego = () => {
   const comprobarTokenPartido = () => {
   const tokenPartido = localStorage.getItem('partido');
   console.log("============= CHEQUEO DE LOCALSTORAGE =============");
-
     if (tokenPartido) {
       const datosPartida: MatchDTO = JSON.parse(tokenPartido);
       console.log("✅ ¡Partida encontrada en el almacenamiento local!");
-      console.log(datosPartida); 
-      if (!datosPartida.Player1.userName || !datosPartida.Player2.userName){
-        console.log("Aun no")
-      } else {
-      alert('Partida Econtrada');
-      navigate('/juego');
-      }
-    } else {
+      console.log(datosPartida);  } else {
       // 3. Si está vacío, lanzamos un aviso por consola
-      console.log("❌ No hay ninguna partida guardada actualmente en 'partido'.");
-    }
-  
+      console.log("❌ No hay ninguna partida guardada actualmente en 'partido'."); }
   console.log("==================================================");
   };
 
@@ -96,6 +86,14 @@ export const InicioJuego = () => {
         onClick={()=>comprobarTokenPartido()}
         className="btn btn-warning btn-full">
         🔍 Inspeccionar Partida Guardada
+        </button>
+
+        {/* Botón manual para ir al Tablero */}
+        <button
+        type="button"
+        onClick={() => navigate('/tablero')}
+        className="btn btn-board btn-full" >
+        🎮 Ir al Tablero de Juego
         </button>
 
       </div>

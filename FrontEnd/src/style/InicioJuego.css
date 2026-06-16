@@ -158,3 +158,17 @@ html, body {
 .btn-full:disabled {
   box-shadow: none;
 }
+
+/* Color exclusivo para el botón del tablero */
+.btn-board {
+  background-color: #6f42c1; /* Violeta Gaming */
+  color: white;
+  margin-top: 5px;
+  box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+}
+
+/* Efecto al pasar el ratón por encima */
+.btn-board:hover {
+  background-color: #5a32a3;
+  box-shadow: 0 6px 15px rgba(111, 66, 193, 0.5);
+}
