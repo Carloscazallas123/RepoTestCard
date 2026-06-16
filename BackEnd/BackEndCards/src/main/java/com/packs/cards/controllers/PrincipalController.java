@@ -164,7 +164,7 @@ public class PrincipalController {
 		EntityMatch.setPlayer1(UserRepo.ObtenerporId(Player1.getIduser()));
 		EntityMatch.setPoints1(0);
 		EntityMatch.setPoints2(0);
-		EntityMatch.setState("Empezando la partida");
+		EntityMatch.setState("¡ La partida ha empezado ! ");
 		MatchRepo.save(EntityMatch);
 
 		MatchDTO ObjectMatch = new MatchDTO();

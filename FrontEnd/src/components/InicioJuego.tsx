@@ -3,6 +3,7 @@ import type { MatchDTO } from '../Interface/Interfaces';
 import ServicioAcceso from './../service/ServiceAcceso';
 import { useNavigate } from 'react-router-dom';
 import './../style/InicioJuego.css';
+
 export const InicioJuego = () => {
 
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
@@ -16,11 +17,10 @@ export const InicioJuego = () => {
   console.log("============= CHEQUEO DE LOCALSTORAGE =============");
 
     if (tokenPartido) {
-      // 2. Si existe, lo transformamos de vuelta a un objeto JavaScript legible
       const datosPartida: MatchDTO = JSON.parse(tokenPartido);
       console.log("✅ ¡Partida encontrada en el almacenamiento local!");
       console.log(datosPartida); 
-      if (datosPartida.idMatch > 0){
+      if (datosPartida.state === " ¡ La partida ha empezado ! "){
         alert('Partida Econtrada');
         navigate('/juego');
       } else {
