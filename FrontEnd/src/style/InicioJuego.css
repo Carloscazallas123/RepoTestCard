@@ -1,12 +1,23 @@
 /* Contenedor Principal */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #1a1d20; /* Mismo color de fondo */
+  overflow-x: hidden;
+}
+
 .lobby-container {
-  margin-top: 30px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: center;      /* 🌟 Centra horizontalmente */
+  justify-content: center;   /* 🌟 Centra verticalmente */
+  min-height: 100vh;        /* 🌟 Toma todo el alto de la pantalla */
+  width: 100vw;             /* Asegura todo el ancho */
+  background-color: #1a1d20; /* 🎨 Un fondo oscuro gamer que hace resaltar tu tarjeta blanca */
+  box-sizing: border-box;
   padding: 20px;
+  margin: 0;                /* Resetea márgenes por si acaso */
 }
 
 /* Monitor de Estado */
