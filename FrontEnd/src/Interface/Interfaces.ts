@@ -5,7 +5,7 @@ export interface Card {
 
 export interface Desk {
     idDesk: number;
-    cards: Card[]; // IDs de las cartas que le quedan al jugador
+    Cards: Card[]; // IDs de las cartas que le quedan al jugador
 }
 
 export interface UserDTO {
