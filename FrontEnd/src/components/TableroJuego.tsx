@@ -4,15 +4,36 @@ import juegoService from '../service/ServiceJuego';
 
 export const TableroJuego = ()=> {
   
-
-  const [Partida,SetPartido] = useState<MatchDTO>();
+  //Definicion de Partida
+  let Partida: MatchDTO ={
+    idMatch: 0,
+    Player1: {
+      idUser: 0,
+      userName: '',
+      deskUser: {
+        idDesk: 0,
+        Cards: []
+      }
+    },
+    Player2: {
+      idUser: 0,
+      userName: '',
+      deskUser: {
+        idDesk: 0,
+        Cards: []
+      }
+    },
+    State: '',
+    Points1: 0,
+    Points2: 0
+  }
 
   //Obtener Partido
   useEffect(() => {
     const token = localStorage.getItem('partido');
     if (token) { 
-    SetPartido(JSON.parse(token));
-    console.log(Partida); }
+      Partida = JSON.parse(token);
+      console.log(Partida); }
   }, []);
     
   const [cartaSeleccionada, SetCartaSeleccionada]=useState(0);
