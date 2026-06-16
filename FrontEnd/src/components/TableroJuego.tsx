@@ -79,10 +79,10 @@ export const TableroJuego = ()=> {
       {/* 🔴 NUEVA SECCIÓN: MANO DEL JUGADOR 2 (BOCA ABAJO) */}
       <div style={{ marginBottom: '25px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e0' }}>
         <h4 style={{ margin: '0 0 10px 0', color: '#4a5568', fontSize: '14px' }}>
-          Mano de {Partida.Player2.userName} ({Partida.Player2.deskUser.cards.length} cartas):
+          Mano de {Partida.Player2.userName} ({Partida.Player2.deskUser.Cards.length} cartas):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {Partida.Player2.deskUser.cards.map((_, index) => (
+          {Partida.Player2.deskUser.Cards.map((_, index) => (
             <div
               key={`rival-card-${index}`}
               style={{
@@ -139,7 +139,7 @@ export const TableroJuego = ()=> {
       {/* 🔵 TU ZONA: CARTAS EN MANO (BOCA ARRIBA) */}
       <h4 style={{ margin: '0 0 12px 0', color: '#2d3748', fontSize: '15px' }}>Tus cartas en mano:</h4>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        {Partida.Player1.deskUser.cards.map((carta: Card) => {
+        {Partida.Player1.deskUser.Cards.map((carta: Card) => {
           const deshabilitado = cartaSeleccionada !== null;
           const esEstaCarta = cartaSeleccionada === carta.idCard;
           
