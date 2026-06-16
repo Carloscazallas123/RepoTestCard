@@ -31,23 +31,35 @@ public class PrincipalController {
 	@MessageMapping("/CrearPartida")
 	@SendTo("/topic/partida")
 	public MatchDTO realizarjugada(String NameUser) {
-		MatchMaking.add(NameUser);
-		System.out.println("👤 Usuario unido a la cola: " + NameUser + 
-							" | Total en cola: " + MatchMaking.size());
-		if (MatchMaking.size() < 2) {
-			System.out.println("Esperando en la nube...");
-			return null;
-		}
+		MatchDTO Match = new MatchDTO();
+		UserDTO Player1 = null;
+		boolean existente = UserRepo.UsuarioExistente(NameUser);
 
-		String UserName1 = MatchMaking.poll();
-		UserDTO Player1 = CreateUser(UserName1, DeskRepo, UserRepo, RepoDC);
-		String UserName2 = MatchMaking.poll();
-		UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo, RepoDC);
-		MatchDTO Match = CreateMatch(Player1, Player2, UserRepo, MatchRepo);
-		
-		MatchMaking.clear();
-		System.out.println("🧹 La cola de Matchmaking ha sido limpiada con éxito.");
-		return Match;
+		// Comprobar si el usuario no existe
+		if (existente == false) {
+			MatchMaking.add(NameUser);
+			// Comprobar si hay mas de dos personas esperando
+			if (MatchMaking.size() < 2) {
+				System.out.println("Esperando en la nube...");
+				Match.setPlayer1(Player1);
+				Match.setPlayer2(null);
+				Match.setIdMatch(0);
+				Match.setPoints1(0);
+				Match.setPoints2(0);
+				Match.setState("Esperando Jugador...");
+				return Match;
+			}
+			String UserName1 = MatchMaking.poll();
+			Player1 = CreateUser(UserName1, DeskRepo, UserRepo, RepoDC);
+			String UserName2 = MatchMaking.poll();
+			UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo, RepoDC);
+			Match = CreateMatch(Player1, Player2, UserRepo, MatchRepo);
+			MatchMaking.clear();
+			System.out.println("🧹 La cola de Matchmaking ha sido limpiada con éxito.");
+			return Match;
+		}
+		System.out.println("Usuario Existente");
+		return null;
 	}
 
 	@MessageMapping("/JugadaRealizada")
@@ -58,14 +70,15 @@ public class PrincipalController {
 		MatchEntity EntityMatch = MatchRepo.ObtenerporId(game.getIdMatch());
 		MatchDTO ObjectMatch = new MatchDTO();
 		ObjectMatch.setIdMatch(EntityMatch.getIdMatch());
-		
-		//No han tirado carta
-		if (game.getCard1() == null || game.getCard2()==null) {
+
+		// No han tirado carta
+		if (game.getCard1() == null || game.getCard2() == null) {
 			ObjectMatch.setState(" Preparen sus Cartas!!!");
 			UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
 			UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
-			ObjectMatch.setPlayer1(Player1); ObjectMatch.setPlayer2(Player2);
-			ObjectMatch.setPoints1(EntityMatch.getPoints1()); 
+			ObjectMatch.setPlayer1(Player1);
+			ObjectMatch.setPlayer2(Player2);
+			ObjectMatch.setPoints1(EntityMatch.getPoints1());
 			ObjectMatch.setPoints2(EntityMatch.getPoints2());
 			return ObjectMatch;
 		}
@@ -80,7 +93,7 @@ public class PrincipalController {
 
 			ObjectMatch.getPlayer2().getDeskUser().getCards().remove(Card2.getIdCard());
 		}
-		
+
 		// Gana el Jugador 2
 		if (Card1.getValour() > Card2.getValour()) {
 			EntityMatch.setPoints1(EntityMatch.getPoints1() + 100);
@@ -91,20 +104,23 @@ public class PrincipalController {
 
 			ObjectMatch.getPlayer1().getDeskUser().getCards().remove(Card1.getIdCard());
 		}
-		
-		// Empate
-		if (Card1.getValour() == Card2.getValour()) { EntityMatch.setState("Nothing"); }
 
-		//Partida Terminada
+		// Empate
+		if (Card1.getValour() == Card2.getValour()) {
+			EntityMatch.setState("Nothing");
+		}
+
+		// Partida Terminada
 		if (ObjectMatch.getPlayer1().getDeskUser().getCards().size() == 0
-			|| ObjectMatch.getPlayer2().getDeskUser().getCards().size() == 0) {
+				|| ObjectMatch.getPlayer2().getDeskUser().getCards().size() == 0) {
 			ObjectMatch.setState("Partida Acabada");
 		}
-		
+
 		UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
 		UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
-		ObjectMatch.setPlayer1(Player1); ObjectMatch.setPlayer2(Player2);
-		ObjectMatch.setPoints1(EntityMatch.getPoints1()); 
+		ObjectMatch.setPlayer1(Player1);
+		ObjectMatch.setPlayer2(Player2);
+		ObjectMatch.setPoints1(EntityMatch.getPoints1());
 		ObjectMatch.setPoints2(EntityMatch.getPoints2());
 
 		return ObjectMatch;
@@ -112,10 +128,7 @@ public class PrincipalController {
 	}
 
 	// Función Externa Nº1: Creacion del Usuario
-	public static UserDTO CreateUser(String Username, 
-									RepoDesk DeskRepo, 
-									RepoUser UserRepo,
-									RepoDeskCards RepoDC) {
+	public static UserDTO CreateUser(String Username, RepoDesk DeskRepo, RepoUser UserRepo, RepoDeskCards RepoDC) {
 
 		UserEntity EntityUser = new UserEntity();
 		EntityUser.setUserName(Username);
@@ -126,7 +139,7 @@ public class PrincipalController {
 		ObjectUser.setIduser(EntityUser.getIdUser());
 
 		List<Integer> Cards = new ArrayList<>();
-		List<CardsEntity> EntityCards =RepoDC.Obtenertodaslascartas();
+		List<CardsEntity> EntityCards = RepoDC.Obtenertodaslascartas();
 		for (int i = 0; i < EntityCards.size(); i++) {
 			Cards.add(EntityCards.get(i).getIdCard());
 		}
