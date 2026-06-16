@@ -32,7 +32,7 @@ public class PrincipalController {
 	@SendTo("/topic/partida")
 	public MatchDTO realizarjugada(String NameUser) {
 		MatchDTO Match = new MatchDTO();
-		UserDTO Player1 = null;
+		UserDTO Player1 = new UserDTO();
 		boolean existente = usuarioexistente(NameUser,UserRepo);
 
 		// Comprobar si el usuario no existe
@@ -40,8 +40,7 @@ public class PrincipalController {
 			MatchMaking.add(NameUser);
 			// Comprobar si hay mas de dos personas esperando
 			if (MatchMaking.size() < 2) {
-				Player1 = CreateUser(NameUser, DeskRepo, UserRepo, RepoDC);
-				System.out.println("Esperando en la nube...");
+				Player1.setUsername(NameUser);
 				Match.setPlayer1(Player1);
 				Match.setPlayer2(null);
 				Match.setIdMatch(0);
