@@ -91,7 +91,7 @@ export const InicioJuego = () => {
         {/* Botón manual para ir al Tablero */}
         <button
         type="button"
-        onClick={() => navigate('/tablero')}
+        onClick={() => navigate('/juego')}
         className="btn btn-board btn-full" >
         🎮 Ir al Tablero de Juego
         </button>
