@@ -45,10 +45,8 @@ public class PrincipalController {
 		UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo, RepoDC);
 		MatchDTO Match = CreateMatch(Player1, Player2, UserRepo, MatchRepo);
 		
-		if(MatchMaking.size()>=2) {
 		MatchMaking.clear();
-		   System.out.println("🧹 La cola de Matchmaking ha sido limpiada con éxito.");
-		}
+		System.out.println("🧹 La cola de Matchmaking ha sido limpiada con éxito.");
 		return Match;
 	}
 

@@ -39,14 +39,14 @@ const ServicioAcceso = {
   escucharCanal: (Nombre: string) => {
   if (suscripcionPartida) { suscripcionPartida.unsubscribe(); }
   ServicioAcceso.IntroducirNombre(Nombre);
-
+  localStorage.clear();
       //Guardamos la variable de la suscripción
       suscripcionPartida = 
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         const datos: MatchDTO = JSON.parse(mensaje.body);
-        localStorage.clear();
-        localStorage.setItem('partido',JSON.stringify(datos));
+        if(!localStorage.getItem('partido')){
+        localStorage.setItem('partido',JSON.stringify(datos)); }
       });
 
       
