@@ -82,7 +82,7 @@ export const TableroJuego = ()=> {
           Mano de {Partida.Player2?.userName} ({Partida.Player2?.deskUser?.Cards?.length} cartas || 0):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {Partida.Player2.deskUser.Cards.map((_, index) => (
+          {Partida.Player2.deskUser?.Cards?.map((_, index) => (
             <div
               key={`rival-card-${index}`}
               style={{
