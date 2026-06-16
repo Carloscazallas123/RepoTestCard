@@ -16,5 +16,5 @@ public interface RepoUser extends JpaRepository<UserEntity, Integer> {
 	UserEntity ObtenerporId(@Param("idUser") int idUser);
 	
 	@Query("SELECT u FROM UserEntity u WHERE u.UserName=:UserName")
-	boolean UsuarioExistente(@Param("Username") String Username);
+	boolean UsuarioExistente(@Param("Username") String username);
 }
