@@ -25,7 +25,7 @@ public class CardsEntity implements Serializable{
 	@Column(name="`Valour`")
     private int Valour;
 	
-	@OneToMany(mappedBy = "`Card`")
+	@OneToMany(mappedBy = "Card")
     private List<DeskCardEntity> DeskCards;
 
 	public int getIdCard() {

@@ -26,7 +26,7 @@ public class DeskEntity implements Serializable{
 	@Column(name="`NameDesk`")
 	private String NameDesk;
 	
-	@OneToMany(mappedBy = "`Desk`", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "Desk", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeskCardEntity> deskCards;
 
 	public int getIdDesk() {
