@@ -94,7 +94,7 @@ export const InicioJuego = () => {
         {/* Botón de Depuración: Comprobar LocalStorage */}
         <button
         type="button"
-        onClick={comprobarTokenPartido}
+        onClick={()=>comprobarTokenPartido()}
         className="btn btn-warning btn-full">
         🔍 Inspeccionar Partida Guardada
         </button>
