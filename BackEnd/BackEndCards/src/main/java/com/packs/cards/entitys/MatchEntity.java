@@ -30,7 +30,7 @@ public class MatchEntity implements Serializable{
     @JoinColumn(name = "`Player2`", referencedColumnName = "`IdUser`")
     private UserEntity Player2;
     
-    @Column(name = "`State`", length = 25)
+    @Column(name = "`State`")
     private String State;
 
     @Column(name = "`Points1`")

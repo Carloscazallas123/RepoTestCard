@@ -38,7 +38,7 @@ create table tablematch (
 	IdMatch int not null auto_increment,
     Player1 int null,
     Player2 int null,
-    State varchar(25) null,
+    State varchar(55) null,
     Points1 int null comment 'puntos del jugador 1',
     Points2 int null comment 'puntos del jugador 2',
     constraint PkIdMatch primary key (IdMatch),
