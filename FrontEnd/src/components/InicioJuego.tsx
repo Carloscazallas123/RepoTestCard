@@ -18,6 +18,22 @@ export const InicioJuego = () => {
     
     console.log(Partido); navegar('/juego');
   };
+  const comprobarTokenPartido = () => {
+  const tokenPartido = localStorage.getItem('partido');
+  console.log("============= CHEQUEO DE LOCALSTORAGE =============");
+
+    if (tokenPartido) {
+      // 2. Si existe, lo transformamos de vuelta a un objeto JavaScript legible
+      const datosPartida = JSON.parse(tokenPartido);
+      console.log("✅ ¡Partida encontrada en el almacenamiento local!");
+      console.dir(datosPartida); // Muestra la estructura del objeto desplegable en consola
+    } else {
+      // 3. Si está vacío, lanzamos un aviso por consola
+      console.log("❌ No hay ninguna partida guardada actualmente en 'partido'.");
+    }
+  
+  console.log("==================================================");
+  };
 
   return (
   <div className="lobby-container">
@@ -54,8 +70,7 @@ export const InicioJuego = () => {
           type="button"
           disabled={isSocketActivo}
           onClick={() => encenderSocket()}
-          className="btn btn-success"
-        >
+          className="btn btn-success">
           ⚡ Encender Socket
         </button>
 
@@ -64,8 +79,7 @@ export const InicioJuego = () => {
           type="button"
           disabled={!isSocketActivo}
           onClick={() => apagarSocket()}
-          className="btn btn-danger"
-        >
+          className="btn btn-danger">
           🛑 Apagar Socket
         </button>
 
@@ -74,9 +88,15 @@ export const InicioJuego = () => {
           type="button"
           disabled={!isSocketActivo || !nombreUsuario.trim()}
           onClick={() => escucharcanalPartida(nombreUsuario)}
-          className="btn btn-primary btn-full"
-        >
+          className="btn btn-primary btn-full">
           🚀 Buscar Partida
+        </button>
+        {/* Botón de Depuración: Comprobar LocalStorage */}
+        <button
+        type="button"
+        onClick={comprobarTokenPartido}
+        className="btn btn-warning btn-full">
+        🔍 Inspeccionar Partida Guardada
         </button>
 
       </div>
