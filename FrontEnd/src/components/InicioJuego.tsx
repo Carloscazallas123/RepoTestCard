@@ -20,10 +20,7 @@ export const InicioJuego = () => {
       const datosPartida: MatchDTO = JSON.parse(tokenPartido);
       console.log("✅ ¡Partida encontrada en el almacenamiento local!");
       console.log(datosPartida); 
-      if(datosPartida.idMatch > 0){
-      alert('Partida Encontrada');
-      navigate('/juego');
-      }
+      navigate('/juego')
     } else {
       // 3. Si está vacío, lanzamos un aviso por consola
       console.log("❌ No hay ninguna partida guardada actualmente en 'partido'.");
