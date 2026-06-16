@@ -23,11 +23,11 @@ public class MatchEntity implements Serializable{
     private int IdMatch;
 	
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "`Player1`", referencedColumnName = "IdUser")
+    @JoinColumn(name = "`Player1`", referencedColumnName = "`IdUser`")
     private UserEntity Player1; 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "`Player2`", referencedColumnName = "IdUser")
+    @JoinColumn(name = "`Player2`", referencedColumnName = "`IdUser`")
     private UserEntity Player2;
     
     @Column(name = "`State`", length = 25)

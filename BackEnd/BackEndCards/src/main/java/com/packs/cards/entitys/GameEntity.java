@@ -17,17 +17,17 @@ public class GameEntity implements Serializable {
 
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "`GameMatch`", referencedColumnName = "IdMatch")
+    @JoinColumn(name = "`GameMatch`", referencedColumnName = "`IdMatch`")
     private MatchEntity GameMatch;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "`Card1`", referencedColumnName = "IdCard")
+    @JoinColumn(name = "`Card1`", referencedColumnName = "`IdCard`")
     private CardsEntity Card1; 
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "`Card2`", referencedColumnName = "IdCard")
+    @JoinColumn(name = "`Card2`", referencedColumnName = "`IdCard`")
     private CardsEntity Card2;
 
 
