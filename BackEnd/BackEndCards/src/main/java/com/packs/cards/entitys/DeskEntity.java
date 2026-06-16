@@ -20,13 +20,13 @@ public class DeskEntity implements Serializable{
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="IdDesk")
+	@Column(name="`IdDesk`")
     private int IdDesk;
     
-	@Column(name="NameDesk")
+	@Column(name="`NameDesk`")
 	private String NameDesk;
 	
-	@OneToMany(mappedBy = "Desk", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "`Desk`", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeskCardEntity> deskCards;
 
 	public int getIdDesk() {

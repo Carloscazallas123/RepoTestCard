@@ -8,15 +8,15 @@ public class DeskCardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IdDesk_Card")
+    @Column(name = "`IdDesk_Card`")
     private int idDeskCard;
 
     @ManyToOne
-    @JoinColumn(name = "IdDesk")
+    @JoinColumn(name = "`IdDesk`")
     private DeskEntity Desk;
 
     @ManyToOne
-    @JoinColumn(name = "IdCard") 
+    @JoinColumn(name = "`IdCard`") 
     private CardsEntity Card;
 
 

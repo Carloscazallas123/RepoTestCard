@@ -19,14 +19,14 @@ public class UserEntity implements Serializable{
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="IdUser")
+	@Column(name="`IdUser`")
     private int IdUser;
     
-	@Column(name="UserName")
+	@Column(name="`UserName`")
 	private String UserName;
 	
 	@ManyToOne
-    @JoinColumn(name = "DeskUser", nullable = true) 
+    @JoinColumn(name = "`DeskUser`", nullable = true) 
     private DeskEntity DeskUser;
 
 	public int getIdUser() {

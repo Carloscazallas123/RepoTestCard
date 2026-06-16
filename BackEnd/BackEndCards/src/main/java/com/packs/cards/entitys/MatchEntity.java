@@ -19,24 +19,24 @@ public class MatchEntity implements Serializable{
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="IdMatch")
+	@Column(name="`IdMatch`")
     private int IdMatch;
 	
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Player1", referencedColumnName = "IdUser")
+    @JoinColumn(name = "`Player1`", referencedColumnName = "IdUser")
     private UserEntity Player1; 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Player2", referencedColumnName = "IdUser")
+    @JoinColumn(name = "`Player2`", referencedColumnName = "IdUser")
     private UserEntity Player2;
     
-    @Column(name = "State", length = 25)
+    @Column(name = "`State`", length = 25)
     private String State;
 
-    @Column(name = "Points1")
+    @Column(name = "`Points1`")
     private Integer Points1;
 
-    @Column(name = "Points2")
+    @Column(name = "`Points2`")
     private Integer Points2;
 
 	public int getIdMatch() {

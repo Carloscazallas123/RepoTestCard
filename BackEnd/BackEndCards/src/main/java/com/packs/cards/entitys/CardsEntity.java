@@ -19,13 +19,13 @@ public class CardsEntity implements Serializable{
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "IdCard") 
+	@Column(name = "`IdCard`") 
     private int IdCard;
     
-	@Column(name="Valour")
+	@Column(name="`Valour`")
     private int Valour;
 	
-	@OneToMany(mappedBy = "Card")
+	@OneToMany(mappedBy = "`Card`")
     private List<DeskCardEntity> DeskCards;
 
 	public int getIdCard() {
