@@ -40,8 +40,7 @@ public class PrincipalController {
 			MatchMaking.add(NameUser);
 			// Comprobar si hay mas de dos personas esperando
 			if (MatchMaking.size() < 2) {
-				String UserName1 = MatchMaking.poll();
-				Player1 = CreateUser(UserName1, DeskRepo, UserRepo, RepoDC);
+				Player1 = CreateUser(NameUser, DeskRepo, UserRepo, RepoDC);
 				System.out.println("Esperando en la nube...");
 				Match.setPlayer1(Player1);
 				Match.setPlayer2(null);
