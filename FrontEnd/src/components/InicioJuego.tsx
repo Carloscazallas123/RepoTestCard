@@ -20,7 +20,7 @@ export const InicioJuego = () => {
       const datosPartida: MatchDTO = JSON.parse(tokenPartido);
       console.log("✅ ¡Partida encontrada en el almacenamiento local!");
       console.log(datosPartida); 
-      if (!datosPartida.Player1 || !datosPartida.Player2){
+      if (datosPartida.Player1.userName===null || datosPartida.Player2.userName===null){
         console.log("Aun no")
       } else {
       alert('Partida Econtrada');
