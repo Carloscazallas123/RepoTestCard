@@ -21,8 +21,8 @@ create table tabledesk_card (
 	IdDesk int null,
     IdCard int null,
     constraint PkDesk_Card primary key (IdDesk_Card),
-    constraint FkDesk foreign key (IdDesk) references Tabledesk(IdDesk),
-    constraint FkDCard foreign key (IdCard) references Tablecard(IdCard)
+    constraint FkDesk foreign key (IdDesk) references tabledesk(IdDesk),
+    constraint FkDCard foreign key (IdCard) references tablecard(IdCard)
 );
 
 
@@ -31,7 +31,7 @@ create table tableuser (
     UserName varchar(250) null,
     DeskUser int null,
     constraint PkIdUser primary key (IdUser),
-    constraint FkDeskUser foreign key (DeskUser) references Tabledesk(IdDesk)
+    constraint FkDeskUser foreign key (DeskUser) references tabledesk(IdDesk)
 );
 
 create table tablematch (
@@ -42,8 +42,8 @@ create table tablematch (
     Points1 int null comment 'puntos del jugador 1',
     Points2 int null comment 'puntos del jugador 2',
     constraint PkIdMatch primary key (IdMatch),
-    constraint FkPlayer1 foreign key (Player1) references Tableuser(IdUser),
-    constraint FkPlayer2 foreign key (Player2) references Tableuser(IdUser)
+    constraint FkPlayer1 foreign key (Player1) references tableuser(IdUser),
+    constraint FkPlayer2 foreign key (Player2) references tableuser(IdUser)
 );
 
 create table tablegame (
@@ -52,9 +52,9 @@ create table tablegame (
     Card1 int null,
     Card2 int null,
     constraint PkIdGame primary key (IdGame),
-    constraint FkGameMatch foreign key (GameMatch) references Tablematch(IdMatch),
-    constraint FkCard1 foreign key (Card1) references Tablecard(IdCard),
-    constraint FkCard2 foreign key (Card2) references Tablecard(IdCard)
+    constraint FkGameMatch foreign key (GameMatch) references tablematch(IdMatch),
+    constraint FkCard1 foreign key (Card1) references tablecard(IdCard),
+    constraint FkCard2 foreign key (Card2) references tablecard(IdCard)
 );
 
 -- 1. Creamos la baraja (Mazo)

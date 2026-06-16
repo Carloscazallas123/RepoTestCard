@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import ServicioAcceso from './../service/ServiceAcceso';
 import { useNavigate } from 'react-router-dom';
 import type { MatchDTO } from '../Interface/Interfaces';
+import ServicioAcceso from './../service/ServiceAcceso';
+import './../style/InicioJuego.css';
 export const InicioJuego = () => {
 
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
@@ -19,91 +20,67 @@ export const InicioJuego = () => {
   };
 
   return (
-    <div style={{ marginTop: '20px', fontFamily: 'Arial, sans-serif' }}>
+  <div className="lobby-container">
+    
+    {/* MONITOR DE ESTADO DEL SERVIDOR */}
+    <div className="status-monitor">
+      <span className="status-label">Estado del Servidor:</span>
+      <span className={`status-badge ${isSocketActivo ? 'online' : 'offline'}`}>
+        {isSocketActivo ? '🟢 CONECTADO' : '🔴 DESCONECTADO'}
+      </span>
+    </div>
+
+    {/* PANEL DE CONTROL CENTRAL */}
+    <div className="control-card">
       
-      {/* MONITOR DE ESTADO DEL SOCKET (Solo visual) */}
-      <div style={{ marginBottom: '15px', fontSize: '14px' }}>
-        <span style={{ fontWeight: 'bold' }}>Estado del Servidor: </span>
-        <span style={{ color: isSocketActivo ? '#28a745' : '#dc3545', fontWeight: 'bold' }}>
-          {isSocketActivo ? '🟢 CONECTADO' : '🔴 DESCONECTADO'}
-        </span>
+      {/* BLOQUE DEL INPUT */}
+      <div className="input-group">
+        <label className="input-label">Nombre de jugador</label>
+        <input
+          type="text"
+          placeholder={isSocketActivo ? "Introduce tu apodo..." : "⚠️ Enciende el socket para poder escribir"}
+          disabled={!isSocketActivo}
+          value={nombreUsuario}
+          onChange={(e) => setNombreUsuario(e.target.value)}
+          className={`player-input ${!isSocketActivo ? 'disabled-input' : ''}`}
+        />
       </div>
 
-      {/* FASE 1: Formulario y botonera */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '400px' }}>
-          
-          {/* Bloque del Input */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <label style={{ fontWeight: 'bold', color: '#333', fontSize: '14px' }}>Nombre de jugador:</label>
-            <input
-              type="text"
-              placeholder={isSocketActivo ? "Introduce tu nombre..." : "⚠️ Enciende el socket para poder escribir"}
-              disabled={!isSocketActivo}
-              value={nombreUsuario}
-              onChange={(e) => setNombreUsuario(e.target.value)}
-              style={{
-                padding: '10px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                fontSize: '14px',
-                backgroundColor: isSocketActivo ? '#fff' : '#e9ecef'
-              }}
-            />
-          </div>
+      {/* PANEL DE BOTONES */}
+      <div className="grid-actions">
+        
+        {/* Botón 1: Encender */}
+        <button
+          type="button"
+          disabled={isSocketActivo}
+          onClick={() => encenderSocket()}
+          className="btn btn-success"
+        >
+          ⚡ Encender Socket
+        </button>
 
-          {/* 🎛️ PANEL DE CUATRO BOTONES */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-            
-            {/* Botón 1: Encender */}
-            <button
-              type="button"
-              disabled={isSocketActivo} // Se deshabilita si ya está encendido
-              onClick={()=>{encenderSocket()}}
-              style={{
-                padding: '10px',
-                backgroundColor: isSocketActivo ? '#ccc' : '#28a745',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                fontWeight: 'bold',
-                cursor: isSocketActivo ? 'not-allowed' : 'pointer'
-              }}
-            >⚡ Encender Socket </button>
+        {/* Botón 2: Apagar */}
+        <button
+          type="button"
+          disabled={!isSocketActivo}
+          onClick={() => apagarSocket()}
+          className="btn btn-danger"
+        >
+          🛑 Apagar Socket
+        </button>
 
-            {/* Botón 2: Apagar */}
-            <button
-              type="button"
-              disabled={!isSocketActivo} // Se deshabilita si ya está apagado
-              onClick={()=> apagarSocket()}
-              style={{
-                padding: '10px',
-                backgroundColor: !isSocketActivo ? '#ccc' : '#dc3545',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                fontWeight: 'bold',
-                cursor: !isSocketActivo ? 'not-allowed' : 'pointer'
-              }}
-            > 🛑 Apagar Socket </button>
+        {/* Botón 3: Buscar Partida */}
+        <button
+          type="button"
+          disabled={!isSocketActivo || !nombreUsuario.trim()}
+          onClick={() => escucharcanalPartida(nombreUsuario)}
+          className="btn btn-primary btn-full"
+        >
+          🚀 Buscar Partida
+        </button>
 
-            {/* Botón 4: Activar el Canal */}
-            <button 
-              type="button"
-              disabled={!isSocketActivo || !nombreUsuario.trim()} 
-              onClick={()=>{escucharcanalPartida(nombreUsuario)}} 
-              style={{
-                padding: '10px',
-                backgroundColor: (!isSocketActivo || !nombreUsuario.trim()) ? '#ccc' : '#007bff',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                fontWeight: 'bold',
-                cursor: (!isSocketActivo || !nombreUsuario.trim()) ? 'not-allowed' : 'pointer'
-              }}
-            > 🚀 Buscar Partida </button>
-
-          </div>
-        </div>
       </div>
-  );
+    </div>
+  </div>
+);
 };
