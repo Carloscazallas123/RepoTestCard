@@ -5,7 +5,7 @@ export const TableroJuego = ()=> {
   const [Partida] = useState(() => {
         const PartidoToken = localStorage.getItem('partido');
         try {
-            return PartidoToken ? JSON.parse(PartidoToken) : null;
+            return PartidoToken ? JSON.parse(PartidoToken) : PartidoToken;
         } catch (e) {
             console.error("Error al parsear el usuario del localStorage:", e);
             return null;
@@ -44,7 +44,7 @@ export const TableroJuego = ()=> {
         <h3 style={{ margin: 0, color: '#1a202c', fontSize: '20px' }}>🃏 Tablero de Juego</h3>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <span style={{ fontSize: '12px', color: '#4a5568', background: '#edf2f7', padding: '4px 10px', borderRadius: '15px', fontWeight: 'bold' }}>
-            Partida #{Partida?.idMatch}
+            Partida #{Partida.idMatch}
           </span>
         </div>
       </div>
@@ -54,21 +54,21 @@ export const TableroJuego = ()=> {
           <p style={{ margin: '0 0 5px 0', 
                       fontWeight: '600', 
                       color: '#4a5568', 
-                      fontSize: '14px' }}> 👤 {Partida?.Player1?.userName} (Tú) </p>
+                      fontSize: '14px' }}> 👤 {Partida.Player1.userName} (Tú) </p>
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
-                      fontSize: '22px' }}> {Partida?.Points1} pts </p>
+                      fontSize: '22px' }}> {Partida.Points1} pts </p>
         </div>
         <div style={{ textAlign: 'right' }}>
           <p style={{ margin: '0 0 5px 0', 
                       fontWeight: '600', 
                       color: '#4a5568', 
-                      fontSize: '14px' }}> 👤 {Partida?.Player2?.userName} </p>
+                      fontSize: '14px' }}> 👤 {Partida.Player2.userName} </p>
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
-                      fontSize: '22px' }}> {Partida?.Points2} pts </p>
+                      fontSize: '22px' }}> {Partida.Points2} pts </p>
         </div>
       </div>
 
@@ -78,7 +78,7 @@ export const TableroJuego = ()=> {
           Mano de {Partida?.Player2?.userName} ({Partida?.Player2?.deskUser?.Cards?.length} cartas || 0):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {Partida?.Player2?.deskUser?.Cards?.map((_: any, index: any) => (
+          {Partida.Player2.deskUser.Cards.map((_: any, index: any) => (
             <div
               key={`rival-card-${index}`}
               style={{
@@ -102,7 +102,7 @@ export const TableroJuego = ()=> {
       {/* 🔵 TU ZONA: CARTAS EN MANO (BOCA ARRIBA) */}
       <h4 style={{ margin: '0 0 12px 0', color: '#2d3748', fontSize: '15px' }}>Tus cartas en mano:</h4>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        {Partida?.Player1?.deskUser?.Cards?.map((carta: Card) => {
+        {Partida.Player1.deskUser.Cards.map((carta: Card) => {
           const deshabilitado = cartaSeleccionada !== null;
           const esEstaCarta = cartaSeleccionada === carta.idCard;
           

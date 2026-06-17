@@ -29,7 +29,6 @@ export const InicioJuego = () => {
         const datosPartida: MatchDTO = JSON.parse(tokenPartido);
         if (datosPartida?.Player2) {
           console.log("¡Rival encontrado! Cancelando el cargando y redirigiendo...");
-          console.log(datosPartida);
           // Limpiamos el temporizador para evitar fugas de memoria
           if (intervaloRef.current) clearInterval(intervaloRef.current);
           
