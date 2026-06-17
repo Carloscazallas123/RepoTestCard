@@ -1,12 +1,21 @@
-/* --- CONTENEDOR PRINCIPAL --- */
+.arena-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+  background-color: #0f1319; /* Un fondo exterior aún más oscuro para que resalte la arena */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 .arena-container {
-  margin: 20px auto 0 auto;
   border: 1px solid #1a202c;
   padding: 20px;
   border-radius: 16px;
   background-color: #1a202c;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  max-width: 750px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  width: 100%;
+  max-width: 750px; /* Evita que se estire infinitamente en pantallas gigantes */
   font-family: system-ui, -apple-system, sans-serif;
   color: #fff;
 }
@@ -100,6 +109,7 @@
   display: flex;
   gap: 8px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .rival-card-back {
