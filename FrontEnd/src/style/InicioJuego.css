@@ -172,3 +172,14 @@ html, body {
   background-color: #5a32a3;
   box-shadow: 0 6px 15px rgba(111, 66, 193, 0.5);
 }
+
+.loading-text {
+  animation: parpadeo 1.5s infinite ease-in-out;
+  font-weight: 500;
+}
+
+@keyframes parpadeo {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
