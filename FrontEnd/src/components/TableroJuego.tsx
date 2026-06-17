@@ -20,6 +20,9 @@ let miJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: "
 let rivalJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: "Rival", DeskUser: { Cards: [] as Card[] } };
 let miPuntaje = 0;
 let rivalPuntaje = 0;
+console.log("Lo que tengo en LocalStorage:", localStorage.getItem('Usuarioo'));
+console.log("Lo que viene en Player1:", Partida?.Player1?.Username);
+console.log("Lo que viene en Player2:", Partida?.Player2?.Username);
 
 // Protegemos con ?. en caso de que Partida sea temporalmente null o undefined
 if (localStorage.getItem(Partida.Player1.Username) === Partida.Player1.Username) {
