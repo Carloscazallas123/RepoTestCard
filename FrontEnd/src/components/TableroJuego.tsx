@@ -13,7 +13,7 @@ export const TableroJuego = ()=> {
             console.error("Error al parsear el usuario del localStorage:", e);
             return null;
         }
-    }); console.log(Partida); localStorage.removeItem('partido');
+    }); console.log(Partida);
 
     //Obtención del Usuario Principal
     const [miJugador] = useState<String|null>(() => {
@@ -24,7 +24,7 @@ export const TableroJuego = ()=> {
             console.error("Error al parsear el usuario del localStorage:", e);
             return null;
         }
-    }); console.log(miJugador); localStorage.removeItem('User');
+    }); console.log(miJugador); 
 
 
 
