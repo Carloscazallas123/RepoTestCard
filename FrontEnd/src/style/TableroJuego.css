@@ -1,0 +1,265 @@
+/* --- CONTENEDOR PRINCIPAL --- */
+.arena-container {
+  margin: 20px auto 0 auto;
+  border: 1px solid #1a202c;
+  padding: 20px;
+  border-radius: 16px;
+  background-color: #1a202c;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  max-width: 750px;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #fff;
+}
+
+/* --- BARRA SUPERIOR --- */
+.arena-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #2d3748;
+  padding-bottom: 10px;
+}
+
+.arena-title {
+  margin: 0;
+  color: #f7fafc;
+  fontSize: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.match-badge {
+  font-size: 11px;
+  color: #63b3ed;
+  background: #2b6cb0;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+/* --- MARCADORES --- */
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  background: #2d3748;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.score-player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score-player.rival {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.dot-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot-player1 { background-color: #4299e1; }
+.dot-player2 { background-color: #f56565; }
+
+.player-label {
+  font-size: 12px;
+  color: #a0aec0;
+}
+
+.pts-counter-p1 { font-size: 20px; font-weight: bold; color: #63b3ed; }
+.pts-counter-p2 { font-size: 20px; font-weight: bold; color: #fc8181; }
+.pts-text { font-size: 12px; }
+
+/* --- ZONA RIVAL --- */
+.rival-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  background: rgba(0,0,0,0.2);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.rival-label {
+  font-size: 12px;
+  color: #cbd5e0;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.rival-hand-slots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.rival-card-back {
+  width: 50px;
+  height: 70px;
+  background-color: #2c5282;
+  border: 2px solid #4299e1;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  background: repeating-linear-gradient(45deg, #2b6cb0, #2b6cb0 5px, #2c5282 5px, #2c5282 10px);
+}
+
+/* --- CAMPO DE BATALLA CENTRAL --- */
+.battlefield {
+  height: 140px;
+  border: 2px dashed #4a5568;
+  border-radius: 12px;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  background: radial-gradient(circle, #2d3748 0%, #1a202c 100%);
+  position: relative;
+}
+
+.battlefield-tag {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-size: 10px;
+  color: #4a5568;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.combat-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.slot-tag-rival { font-size: 10px; color: #fc8181; }
+.slot-tag-player { font-size: 10px; color: #63b3ed; }
+
+.card-placeholder {
+  width: 60px;
+  height: 85px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.card-placeholder.rival-side {
+  border: 2px solid #f56565;
+  background: rgba(245, 101, 101, 0.05);
+  color: #f56565;
+}
+
+.card-placeholder.player-side {
+  border: 2px solid #4299e1;
+  background: rgba(66, 153, 225, 0.05);
+  color: #4299e1;
+}
+
+.card-placeholder.player-side.active {
+  background: rgba(66, 153, 225, 0.2);
+  font-weight: bold;
+}
+
+/* --- TU MANO INTERACTIVA (EL HOVER BONITO) --- */
+.player-hand-container {
+  background: rgba(255,255,255,0.02);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #2d3748;
+}
+
+.hand-label {
+  margin: 0 0 10px 0;
+  color: #cbd5e0;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+.player-cards-grid {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* El botón/carta base */
+.card-button {
+  padding: 12px 8px;
+  width: 85px;
+  height: 120px;
+  background-color: #2d3748;
+  color: #fff;
+  border: 2px solid #4a5568;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Transición elástica suave */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 🌟 ¡EFECTO HOVER GAMING! Elevación, cambio de borde e iluminación */
+.card-button:not(:disabled):hover {
+  background-color: #3a4a63;
+  border-color: #63b3ed;
+  transform: translateY(-12px) scale(1.05); /* Se levanta más y se agranda un pelín */
+  box-shadow: 0 12px 20px rgba(99, 179, 237, 0.3); /* Destello azul en la base */
+}
+
+/* Estado de carta seleccionada (Jugada) */
+.card-button.selected {
+  background-color: #2f855a;
+  border-color: #48bb78;
+  transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(72, 187, 120, 0.4);
+}
+
+/* Cartas bloqueadas cuando ya has jugado */
+.card-button:disabled:not(.selected) {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(80%);
+}
+
+.card-valour {
+  font-size: 16px;
+  font-weight: bold;
+  color: #edf2f7;
+}
+
+.card-id {
+  font-size: 9px;
+  color: #a0aec0;
+}
+
+/* --- ALERTAS --- */
+.wait-alert {
+  margin-top: 15px;
+  padding: 10px;
+  background: #22543d;
+  color: #c6f6d5;
+  border-radius: 8px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid #2f855a;
+}
