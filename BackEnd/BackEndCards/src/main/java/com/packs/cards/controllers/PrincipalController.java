@@ -199,26 +199,23 @@ public class PrincipalController {
 	DeskEntity EntityDesk= new DeskEntity();
 	String NameDesk= "Mazo de " + Username;
 	EntityDesk.setNameDesk(NameDesk);
+	EntityDesk=DeskRepo.save(EntityDesk);
 	
 	List<CardsEntity> Cards = new ArrayList<>();
 	List<DeskCardEntity>DeskCards=new ArrayList<>();
 	
 	//Bucle para crear las cartas
 	for (int i = 0; i < 5; i++) {
-	int aleatorio=(int)(Math.random()*130);
-	Cards.add( CardsRepo.save(new CardsEntity(aleatorio))); }
+	int aleatorio = (int)(Math.random() * 130);
+    CardsEntity nuevaCarta = new CardsEntity(aleatorio);
+    Cards.add(nuevaCarta);
+    nuevaCarta = CardsRepo.save(nuevaCarta); 
+    DeskCardEntity relacion = new DeskCardEntity(EntityDesk, nuevaCarta);
+    DeskCards.add(RepoDC.save(relacion)); 
 	
-	//Bucle para vincular las cartas con el mazo
-	for (int e = 0; e < Cards.size(); e++) {
-	DeskCards.add( RepoDC.save(new DeskCardEntity(EntityDesk,Cards.get(e)))); }
-	
-	//Bucle para vincular las cartas con el mazo
-	for (int o = 0; o < DeskCards.size(); o++) {
-	RepoDC.save(DeskCards.get(o)); }
-		
-		
+	}
 	EntityDesk.setDeskCards(DeskCards);
-	DeskRepo.save(EntityDesk);
+	
 	
 	return EntityDesk;
 	}
