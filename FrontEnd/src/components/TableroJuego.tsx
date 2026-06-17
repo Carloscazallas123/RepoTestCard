@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import type { MatchDTO, Card } from './../Interface/Interfaces';
 
 export const TableroJuego = ()=> {
+  const [cartaSeleccionada] = useState<number | null>(null);
   const [Partida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
         try {
@@ -11,8 +12,6 @@ export const TableroJuego = ()=> {
             return null;
         }
     });
-  const [cartaSeleccionada] = useState<number | null>(null);
-
   useEffect(() => {
     const token = localStorage.getItem('partido');
     if (token) {
@@ -25,7 +24,7 @@ export const TableroJuego = ()=> {
     }
   }, []);
 
-  
+  console.log(Partida);
 
   return (
     <div style={{
