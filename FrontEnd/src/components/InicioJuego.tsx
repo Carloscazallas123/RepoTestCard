@@ -19,7 +19,7 @@ export const InicioJuego = () => {
   // 🚀 Función modificada para gestionar la cola con el refresco automático
   const escucharcanalPartida = (Nombre: string) => { 
     localStorage.setItem('Usuarioo',Nombre);
-    console.log(localStorage.getItem('Usuarioo'));
+    console.log(localStorage.getItem('User'));
     ServicioAcceso.escucharCanal(Nombre); 
     setEnCola(true); // Bloqueamos la interfaz
 

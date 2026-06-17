@@ -3,6 +3,7 @@ import type { MatchDTO, Card, GameDTO } from './../Interface/Interfaces';
 import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
+
   //Obtención de la Partida
    const [Partida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
@@ -14,29 +15,18 @@ export const TableroJuego = ()=> {
         }
     }); console.log(Partida); localStorage.removeItem('partido');
 
-  // //Repartición de Usuarios
-// Inicializamos con valores por defecto seguros para que el HTML/JSX no de error al renderizar vacío
-let miJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: "Tu", DeskUser: { Cards: [] as Card[] } };
-let rivalJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: "Rival", DeskUser: { Cards: [] as Card[] } };
-let miPuntaje = 0;
-let rivalPuntaje = 0;
-console.log("Lo que tengo en LocalStorage:", localStorage.getItem('Usuarioo'));
-console.log("Lo que viene en Player1:", Partida?.Player1?.Username);
-console.log("Lo que viene en Player2:", Partida?.Player2?.Username);
+    //Obtención del Usuario Principal
+    const [miJugador] = useState<String|null>(() => {
+        const UserToken = localStorage.getItem('User');
+        try {
+            return UserToken;
+        } catch (e) {
+            console.error("Error al parsear el usuario del localStorage:", e);
+            return null;
+        }
+    }); console.log(miJugador); localStorage.removeItem('User');
 
-// Protegemos con ?. en caso de que Partida sea temporalmente null o undefined
-if (localStorage.getItem(Partida.Player1.Username) === Partida.Player1.Username) {
-  miJugador = Partida.Player1;
-  miPuntaje = Partida.Points1;
-  rivalJugador = Partida.Player2;
-  rivalPuntaje = Partida.Points2;
-} else if (localStorage.getItem(Partida.Player2.Username) === Partida.Player2?.Username) {
-  miJugador = Partida.Player2;
-  miPuntaje = Partida.Points2;
-  rivalJugador = Partida.Player1;
-  rivalPuntaje = Partida.Points1;
-}
-console.log(miJugador);
+
 
 
   //Declaración de las variables
@@ -75,15 +65,15 @@ console.log(miJugador);
         <div className="score-player">
           <div className="dot-status dot-player1"></div>
           <div>
-            <span className="player-label">{miJugador?.Username ?? "Tú"}</span>
-            <div className="pts-counter-p1">{miPuntaje ?? 0} <span className="pts-text">PTS</span></div>
+            <span className="player-label">{Partida.Player1.Username ?? "Tú"}</span>
+            <div className="pts-counter-p1">{Partida.Points1 ?? 0} <span className="pts-text">PTS</span></div>
           </div>
         </div>
         <div className="score-player rival">
           <div className="dot-status dot-player2"></div>
           <div>
-            <span className="player-label">{rivalJugador?.Username ?? "Rival"}</span>
-            <div className="pts-counter-p2">{rivalPuntaje ?? 0} <span className="pts-text">PTS</span></div>
+            <span className="player-label">{Partida.Player2.Username ?? "Rival"}</span>
+            <div className="pts-counter-p2">{Partida.Points2 ?? 0} <span className="pts-text">PTS</span></div>
           </div>
         </div>
       </div>
@@ -91,11 +81,11 @@ console.log(miJugador);
       {/* ================= 1. ZONA SUPERIOR: RIVAL (SIEMPRE EL OTRO) ================= */}
       <div className="rival-zone">
         <div className="rival-label">
-          Mano de {rivalJugador?.Username ?? "Rival"} ({rivalJugador?.DeskUser?.Cards?.length ?? 0} cartas)
+          Mano de {Partida.Player2.Username ?? "Rival"} ({Partida.Player2.DeskUser.Cards.length ?? 0} cartas)
         </div>
         <div className="rival-hand-slots">
-          {rivalJugador?.DeskUser.Cards.map((carta: any, idx: number) => (
-            <div key={`rival-${carta?.IdCard ?? idx}`} className="rival-card-back">
+          {Partida.Player2.DeskUser.Cards.map((carta:Card) => (
+            <div key={`rival-${carta.IdCard}`} className="rival-card-back">
               <span style={{ fontSize: '14px' }}>❓</span>
             </div>
           ))}
@@ -128,7 +118,7 @@ console.log(miJugador);
       <div className="player-hand-container">
         <h4 className="hand-label">Tu Mano Operativa:</h4>
         <div className="player-cards-grid">
-          {miJugador?.DeskUser?.Cards?.map((carta: any) => {
+          {Partida.Player1.DeskUser.Cards.map((carta: Card) => {
             const deshabilitado = cartaSeleccionada !== null;
             const esEstaCarta = cartaSeleccionada === carta.IdCard;
             
