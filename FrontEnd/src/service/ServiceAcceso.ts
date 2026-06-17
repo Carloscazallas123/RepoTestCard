@@ -45,6 +45,7 @@ const ServicioAcceso = {
       stompClient.subscribe('/topic/partida', 
         (mensaje: Message) => {
         const datos: MatchDTO = JSON.parse(mensaje.body);
+        localStorage.setItem('User',Nombre);
         localStorage.setItem('partido',JSON.stringify(datos)); });
       console.log(suscripcionPartida);
       console.log('📡 Escuchando canal: /topic/partida');

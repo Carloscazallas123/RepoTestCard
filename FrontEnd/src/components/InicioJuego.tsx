@@ -18,8 +18,6 @@ export const InicioJuego = () => {
 
   // 🚀 Función modificada para gestionar la cola con el refresco automático
   const escucharcanalPartida = (Nombre: string) => { 
-    localStorage.setItem('User',Nombre);
-    console.log(localStorage.getItem('User'));
     ServicioAcceso.escucharCanal(Nombre); 
     setEnCola(true); // Bloqueamos la interfaz
 
@@ -29,7 +27,7 @@ export const InicioJuego = () => {
       
       if (tokenPartido) {
         const datosPartida: MatchDTO = JSON.parse(tokenPartido);
-        if (datosPartida?.Player2) {
+        if (datosPartida.Player2) {
           console.log("¡Rival encontrado! Cancelando el cargando y redirigiendo...");
           // Limpiamos el temporizador para evitar fugas de memoria
           if (intervaloRef.current) clearInterval(intervaloRef.current);
