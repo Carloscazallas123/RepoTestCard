@@ -11,7 +11,6 @@ export const TableroJuego = ()=> {
   useEffect(() => {
     const token = localStorage.getItem('partido');
     if (token) {
-      console.log(token);
       SetRellenar(JSON.parse(token));
     }
   }, []);

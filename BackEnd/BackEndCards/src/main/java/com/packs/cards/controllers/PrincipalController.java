@@ -150,7 +150,7 @@ public class PrincipalController {
 		ObjectUser.setUsername(Username);
 		ObjectUser.setIduser(EntityUser.getIdUser());
 		ObjectUser.setDeskUser( new DeskDTO());
-		ObjectUser.getDeskUser().setNameDesk(Username);
+		ObjectUser.getDeskUser().setNameDesk(DeskUser.getNameDesk());
 		ObjectUser.getDeskUser().setIdDesk(DeskUser.getIdDesk());
 		List<CardsDTO>ListCardsDTO=new ArrayList<>();
 		ObjectUser.getDeskUser().setCards(ListCardsDTO);
