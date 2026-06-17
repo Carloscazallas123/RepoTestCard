@@ -11,11 +11,11 @@ public class DeskCardEntity {
     @Column(name = "`IdDesk_Card`")
     private int idDeskCard;
     
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.MERGE)
     @JoinColumn(name = "`IdDesk`")
     private DeskEntity Desk;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.MERGE)
     @JoinColumn(name = "`IdCard`") 
     private CardsEntity Card;
     
