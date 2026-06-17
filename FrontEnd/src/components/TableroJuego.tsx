@@ -191,10 +191,10 @@ export const TableroJuego = ()=> {
             > 
               <div style={{ fontSize: '16px' }}>🃏</div>
               <div style={{ fontSize: '16px', fontWeight: 'extrabold', color: '#edf2f7' }}>
-                ⚔️ {carta.valour}
+                ⚔️ {carta.Valour}
               </div>
               <div style={{ fontSize: '9px', color: '#a0aec0' }}>
-                ID: {carta.idCard}
+                ID: {carta.IdCard}
               </div>
             </button>
           );

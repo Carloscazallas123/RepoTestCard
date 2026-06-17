@@ -1,6 +1,6 @@
 export interface Card {
-    idCard: number;
-    valour: number; 
+    IdCard: number;
+    Valour: number; 
 }
 
 export interface Desk {
