@@ -2,22 +2,23 @@ import { useState, useEffect } from 'react';
 import type { MatchDTO, Card } from './../Interface/Interfaces';
 
 export const TableroJuego = ()=> {
-  const [Rellenar,SetRellenar]=useState<MatchDTO | null>(null);
-  const [cartaSeleccionada] = useState(0);
+  const [Partida, SetPartida] = useState<MatchDTO | null>(null);
+  const [cartaSeleccionada] = useState<number | null>(null);
 
-
-  //Obtener Partido
   useEffect(() => {
     const token = localStorage.getItem('partido');
     if (token) {
-      const P: MatchDTO = JSON.parse(token);
-      SetRellenar(P);
-      console.log(P);
+      try {
+        const P: MatchDTO = JSON.parse(token);
+        SetPartida(P);
+        console.log(Partida);
+      } catch (e) {
+        console.error('Error parsing partido from localStorage', e);
+      }
     }
   }, []);
 
-  //Definicion de Partida
-  const Partida = Rellenar;
+  
 
   return (
     <div style={{
