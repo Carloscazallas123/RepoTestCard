@@ -120,7 +120,12 @@ export const TableroJuego = ()=> {
         <div className="combat-slot">
           <span className="slot-tag-player">TÚ</span>
           <div className={`card-placeholder player-side ${cartaSeleccionada ? 'active' : ''}`}>
-            {cartaSeleccionada ? "⚔️ V" : "EMPTY"}
+            {cartaSeleccionada ? (
+            <div className="card-placed-animation">
+              <div style={{ fontSize: '18px' }}>🃏</div>
+                <div style={{ fontWeight: 'bold', color: '#4ade80' }}>⚔️ {cartaSeleccionada.Valour}</div>
+                <div style={{ fontSize: '10px', opacity: 0.5 }}>ID: {cartaSeleccionada.IdCard}</div>
+            </div> ) : ( "SELECCIONA UNA CARTA" )}
           </div>
         </div>
       </div>
