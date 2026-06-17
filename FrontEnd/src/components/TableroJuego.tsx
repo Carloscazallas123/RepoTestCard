@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import type { MatchDTO, Card } from './../Interface/Interfaces';
+import { useState } from 'react';
+import type { MatchDTO, Card, GameDTO } from './../Interface/Interfaces';
 import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<number | null>(null);
+  const [Jugada,SetJugada] = useState<GameDTO | null>(null);
   const [Partida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
         try {
@@ -12,20 +13,26 @@ export const TableroJuego = ()=> {
             console.error("Error al parsear el usuario del localStorage:", e);
             return null;
         }
-    });
-  useEffect(() => {
-    const token = localStorage.getItem('partido');
-    if (token) {
-      try {
-        const P: MatchDTO = JSON.parse(token);
-        console.log(P);
-      } catch (e) {
-        console.error('Error parsing partido from localStorage', e);
+    }); console.log(Partida); localStorage.removeItem('partido');
+
+    const PrepararJugada = (carta:Card) =>{
+      SetCartaSeleccionada(carta.IdCard);
+      const Jugada='Jugada de la Partida Nº '+ Partida.IdMatch;
+      const token=localStorage.getItem(Jugada);
+
+      if(!token){
+        const Game: GameDTO = { idMatch: Partida.IdMatch, card1: carta, card2: null }
+        localStorage.setItem(Jugada, JSON.stringify(Game));
+        return console.log('Esperando a que el jugador 2');
+      } else {
+        console.log('Realizando Jugada...');
+        const GameToken: GameDTO = JSON.parse(token);
+        const Game: GameDTO = { idMatch: GameToken.idMatch, card1: GameToken.card1, card2: carta }
+        console.log(Game);
       }
     }
-  }, []);
 
-  console.log(Partida);
+  
 
   return (
   <div className="arena-wrapper">
@@ -46,7 +53,7 @@ export const TableroJuego = ()=> {
       </span>
       </div>
       )}
-      
+
       {/* ================= MARCADOR DE PUNTOS ================= */}
       <div className="scoreboard">
         <div className="score-player">
@@ -114,7 +121,7 @@ export const TableroJuego = ()=> {
               <button
                 key={carta.IdCard}
                 disabled={deshabilitado}
-                onClick={() => SetCartaSeleccionada(carta.IdCard)}
+                onClick={() => PrepararJugada(carta)}
                 className={`card-button ${esEstaCarta ? 'selected' : ''}`}
               > 
                 <div style={{ fontSize: '16px' }}>🃏</div>
