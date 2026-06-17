@@ -28,6 +28,12 @@ public class CardsEntity implements Serializable{
 	@OneToMany(mappedBy = "Card")
     private List<DeskCardEntity> DeskCards;
 
+	
+	public CardsEntity(int valour) { Valour = valour; }
+	public CardsEntity() { }
+
+
+
 	public int getIdCard() {
 		return IdCard;
 	}
@@ -42,6 +48,12 @@ public class CardsEntity implements Serializable{
 
 	public void setValour(int valour) {
 		Valour = valour;
+	}
+	public List<DeskCardEntity> getDeskCards() {
+		return DeskCards;
+	}
+	public void setDeskCards(List<DeskCardEntity> deskCards) {
+		DeskCards = deskCards;
 	}
 	
 }

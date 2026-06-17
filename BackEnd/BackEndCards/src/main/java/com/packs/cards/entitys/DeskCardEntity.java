@@ -10,7 +10,7 @@ public class DeskCardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`IdDesk_Card`")
     private int idDeskCard;
-
+    
     @ManyToOne
     @JoinColumn(name = "`IdDesk`")
     private DeskEntity Desk;
@@ -18,6 +18,30 @@ public class DeskCardEntity {
     @ManyToOne
     @JoinColumn(name = "`IdCard`") 
     private CardsEntity Card;
+    
+    
+
+	public DeskCardEntity(DeskEntity desk, CardsEntity card) {
+		Desk = desk;
+		Card = card;
+	}
+
+	public DeskEntity getDesk() {
+		return Desk;
+	}
+
+	public void setDesk(DeskEntity desk) {
+		Desk = desk;
+	}
+
+	public CardsEntity getCard() {
+		return Card;
+	}
+
+	public void setCard(CardsEntity card) {
+		Card = card;
+	}
 
 
+    
 }

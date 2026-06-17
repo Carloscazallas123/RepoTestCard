@@ -56,26 +56,3 @@ create table tablegame (
     constraint FkCard1 foreign key (Card1) references tablecard(IdCard),
     constraint FkCard2 foreign key (Card2) references tablecard(IdCard)
 );
-
--- 1. Creamos la baraja (Mazo)
-INSERT INTO tabledesk (NameDesk) 
-VALUES ('Baraja Principal');
-
--- 2. Creamos las 5 cartas con valores de fuerza aleatorios (ej. entre 1 y 100)
--- Usamos FLOOR(RAND() * 100) + 1 para generar el número aleatorio en MySQL
-INSERT INTO tablecard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
-INSERT INTO tablecard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
-INSERT INTO tablecard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
-INSERT INTO tablecard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
-INSERT INTO tablecard (Valour) VALUES (FLOOR(RAND() * 100) + 1);
-
--- 3. Metemos las 5 cartas dentro de la baraja que acabamos de crear
--- Como es la primera baraja, su IdDesk será 1. 
--- Como son las primeras cartas, sus IdCard serán 1, 2, 3, 4 y 5.
-INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 1);
-INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 2);
-INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 3);
-INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 4);
-INSERT INTO tabledesk_card (IdDesk, IdCard) VALUES (1, 5);
-
-SELECT * FROM tabledesk;

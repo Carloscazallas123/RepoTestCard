@@ -50,9 +50,9 @@ public class PrincipalController {
 				return Match;
 			}
 			String UserName1 = MatchMaking.poll();
-			Player1 = CreateUser(UserName1, DeskRepo, UserRepo, RepoDC);
+			Player1 = CreateUser(UserName1, DeskRepo, UserRepo, RepoDC, CardsRepo);
 			String UserName2 = MatchMaking.poll();
-			UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo, RepoDC);
+			UserDTO Player2 = CreateUser(UserName2, DeskRepo, UserRepo, RepoDC, CardsRepo);
 			Match = CreateMatch(Player1, Player2, UserRepo, MatchRepo);
 			MatchMaking.clear();
 			System.out.println("🧹 La cola de Matchmaking ha sido limpiada con éxito.");
@@ -81,8 +81,8 @@ public class PrincipalController {
 		// No han tirado carta
 		if (game.getCard1() == null || game.getCard2() == null) {
 			ObjectMatch.setState(" Preparen sus Cartas!!!");
-			UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
-			UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
+			UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
+			UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
 			ObjectMatch.setPlayer1(Player1);
 			ObjectMatch.setPlayer2(Player2);
 			ObjectMatch.setPoints1(EntityMatch.getPoints1());
@@ -123,8 +123,8 @@ public class PrincipalController {
 			ObjectMatch.setState("Partida Acabada");
 		}
 
-		UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
-		UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC);
+		UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
+		UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
 		ObjectMatch.setPlayer1(Player1);
 		ObjectMatch.setPlayer2(Player2);
 		ObjectMatch.setPoints1(EntityMatch.getPoints1());
@@ -135,23 +135,22 @@ public class PrincipalController {
 	}
 
 	// Función Externa Nº1: Creacion del Usuario
-	public static UserDTO CreateUser(String Username, RepoDesk DeskRepo, RepoUser UserRepo, RepoDeskCards RepoDC) {
+	public static UserDTO CreateUser(String Username, 
+									RepoDesk DeskRepo, 
+									RepoUser UserRepo, 
+									RepoDeskCards RepoDC,
+									RepoCards CardsRepo) {
 
 		UserEntity EntityUser = new UserEntity();
 		EntityUser.setUserName(Username);
-		EntityUser.setDeskUser(DeskRepo.ObtenerporId(1));
+		DeskEntity DeskUser=CreateDesk(Username,DeskRepo,RepoDC, CardsRepo);
+		EntityUser.setDeskUser(DeskUser);
 		UserRepo.save(EntityUser);
 		UserDTO ObjectUser = new UserDTO();
 		ObjectUser.setUsername(Username);
 		ObjectUser.setIduser(EntityUser.getIdUser());
 
-		List<Integer> Cards = new ArrayList<>();
-		List<CardsEntity> EntityCards = RepoDC.Obtenertodaslascartas();
-		for (int i = 0; i < EntityCards.size(); i++) {
-			Cards.add(EntityCards.get(i).getIdCard());
-		}
-
-		ObjectUser.setDeskUser(new DeskDTO(Cards));
+		
 
 		return ObjectUser;
 	}
@@ -179,7 +178,9 @@ public class PrincipalController {
 
 	}
 
-	public static boolean usuarioexistente(String username, RepoUser UserRepo) {
+	//Función Externa nº3: Comprobar la exsitencia del usuario
+	public static boolean usuarioexistente(String username, 
+										   RepoUser UserRepo) {
 		boolean existe = false;
 		List<UserEntity> ListaUsuarios = UserRepo.Obtenertodos();
 		for (int i = 0; i < ListaUsuarios.size(); i++) {
@@ -189,5 +190,36 @@ public class PrincipalController {
 		}
 		return existe;
 
+	}
+	
+	public static DeskEntity CreateDesk(String Username,
+										RepoDesk DeskRepo,
+										RepoDeskCards RepoDC,
+										RepoCards CardsRepo) {
+	DeskEntity EntityDesk= new DeskEntity();
+	String NameDesk= "Mazo de " + Username;
+	EntityDesk.setNameDesk(NameDesk);
+	
+	List<CardsEntity> Cards = new ArrayList<>();
+	List<DeskCardEntity>DeskCards=new ArrayList<>();
+	
+	//Bucle para crear las cartas
+	for (int i = 0; i < 5; i++) {
+	int aleatorio=(int)(Math.random()*130);
+	Cards.add( CardsRepo.save(new CardsEntity(aleatorio))); }
+	
+	//Bucle para vincular las cartas con el mazo
+	for (int e = 0; e < Cards.size(); e++) {
+	DeskCards.add( RepoDC.save(new DeskCardEntity(EntityDesk,Cards.get(e)))); }
+	
+	//Bucle para vincular las cartas con el mazo
+	for (int o = 0; o < DeskCards.size(); o++) {
+	RepoDC.save(DeskCards.get(o)); }
+		
+		
+	EntityDesk.setDeskCards(DeskCards);
+	DeskRepo.save(EntityDesk);
+	
+	return EntityDesk;
 	}
 }
