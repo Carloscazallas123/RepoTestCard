@@ -16,14 +16,12 @@ export interface UserDTO {
 }
 
 export interface MatchDTO {
-    idMatch?: number;
+    idMatch: number;
     Player1: UserDTO;
     Player2: UserDTO;
-    State?: string;
-    Points1?: number;
-    Points2?: number;
-    cartaMesaPlayer1?: Card | null; 
-    cartaMesaPlayer2?: Card | null;
+    State: string;
+    Points1: number;
+    Points2: number;
 }
 
 export interface GameDTO {

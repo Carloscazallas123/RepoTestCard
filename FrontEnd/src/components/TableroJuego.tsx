@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import type { MatchDTO, GameDTO, Card } from './../Interface/Interfaces';
-import juegoService from '../service/ServiceJuego';
+import type { MatchDTO, Card } from './../Interface/Interfaces';
 
 export const TableroJuego = ()=> {
   const [Rellenar,SetRellenar]=useState<MatchDTO | null>(null);
-  const [cartaSeleccionada, SetCartaSeleccionada]=useState(0);
+  const [cartaSeleccionada] = useState(0);
 
 
   //Obtener Partido
@@ -18,50 +17,7 @@ export const TableroJuego = ()=> {
   }, []);
 
   //Definicion de Partida
-  let Partida: MatchDTO ={
-    idMatch: Rellenar?.idMatch ?? 1,
-    Player1: {
-      idUser: Rellenar?.Player1?.idUser ?? 0,
-      userName: Rellenar?.Player1?.userName ?? 'Jugador 1',
-      deskUser: {
-        idDesk: Rellenar?.Player1?.deskUser?.idDesk ?? 0,
-        Cards: Rellenar?.Player1?.deskUser?.Cards ?? [],
-        NameDesk: Rellenar?.Player1.deskUser?.NameDesk ?? 'Mazo 1'
-      }
-    },
-    Player2: {
-      idUser: Rellenar?.Player2?.idUser ?? 1,
-      userName: Rellenar?.Player2?.userName ?? 'Jugador 2',
-      deskUser: {
-        idDesk: Rellenar?.Player2?.deskUser?.idDesk ?? 1,
-        Cards: Rellenar?.Player2?.deskUser?.Cards ?? [],
-        NameDesk: Rellenar?.Player2.deskUser?.NameDesk ?? 'Mazo 2'
-      }
-    },
-    State: 'Empezando la partida',
-    Points1: 0,
-    Points2: 0
-  }
-
-  
-    
- 
-  if (!Partida) return null;
-  juegoService.escucharJugada;
-  const Lanzarjugada = (Carta: Card) => {
-    SetCartaSeleccionada(Carta.idCard);
-    const Jugada: GameDTO = { idMatch: Partida.idMatch ?? 0, 
-                             card1: Partida.cartaMesaPlayer1?.idCard ?? 0, 
-                             card2: Partida.cartaMesaPlayer2?.idCard ?? 0 };
-    if (Jugada.card1 === 0 || Jugada.card2 === 0){
-      console.log('Aun Falta que uno de los jugadores lance una carta');
-      juegoService.enviarJugadaRealizada(Jugada);
-    } else {
-      console.log(Jugada);
-      juegoService.enviarJugadaRealizada(Jugada);
-    }
-
-  }
+  const Partida = Rellenar;
 
   return (
     <div style={{
@@ -80,7 +36,7 @@ export const TableroJuego = ()=> {
         <h3 style={{ margin: 0, color: '#1a202c', fontSize: '20px' }}>🃏 Tablero de Juego</h3>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <span style={{ fontSize: '12px', color: '#4a5568', background: '#edf2f7', padding: '4px 10px', borderRadius: '15px', fontWeight: 'bold' }}>
-            Partida #{Partida.idMatch}
+            Partida #{Partida?.idMatch}
           </span>
         </div>
       </div>
@@ -94,7 +50,7 @@ export const TableroJuego = ()=> {
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
-                      fontSize: '22px' }}> {Partida.Points1} pts </p>
+                      fontSize: '22px' }}> {Partida?.Points1} pts </p>
         </div>
         <div style={{ textAlign: 'right' }}>
           <p style={{ margin: '0 0 5px 0', 
@@ -104,14 +60,14 @@ export const TableroJuego = ()=> {
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
-                      fontSize: '22px' }}> {Partida.Points2} pts </p>
+                      fontSize: '22px' }}> {Partida?.Points2} pts </p>
         </div>
       </div>
 
       {/* 🔴 NUEVA SECCIÓN: MANO DEL JUGADOR 2 (BOCA ABAJO) */}
       <div style={{ marginBottom: '25px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e0' }}>
         <h4 style={{ margin: '0 0 10px 0', color: '#4a5568', fontSize: '14px' }}>
-          Mano de {Partida.Player2?.userName} ({Partida.Player2?.deskUser?.Cards?.length} cartas || 0):
+          Mano de {Partida?.Player2?.userName} ({Partida?.Player2?.deskUser?.Cards?.length} cartas || 0):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {Partida?.Player2?.deskUser?.Cards?.map((_, index) => (
@@ -135,39 +91,6 @@ export const TableroJuego = ()=> {
           ))}
         </div>
       </div>
-
-      {/* ⚔️ 3. AQUÍ VA: ZONA DE ENFRENTAMIENTO EN EL TABLERO */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-around', 
-        margin: '25px 0', 
-        padding: '20px 15px', 
-        background: '#f7fafc', 
-        borderRadius: '8px', 
-        border: '2px solid #edf2f7',
-        textAlign: 'center'
-      }}>
-        <div style={{ flex: 1, borderRight: '1px solid #edf2f7' }}>
-          <strong style={{ display: 'block', marginBottom: '8px', color: '#4a5568', fontSize: '13px' }}>Tu Carta en Mesa:</strong>
-          {/* Si tu backend soporta esta propiedad, la pintará aquí */}
-          {Partida.cartaMesaPlayer1 ? (
-            <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#2b6cb0' }}>⚔️ {Partida.cartaMesaPlayer1.valour}</span>
-          ) : (
-            <span style={{ fontSize: '14px', color: '#a0aec0', fontStyle: 'italic' }}>⏳ Esperando tu jugada</span>
-          )}
-        </div>
-
-        <div style={{ flex: 1 }}>
-          <strong style={{ display: 'block', marginBottom: '8px', color: '#4a5568', fontSize: '13px' }}>Carta de {Partida?.Player2?.userName}:</strong>
-          {/* Aquí obtienes dinámicamente la carta del oponente */}
-          {Partida.cartaMesaPlayer2 ? (
-            <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#e53e3e' }}>⚔️ {Partida.cartaMesaPlayer2.valour}</span>
-          ) : (
-            <span style={{ fontSize: '14px', color: '#a0aec0', fontStyle: 'italic' }}>⏳ Pensando...</span>
-          )}
-        </div>
-      </div>
-
       {/* 🔵 TU ZONA: CARTAS EN MANO (BOCA ARRIBA) */}
       <h4 style={{ margin: '0 0 12px 0', color: '#2d3748', fontSize: '15px' }}>Tus cartas en mano:</h4>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -179,7 +102,7 @@ export const TableroJuego = ()=> {
             <button
               key={carta.idCard}
               disabled={deshabilitado}
-              onClick={() => Lanzarjugada(carta)}
+              onClick={() => console.log('Lanzando Carta')}
               style={{
                 padding: '20px 15px',
                 fontSize: '16px',
@@ -215,7 +138,7 @@ export const TableroJuego = ()=> {
       {/* MENSAJES DE ESTADO */}
       {cartaSeleccionada && (
         <div style={{ marginTop: '20px', padding: '12px', background: '#f0fff4', color: '#22543d', borderRadius: '6px', fontWeight: '500', fontSize: '13px', border: '1px solid #c6f6d5', textAlign: 'center' }}>
-          🚀 Has lanzado tu carta. Esperando a que {Partida.Player2?.userName} haga su movimiento...
+          🚀 Has lanzado tu carta. Esperando a que {Partida?.Player2?.userName} haga su movimiento...
         </div>
       )}
     </div>
