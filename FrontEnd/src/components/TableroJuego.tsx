@@ -35,7 +35,7 @@ if (Partida && nombreUsuarioLogueado === Partida.Player1.Username) {
   rivalJugador = Partida.Player1;
   rivalPuntaje = Partida.Points1;
 }
-
+console.log(miJugador);
 
   //Declaración de las variables
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<number | null>(null);
