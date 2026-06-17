@@ -4,6 +4,9 @@ import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
 
+  //Declaración de las variables
+  const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null>(null);
+
   //Obtención de la Partida
    const [Partida,SetPartida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
@@ -26,6 +29,7 @@ export const TableroJuego = ()=> {
         }
     }); console.log(miJugador); 
 
+  //Condición Para cambiar la Perpectiva 
    if (Partida.Player2.Username === miJugador){
     SetPartida({
       IdMatch: Partida.IdMatch,
@@ -41,15 +45,9 @@ export const TableroJuego = ()=> {
     });
   }
 
-
-  //Declaración de las variables
-  const [cartaSeleccionada,SetCartaSeleccionada] = useState<number | null>(null);
-
-
-
     //Metodo para preparar la Jugada
     const PrepararJugada = (carta:Card) =>{
-      SetCartaSeleccionada(carta.IdCard);
+      SetCartaSeleccionada(carta);
       const Jugada='Jugada de la Partida Nº '+ Partida.IdMatch;
       const token=localStorage.getItem(Jugada);
 
@@ -132,16 +130,21 @@ export const TableroJuego = ()=> {
         <h4 className="hand-label">Tu Mano Operativa:</h4>
         <div className="player-cards-grid">
           {Partida.Player1.DeskUser.Cards.map((carta: Card) => {
-            const deshabilitado = cartaSeleccionada !== null;
-            const esEstaCarta = cartaSeleccionada === carta.IdCard;
-            
+          // Comprobamos si esta carta específica es la que el jugador acaba de clickar
+          // (Asegúrate de si usas carta.IdCard o carta.Card para identificarla)
+          const deshabilitado = cartaSeleccionada?.IdCard === carta.IdCard;
+          const esEstaCarta = cartaSeleccionada !== null;
             return (
               <button
                 key={carta.IdCard}
-                disabled={deshabilitado}
-                onClick={() => PrepararJugada(carta)}
-                className={`card-button ${esEstaCarta ? 'selected' : ''}`}
-              > 
+                disabled={esEstaCarta}
+                onClick={() => {
+                  console.log("Carta seleccionada con clic:", carta);
+                  // Le pasamos el objeto completo a tu función (¡adiós errores de TypeScript!)
+                  PrepararJugada(carta); 
+                }}
+                // Si es la carta jugada, le metemos la clase 'jugada' para activar el CSS
+                className={`card-button ${deshabilitado ? 'jugada' : ''}`} > 
                 <div style={{ fontSize: '16px' }}>🃏</div>
                 <div className="card-valour">⚔️ {carta.Valour}</div>
                 <div className="card-id">ID: {carta.IdCard}</div>

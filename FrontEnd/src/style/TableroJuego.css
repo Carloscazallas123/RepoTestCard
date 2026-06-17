@@ -228,27 +228,30 @@ text-align: left;
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Transición elástica suave */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
 }
 
 /* 🌟 ¡EFECTO HOVER GAMING! Elevación, cambio de borde e iluminación */
 .card-button:not(:disabled):hover {
   background-color: #3a4a63;
   border-color: #63b3ed;
-  transform: translateY(-12px) scale(1.05); /* Se levanta más y se agranda un pelín */
-  box-shadow: 0 12px 20px rgba(99, 179, 237, 0.3); /* Destello azul en la base */
+  transform: translateY(-10px); /* Se levanta un poco al pasar el ratón */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* Estado de carta seleccionada (Jugada) */
 .card-button.selected {
   background-color: #2f855a;
   border-color: #48bb78;
-  transform: translateY(-10px);
   box-shadow: 0 6px 12px rgba(72, 187, 120, 0.4);
+  opacity: 0; /* La desvanecemos de la mano porque simularemos que "voló" al centro */
+  transform: translateY(-150px) scale(0.8); /* Efecto visual de alejamiento hacia el tablero */
+  pointer-events: none;
 }
 
 /* Cartas bloqueadas cuando ya has jugado */
