@@ -4,7 +4,6 @@ import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<number | null>(null);
-  const [Jugada,SetJugada] = useState<GameDTO | null>(null);
   const [Partida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
         try {
