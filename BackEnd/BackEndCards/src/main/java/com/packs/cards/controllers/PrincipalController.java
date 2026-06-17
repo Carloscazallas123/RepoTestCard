@@ -152,6 +152,8 @@ public class PrincipalController {
 		ObjectUser.setDeskUser( new DeskDTO());
 		ObjectUser.getDeskUser().setNameDesk(Username);
 		ObjectUser.getDeskUser().setIdDesk(DeskUser.getIdDesk());
+		List<CardsDTO>ListCardsDTO=new ArrayList<>();
+		ObjectUser.getDeskUser().setCards(ListCardsDTO);
 		
 		for(int i=0;i<DeskUser.getDeskCards().size();i++) {
 		ObjectUser.getDeskUser().getCards().add(new CardsDTO(
