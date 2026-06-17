@@ -15,21 +15,19 @@ export const TableroJuego = ()=> {
     }); console.log(Partida); localStorage.removeItem('partido');
 
   // //Repartición de Usuarios
-const nombreUsuarioLogueado = localStorage.getItem('JugadorPartida');
-console.log(nombreUsuarioLogueado);
 // Inicializamos con valores por defecto seguros para que el HTML/JSX no de error al renderizar vacío
-let miJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: nombreUsuarioLogueado || "Tú", DeskUser: { Cards: [] as Card[] } };
+let miJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: "Tu", DeskUser: { Cards: [] as Card[] } };
 let rivalJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: "Rival", DeskUser: { Cards: [] as Card[] } };
 let miPuntaje = 0;
 let rivalPuntaje = 0;
 
 // Protegemos con ?. en caso de que Partida sea temporalmente null o undefined
-if (Partida && nombreUsuarioLogueado === Partida.Player1.Username) {
+if (localStorage.getItem(Partida.Player1.Username) === Partida.Player1.Username) {
   miJugador = Partida.Player1;
   miPuntaje = Partida.Points1;
   rivalJugador = Partida.Player2;
   rivalPuntaje = Partida.Points2;
-} else if (Partida && nombreUsuarioLogueado === Partida.Player2?.Username) {
+} else if (localStorage.getItem(Partida.Player2.Username) === Partida.Player2?.Username) {
   miJugador = Partida.Player2;
   miPuntaje = Partida.Points2;
   rivalJugador = Partida.Player1;
