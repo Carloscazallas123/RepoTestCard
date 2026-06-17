@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { MatchDTO, Card } from './../Interface/Interfaces';
 
 export const TableroJuego = ()=> {
-  const [Partida] = useState(() => {
+  const [Partida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
         try {
             return PartidoToken ? JSON.parse(PartidoToken) : PartidoToken;
@@ -78,9 +78,9 @@ export const TableroJuego = ()=> {
           Mano de {Partida.Player2.userName} ({Partida?.Player2.deskUser.Cards.length} cartas || 0):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {Partida.Player2.deskUser.Cards.map((_: number, index: number) => (
+          {Partida.Player2.deskUser.Cards.map((card) => (
             <div
-              key={`rival-card-${index}`}
+              key={`rival-card-${card.idCard}`}
               style={{
                 width: '60px',
                 height: '85px',
