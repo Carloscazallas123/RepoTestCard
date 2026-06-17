@@ -8,7 +8,7 @@ export const InicioJuego = () => {
 
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
   const [isSocketActivo, SetisSocketActivo] = useState<boolean>(false);
-  const [enCola, setEnCola] = useState<boolean>(false); // ⏳ Estado para controlar el modo búsqueda
+  const [enCola, setEnCola] = useState<boolean>(false);
   
   const intervaloRef = useRef<ReturnType<typeof setInterval> | null>(null); // Guardamos la referencia del setInterval
   const navigate = useNavigate();
@@ -27,8 +27,6 @@ export const InicioJuego = () => {
       
       if (tokenPartido) {
         const datosPartida: MatchDTO = JSON.parse(tokenPartido);
-        
-        // 🌟 Si el Player2 ya existe y tiene datos, significa que se completó el emparejamiento
         if (datosPartida?.Player2) {
           console.log("¡Rival encontrado! Cancelando el cargando y redirigiendo...");
           
@@ -41,21 +39,6 @@ export const InicioJuego = () => {
       }
     }, 1000);
   };
-
-  const comprobarTokenPartido = () => {
-    const tokenPartido = localStorage.getItem('partido');
-    console.log("============= CHEQUEO DE LOCALSTORAGE =============");
-    if (tokenPartido) {
-      const datosPartida: MatchDTO = JSON.parse(tokenPartido);
-      console.log("✅ ¡Partida encontrada en el almacenamiento local!");
-      console.log(datosPartida);  
-    } else {
-      console.log("❌ No hay ninguna partida guardada actualmente en 'partido'."); 
-    }
-    console.log("==================================================");
-  };
-
-  // Limpieza de seguridad: si el usuario cierra o cambia de pestaña, destruimos el setInterval
   useEffect(() => {
     return () => {
       if (intervaloRef.current) clearInterval(intervaloRef.current);
@@ -121,24 +104,6 @@ export const InicioJuego = () => {
             ) : (
               "🚀 Buscar Partida"
             )}
-          </button>
-
-          {/* Botón de Depuración: Comprobar LocalStorage */}
-          <button
-            type="button"
-            disabled={enCola} // Deshabilitado en cola
-            onClick={() => comprobarTokenPartido()}
-            className="btn btn-warning btn-full">
-            🔍 Inspeccionar Partida Guardada
-          </button>
-
-          {/* Botón manual para ir al Tablero */}
-          <button
-            type="button"
-            disabled={enCola} // Deshabilitado en cola
-            onClick={() => navigate('/juego')}
-            className="btn btn-board btn-full" >
-            🎮 Ir al Tablero de Juego
           </button>
 
         </div>
