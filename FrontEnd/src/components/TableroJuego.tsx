@@ -40,10 +40,7 @@ export const TableroJuego = ()=> {
       Points1: Partida.Points1,
       Points2: Partida.Points2,
     });
-  }
-
-  //Perpectiva 2
-  if(Partida.Player2.Username === miJugador){
+  } else if (Partida.Player2.Username === miJugador){
     SetPartida({
       IdMatch: Partida.IdMatch,
       Player1: Partida.Player1,
