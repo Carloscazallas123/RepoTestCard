@@ -12,7 +12,7 @@ export const TableroJuego = ()=> {
     if (token) {
       const P: MatchDTO = JSON.parse(token);
       SetRellenar(P);
-      console.log(Rellenar);
+      console.log(P);
     }
   }, []);
 
