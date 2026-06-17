@@ -23,17 +23,17 @@ export const TableroJuego = ()=> {
       userName: Rellenar?.Player1?.userName ?? 'Jugador 1',
       deskUser: {
         idDesk: Rellenar?.Player1?.deskUser?.idDesk ?? 0,
-        Cards: Rellenar?.Player1?.deskUser.Cards ?? [],
-        NameDesk: Rellenar?.Player1.deskUser.NameDesk ?? 'Mazo 1'
+        Cards: Rellenar?.Player1?.deskUser?.Cards ?? [],
+        NameDesk: Rellenar?.Player1.deskUser?.NameDesk ?? 'Mazo 1'
       }
     },
     Player2: {
       idUser: Rellenar?.Player2?.idUser ?? 1,
       userName: Rellenar?.Player2?.userName ?? 'Jugador 2',
       deskUser: {
-        idDesk: Rellenar?.Player2?.deskUser.idDesk ?? 1,
-        Cards: Rellenar?.Player2?.deskUser.Cards ?? [],
-        NameDesk: Rellenar?.Player2.deskUser.NameDesk ?? 'Mazo 2'
+        idDesk: Rellenar?.Player2?.deskUser?.idDesk ?? 1,
+        Cards: Rellenar?.Player2?.deskUser?.Cards ?? [],
+        NameDesk: Rellenar?.Player2.deskUser?.NameDesk ?? 'Mazo 2'
       }
     },
     State: 'Empezando la partida',
