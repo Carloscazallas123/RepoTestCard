@@ -138,18 +138,18 @@ export const TableroJuego = ()=> {
           // Comprobamos si esta carta específica es la que el jugador acaba de clickar
           // (Asegúrate de si usas carta.IdCard o carta.Card para identificarla)
           const deshabilitado = cartaSeleccionada?.IdCard === carta.IdCard;
-          const esEstaCarta = cartaSeleccionada !== null;
+          const esEstaCarta = cartaSeleccionada !!= null;
             return (
               <button
                 key={carta.IdCard}
                 disabled={esEstaCarta}
                 onClick={() => {
-                  console.log("Carta seleccionada con clic:", carta);
+                  console.log("Carta seleccionada: ", carta);
                   // Le pasamos el objeto completo a tu función (¡adiós errores de TypeScript!)
                   PrepararJugada(carta); 
                 }}
                 // Si es la carta jugada, le metemos la clase 'jugada' para activar el CSS
-                className={`card-button ${deshabilitado ? 'jugada' : ''}`} > 
+                className={`card-button ${deshabilitado ? 'oculta' : ''}`} > 
                 <div style={{ fontSize: '16px' }}>🃏</div>
                 <div className="card-valour">⚔️ {carta.Valour}</div>
                 <div className="card-id">ID: {carta.IdCard}</div>
