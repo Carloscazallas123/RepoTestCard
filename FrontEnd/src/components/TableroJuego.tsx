@@ -76,7 +76,7 @@ export const TableroJuego = ()=> {
       <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
         {Partida?.Player2?.DeskUser?.Cards?.map((carta: Card) => (
           <div
-            key={`rival-${carta.idCard}`}
+            key={`rival-${carta.IdCard}`}
             style={{
               width: '50px',
               height: '70px',
