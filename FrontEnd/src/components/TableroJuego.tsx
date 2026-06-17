@@ -3,10 +3,8 @@ import type { MatchDTO, Card, GameDTO } from './../Interface/Interfaces';
 import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
-
-  //Declaración de los Hooks
-  const [cartaSeleccionada,SetCartaSeleccionada] = useState<number | null>(null);
-  const [Partida] = useState<MatchDTO>(() => {
+  //Obtención de la Partida
+   const [Partida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
         try {
             return PartidoToken ? JSON.parse(PartidoToken) : PartidoToken;
@@ -15,6 +13,25 @@ export const TableroJuego = ()=> {
             return null;
         }
     }); console.log(Partida); localStorage.removeItem('partido');
+
+  //Repartición de Usuarios
+    const nombreUsuarioLogueado = localStorage.getItem('JugadorPartida');
+    let miJugador=null;  let miPuntaje=null; let rivalJugador=null; let rivalPuntaje=null;
+
+    if(nombreUsuarioLogueado === Partida.Player1.Username){
+    miJugador = Partida.Player1; miPuntaje = Partida.Points1;
+    rivalJugador = Partida.Player2; rivalPuntaje = Partida.Points2;
+
+    } else if (nombreUsuarioLogueado === Partida.Player2.Username){
+
+    miJugador = Partida.Player2; miPuntaje = Partida.Points2;
+    rivalJugador = Partida.Player1; rivalPuntaje = Partida.Points1;
+    
+    }
+
+
+  //Declaración de las variables
+  const [cartaSeleccionada,SetCartaSeleccionada] = useState<number | null>(null);
 
 
 
@@ -36,18 +53,8 @@ export const TableroJuego = ()=> {
       }
     }
 
-    // 1. Leemos el string directamente del localStorage
-    const nombreUsuarioLogueado = localStorage.getItem('JugadorPartida');
-
-    // 2. Comparamos los nombres (Username) en lugar de los IDs
-    const esDuenioPartida = Partida?.Player1?.Username === nombreUsuarioLogueado;
-
-    // El resto de la asignación automática se queda exactamente igual:
-    const miJugador = esDuenioPartida ? Partida.Player1 : Partida?.Player2;
-    const miPuntaje = esDuenioPartida ? Partida.Points1 : Partida?.Points2;
-
-    const rivalJugador = esDuenioPartida ? Partida.Player2 : Partida.Player1;
-    const rivalPuntaje = esDuenioPartida ? Partida.Points2 : Partida.Points1;
+    
+    
       
 
   return (
