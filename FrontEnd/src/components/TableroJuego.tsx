@@ -26,8 +26,10 @@ export const TableroJuego = ()=> {
 
     miJugador = Partida.Player2; miPuntaje = Partida.Points2;
     rivalJugador = Partida.Player1; rivalPuntaje = Partida.Points1;
-    
+
     }
+    console.log(miJugador);
+    console.log(rivalJugador);
 
 
   //Declaración de las variables
@@ -87,7 +89,7 @@ export const TableroJuego = ()=> {
           Mano de {rivalJugador?.Username ?? "Rival"} ({rivalJugador?.DeskUser?.Cards?.length ?? 0} cartas)
         </div>
         <div className="rival-hand-slots">
-          {rivalJugador?.DeskUser?.Cards?.map((carta: any, idx: number) => (
+          {rivalJugador?.DeskUser.Cards.map((carta: any, idx: number) => (
             <div key={`rival-${carta?.IdCard ?? idx}`} className="rival-card-back">
               <span style={{ fontSize: '14px' }}>❓</span>
             </div>
