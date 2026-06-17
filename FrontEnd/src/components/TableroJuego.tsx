@@ -3,6 +3,8 @@ import type { MatchDTO, Card, GameDTO } from './../Interface/Interfaces';
 import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
+
+  //Declaración de los Hooks
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<number | null>(null);
   const [Partida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
@@ -14,6 +16,9 @@ export const TableroJuego = ()=> {
         }
     }); console.log(Partida); localStorage.removeItem('partido');
 
+
+
+    //Metodo para preparar la Jugada
     const PrepararJugada = (carta:Card) =>{
       SetCartaSeleccionada(carta.IdCard);
       const Jugada='Jugada de la Partida Nº '+ Partida.IdMatch;
@@ -22,7 +27,7 @@ export const TableroJuego = ()=> {
       if(!token){
         const Game: GameDTO = { idMatch: Partida.IdMatch, card1: carta, card2: null }
         localStorage.setItem(Jugada, JSON.stringify(Game));
-        return console.log('Esperando a que el jugador 2');
+        console.log('Esperando a que el jugador 2');
       } else {
         console.log('Realizando Jugada...');
         const GameToken: GameDTO = JSON.parse(token);
@@ -31,56 +36,52 @@ export const TableroJuego = ()=> {
       }
     }
 
-  
+    // 1. Leemos el string directamente del localStorage
+    const nombreUsuarioLogueado = localStorage.getItem('JugadorPartida');
+
+    // 2. Comparamos los nombres (Username) en lugar de los IDs
+    const esDuenioPartida = Partida?.Player1?.Username === nombreUsuarioLogueado;
+
+    // El resto de la asignación automática se queda exactamente igual:
+    const miJugador = esDuenioPartida ? Partida.Player1 : Partida?.Player2;
+    const miPuntaje = esDuenioPartida ? Partida.Points1 : Partida?.Points2;
+
+    const rivalJugador = esDuenioPartida ? Partida.Player2 : Partida.Player1;
+    const rivalPuntaje = esDuenioPartida ? Partida.Points2 : Partida.Points1;
+      
 
   return (
   <div className="arena-wrapper">
     <div className="arena-container">
       
-      {/* ================= BARRA SUPERIOR (INFORMACIÓN) ================= */}
-      <div className="arena-header">
-        <h3 className="arena-title">🎮 Arena de Batalla</h3>
-        <span className="match-badge">
-          ID PARTIDA: #{Partida.IdMatch ?? '---'}
-        </span>
-      </div>
+      {/* ... BARRA SUPERIOR ... */}
 
-      {Partida.State && (
-      <div className="match-state-banner">
-      <span className="match-state-text">
-      📢 {Partida.State.trim()}
-      </span>
-      </div>
-      )}
-
-      {/* ================= MARCADOR DE PUNTOS ================= */}
+      {/* ================= MARCADOR DE PUNTOS DINÁMICO ================= */}
       <div className="scoreboard">
         <div className="score-player">
           <div className="dot-status dot-player1"></div>
           <div>
-            <span className="player-label">{Partida.Player1.Username}</span>
-            <div className="pts-counter-p1">{Partida.Points1} <span className="pts-text">PTS</span></div>
+            <span className="player-label">{miJugador?.Username ?? "Tú"}</span>
+            <div className="pts-counter-p1">{miPuntaje ?? 0} <span className="pts-text">PTS</span></div>
           </div>
         </div>
         <div className="score-player rival">
           <div className="dot-status dot-player2"></div>
           <div>
-            <span className="player-label">{Partida.Player2.Username}</span>
-            <div className="pts-counter-p2">{Partida.Points2} <span className="pts-text">PTS</span></div>
+            <span className="player-label">{rivalJugador?.Username ?? "Rival"}</span>
+            <div className="pts-counter-p2">{rivalPuntaje ?? 0} <span className="pts-text">PTS</span></div>
           </div>
         </div>
       </div>
 
-      {/* ================= 1. ZONA SUPERIOR: RIVAL (BOCA ABAJO) ================= */}
+      {/* ================= 1. ZONA SUPERIOR: RIVAL (SIEMPRE EL OTRO) ================= */}
       <div className="rival-zone">
         <div className="rival-label">
-          {/* Añadido ?. a deskUser para evitar el crash de la consola */}
-          Mano de {Partida.Player2.Username} ({Partida.Player2.DeskUser.Cards.length} cartas)
+          Mano de {rivalJugador?.Username ?? "Rival"} ({rivalJugador?.DeskUser?.Cards?.length ?? 0} cartas)
         </div>
         <div className="rival-hand-slots">
-          {/* Aquí también protegemos con el ?.Cards?.map */}
-          {Partida.Player2.DeskUser.Cards.map((carta: Card, idx: number) => (
-            <div key={`rival-${carta.IdCard ?? idx}`} className="rival-card-back">
+          {rivalJugador?.DeskUser?.Cards?.map((carta: any, idx: number) => (
+            <div key={`rival-${carta?.IdCard ?? idx}`} className="rival-card-back">
               <span style={{ fontSize: '14px' }}>❓</span>
             </div>
           ))}
@@ -95,6 +96,7 @@ export const TableroJuego = ()=> {
         <div className="combat-slot">
           <span className="slot-tag-rival">RIVAL</span>
           <div className="card-placeholder rival-side">
+            {/* Aquí pintarás la carta que tiró el rival real en tu backend */}
             EMPTY
           </div>
         </div>
@@ -108,11 +110,11 @@ export const TableroJuego = ()=> {
         </div>
       </div>
 
-      {/* ================= 3. ZONA INFERIOR: TUS CARTAS EN MANO ================= */}
+      {/* ================= 3. ZONA INFERIOR: TUS CARTAS EN MANO (TUS DATOS REALES) ================= */}
       <div className="player-hand-container">
         <h4 className="hand-label">Tu Mano Operativa:</h4>
         <div className="player-cards-grid">
-          {Partida.Player1.DeskUser.Cards.map((carta: Card) => {
+          {miJugador?.DeskUser?.Cards?.map((carta: any) => {
             const deshabilitado = cartaSeleccionada !== null;
             const esEstaCarta = cartaSeleccionada === carta.IdCard;
             
@@ -132,13 +134,8 @@ export const TableroJuego = ()=> {
         </div>
       </div>
 
-      {/* ALERTAS DE ESPERA */}
-      {cartaSeleccionada && (
-        <div className="wait-alert">
-          ⌛ Movimiento realizado. Esperando resolución del turno de {Partida.Player2.Username}...
-        </div>
-      )}
+      {/* ... ALERTAS DE ESPERA ... */}
     </div>
   </div>
-  );
+);
 };
