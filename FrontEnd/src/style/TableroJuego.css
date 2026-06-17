@@ -244,23 +244,6 @@ text-align: left;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Estado de carta seleccionada (Jugada) */
-.card-button.selected {
-  background-color: #2f855a;
-  border-color: #48bb78;
-  box-shadow: 0 6px 12px rgba(72, 187, 120, 0.4);
-  opacity: 0; /* La desvanecemos de la mano porque simularemos que "voló" al centro */
-  transform: translateY(-150px) scale(0.8); /* Efecto visual de alejamiento hacia el tablero */
-  pointer-events: none;
-}
-
-/* Cartas bloqueadas cuando ya has jugado */
-.card-button:disabled:not(.selected) {
-  opacity: 0.4;
-  cursor: not-allowed;
-  filter: grayscale(80%);
-}
-
 .card-button.oculta {
   display: none !important;
 }
