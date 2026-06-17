@@ -1,23 +1,30 @@
 .arena-wrapper {
+  position: fixed; /* Lo desengancha de cualquier layout padre */
+  top: 0;
+  left: 0;
+  width: 100vw;    /* Fuerza a ocupar todo el ancho de la pantalla */
+  height: 100vh;   /* Fuerza a ocupar todo el alto de la pantalla */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
-  background-color: #0f1319; /* Un fondo exterior aún más oscuro para que resalte la arena */
-  padding: 20px;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center;     /* Centrado vertical */
+  background-color: #0f1319; /* Fondo exterior oscuro idéntico al de tu juego */
+  z-index: 9999;   /* Asegura que se pinte por encima de cualquier otra cosa */
+  overflow-y: auto; /* Si la pantalla es pequeña, permite hacer scroll */
   box-sizing: border-box;
+  padding: 20px;
 }
 
 .arena-container {
-  border: 1px solid #1a202c;
-  padding: 20px;
-  border-radius: 16px;
-  background-color: #1a202c;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   width: 100%;
-  max-width: 750px; /* Evita que se estire infinitamente en pantallas gigantes */
-  font-family: system-ui, -apple-system, sans-serif;
+  max-width: 750px; 
+  background-color: #1a202c;
+  border: 1px solid #2d3748;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   color: #fff;
+  font-family: system-ui, -apple-system, sans-serif;
+text-align: left;
 }
 
 /* --- BARRA SUPERIOR --- */
@@ -33,7 +40,7 @@
 .arena-title {
   margin: 0;
   color: #f7fafc;
-  fontSize: 18px;
+  font-size: 18px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -272,4 +279,25 @@
   font-size: 12px;
   text-align: center;
   border: 1px solid #2f855a;
+}
+
+.match-state-banner {
+  background: rgba(99, 179, 237, 0.1);
+  border: 1px solid #2b6cb0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: inset 0 0 10px rgba(99, 179, 237, 0.05);
+}
+
+.match-state-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #90cdf4;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }

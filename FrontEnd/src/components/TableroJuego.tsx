@@ -39,6 +39,14 @@ export const TableroJuego = ()=> {
         </span>
       </div>
 
+      {Partida.State && (
+      <div className="match-state-banner">
+      <span className="match-state-text">
+      📢 {Partida.State.trim()}
+      </span>
+      </div>
+      )}
+      
       {/* ================= MARCADOR DE PUNTOS ================= */}
       <div className="scoreboard">
         <div className="score-player">
