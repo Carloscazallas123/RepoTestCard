@@ -16,7 +16,7 @@ export const TableroJuego = ()=> {
 
   // //Repartición de Usuarios
 const nombreUsuarioLogueado = localStorage.getItem('JugadorPartida');
-
+console.log(nombreUsuarioLogueado);
 // Inicializamos con valores por defecto seguros para que el HTML/JSX no de error al renderizar vacío
 let miJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: nombreUsuarioLogueado || "Tú", DeskUser: { Cards: [] as Card[] } };
 let rivalJugador: { Username: string; DeskUser: { Cards: Card[] } } = { Username: "Rival", DeskUser: { Cards: [] as Card[] } };
@@ -36,6 +36,7 @@ if (Partida && nombreUsuarioLogueado === Partida.Player1.Username) {
   rivalPuntaje = Partida.Points1;
 }
 console.log(miJugador);
+
 
   //Declaración de las variables
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<number | null>(null);
@@ -67,8 +68,6 @@ console.log(miJugador);
   return (
   <div className="arena-wrapper">
     <div className="arena-container">
-      
-      {/* ... BARRA SUPERIOR ... */}
 
       {/* ================= MARCADOR DE PUNTOS DINÁMICO ================= */}
       <div className="scoreboard">
