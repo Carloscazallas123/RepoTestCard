@@ -75,12 +75,12 @@ export const TableroJuego = ()=> {
       {/* 🔴 NUEVA SECCIÓN: MANO DEL JUGADOR 2 (BOCA ABAJO) */}
       <div style={{ marginBottom: '25px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e0' }}>
         <h4 style={{ margin: '0 0 10px 0', color: '#4a5568', fontSize: '14px' }}>
-          Mano de {Partida.Player2.userName} ({Partida?.Player2.deskUser.Cards.length} cartas || 0):
+          Mano de {Partida.Player2.userName} ({Partida.Player2.deskUser.Cards.length} cartas || 0):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {Partida.Player2.deskUser.Cards.map((card) => (
+          {Partida.Player2.deskUser.Cards.map((carta: Card) => (
             <div
-              key={`rival-card-${card.idCard}`}
+              key={`rival-card-${carta.idCard}`}
               style={{
                 width: '60px',
                 height: '85px',
