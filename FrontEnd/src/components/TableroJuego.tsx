@@ -53,7 +53,7 @@ export const TableroJuego = ()=> {
           <p style={{ margin: '0 0 5px 0', 
                       fontWeight: '600', 
                       color: '#4a5568', 
-                      fontSize: '14px' }}> 👤 {Partida.Player1.userName} (Tú) </p>
+                      fontSize: '14px' }}> 👤 {Partida.Player1.UserName} (Tú) </p>
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
@@ -63,7 +63,7 @@ export const TableroJuego = ()=> {
           <p style={{ margin: '0 0 5px 0', 
                       fontWeight: '600', 
                       color: '#4a5568', 
-                      fontSize: '14px' }}> 👤 {Partida.Player2.userName} </p>
+                      fontSize: '14px' }}> 👤 {Partida.Player2.UserName} </p>
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
@@ -74,10 +74,10 @@ export const TableroJuego = ()=> {
       {/* 🔴 NUEVA SECCIÓN: MANO DEL JUGADOR 2 (BOCA ABAJO) */}
       <div style={{ marginBottom: '25px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e0' }}>
         <h4 style={{ margin: '0 0 10px 0', color: '#4a5568', fontSize: '14px' }}>
-          Mano de {Partida.Player2.userName} ({Partida.Player2.deskUser.Cards.length} cartas || 0):
+          Mano de {Partida.Player2.UserName} ({Partida.Player2.DeskUser.Cards.length} cartas || 0):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {Partida.Player2.deskUser.Cards.map((carta: Card) => (
+          {Partida.Player2.DeskUser.Cards.map((carta: Card) => (
             <div
               key={`rival-card-${carta.idCard}`}
               style={{
@@ -101,7 +101,7 @@ export const TableroJuego = ()=> {
       {/* 🔵 TU ZONA: CARTAS EN MANO (BOCA ARRIBA) */}
       <h4 style={{ margin: '0 0 12px 0', color: '#2d3748', fontSize: '15px' }}>Tus cartas en mano:</h4>
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        {Partida.Player1.deskUser.Cards.map((carta: Card) => {
+        {Partida.Player1.DeskUser.Cards.map((carta: Card) => {
           const deshabilitado = cartaSeleccionada !== null;
           const esEstaCarta = cartaSeleccionada === carta.idCard;
           
@@ -145,7 +145,7 @@ export const TableroJuego = ()=> {
       {/* MENSAJES DE ESTADO */}
       {cartaSeleccionada && (
         <div style={{ marginTop: '20px', padding: '12px', background: '#f0fff4', color: '#22543d', borderRadius: '6px', fontWeight: '500', fontSize: '13px', border: '1px solid #c6f6d5', textAlign: 'center' }}>
-          🚀 Has lanzado tu carta. Esperando a que {Partida?.Player2?.userName} haga su movimiento...
+          🚀 Has lanzado tu carta. Esperando a que {Partida.Player2.UserName} haga su movimiento...
         </div>
       )}
     </div>

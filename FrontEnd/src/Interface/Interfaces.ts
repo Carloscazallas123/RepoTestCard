@@ -11,8 +11,8 @@ export interface Desk {
 
 export interface UserDTO {
     idUser: number;
-    userName: string;
-    deskUser: Desk;
+    UserName: string;
+    DeskUser: Desk;
 }
 
 export interface MatchDTO {
