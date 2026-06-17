@@ -26,21 +26,7 @@ export const TableroJuego = ()=> {
         }
     }); console.log(miJugador); 
 
-  //Perpectiva 1
-  if(Partida.Player1.Username === miJugador){
-    SetPartida({
-      IdMatch: Partida.IdMatch,
-      Player1: {
-        idUser: Partida.Player1.idUser,
-        Username: miJugador,
-        DeskUser: Partida.Player1.DeskUser,
-      },
-      Player2: Partida.Player2,
-      State: Partida.State,
-      Points1: Partida.Points1,
-      Points2: Partida.Points2,
-    });
-  } else if (Partida.Player2.Username === miJugador){
+   if (Partida.Player2.Username === miJugador){
     SetPartida({
       IdMatch: Partida.IdMatch,
       Player1: Partida.Player1,
