@@ -149,6 +149,16 @@ public class PrincipalController {
 		UserDTO ObjectUser = new UserDTO();
 		ObjectUser.setUsername(Username);
 		ObjectUser.setIduser(EntityUser.getIdUser());
+		ObjectUser.setDeskUser( new DeskDTO());
+		ObjectUser.getDeskUser().setNameDesk(Username);
+		ObjectUser.getDeskUser().setIdDesk(DeskUser.getIdDesk());
+		
+		for(int i=0;i<DeskUser.getDeskCards().size();i++) {
+		ObjectUser.getDeskUser().getCards().add(new CardsDTO(
+												DeskUser.getDeskCards().get(i).getCard().getIdCard(),
+												DeskUser.getDeskCards().get(i).getCard().getValour()
+	));
+		}
 
 		
 

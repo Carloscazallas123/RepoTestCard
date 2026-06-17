@@ -6,6 +6,13 @@ public class CardsDTO {
 	private int Valour;
 	
 	public CardsDTO() { }
+	
+	public CardsDTO(int idCard, int valour) {
+		IdCard = idCard;
+		Valour = valour;
+	}
+
+
 
 	public int getIdCard() {
 		return IdCard;

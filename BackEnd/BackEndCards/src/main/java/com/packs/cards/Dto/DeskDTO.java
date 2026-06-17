@@ -6,13 +6,10 @@ public class DeskDTO {
 
 	private int IdDesk;
 	private String NameDesk;
-	private List<Integer>Cards;
+	private List<CardsDTO>Cards;
 	
 	public DeskDTO() { }
-	
-	public DeskDTO(List<Integer>Cards) { 
-	this.Cards = Cards;
-	}
+
 
 	public int getIdDesk() {
 		return IdDesk;
@@ -30,13 +27,17 @@ public class DeskDTO {
 		NameDesk = nameDesk;
 	}
 
-	public List<Integer> getCards() {
+
+	public List<CardsDTO> getCards() {
 		return Cards;
 	}
 
-	public void setCards(List<Integer> cards) {
+
+	public void setCards(List<CardsDTO> cards) {
 		Cards = cards;
 	}
+
+	
 	
 	
 	
