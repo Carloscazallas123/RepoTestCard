@@ -29,12 +29,12 @@ export const TableroJuego = ()=> {
    if (Partida.Player2.Username === miJugador){
     SetPartida({
       IdMatch: Partida.IdMatch,
-      Player1: Partida.Player1,
-      Player2: {
+      Player1: {
         idUser: Partida.Player2.idUser,
         Username: miJugador,
         DeskUser: Partida.Player2.DeskUser,
       },
+      Player2: Partida.Player1,
       State: Partida.State,
       Points1: Partida.Points1,
       Points2: Partida.Points2,
