@@ -43,7 +43,7 @@ export const TableroJuego = ()=> {
         <h3 style={{ margin: 0, color: '#1a202c', fontSize: '20px' }}>🃏 Tablero de Juego</h3>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <span style={{ fontSize: '12px', color: '#4a5568', background: '#edf2f7', padding: '4px 10px', borderRadius: '15px', fontWeight: 'bold' }}>
-            Partida #{Partida.idMatch}
+            Partida #{Partida.IdMatch}
           </span>
         </div>
       </div>
@@ -53,7 +53,7 @@ export const TableroJuego = ()=> {
           <p style={{ margin: '0 0 5px 0', 
                       fontWeight: '600', 
                       color: '#4a5568', 
-                      fontSize: '14px' }}> 👤 {Partida.Player1.UserName} (Tú) </p>
+                      fontSize: '14px' }}> 👤 {Partida.Player1.Username} (Tú) </p>
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
@@ -63,7 +63,7 @@ export const TableroJuego = ()=> {
           <p style={{ margin: '0 0 5px 0', 
                       fontWeight: '600', 
                       color: '#4a5568', 
-                      fontSize: '14px' }}> 👤 {Partida.Player2.UserName} </p>
+                      fontSize: '14px' }}> 👤 {Partida.Player2.Username} </p>
           <p style={{ margin: 0, 
                       color: '#38a169', 
                       fontWeight: 'bold', 
@@ -74,7 +74,7 @@ export const TableroJuego = ()=> {
       {/* 🔴 NUEVA SECCIÓN: MANO DEL JUGADOR 2 (BOCA ABAJO) */}
       <div style={{ marginBottom: '25px', padding: '15px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e0' }}>
         <h4 style={{ margin: '0 0 10px 0', color: '#4a5568', fontSize: '14px' }}>
-          Mano de {Partida.Player2.UserName} ({Partida.Player2.DeskUser.Cards.length} cartas || 0):
+          Mano de {Partida.Player2.Username} ({Partida.Player2.DeskUser.Cards.length} cartas || 0):
         </h4>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {Partida.Player2.DeskUser.Cards.map((carta: Card) => (
@@ -145,7 +145,7 @@ export const TableroJuego = ()=> {
       {/* MENSAJES DE ESTADO */}
       {cartaSeleccionada && (
         <div style={{ marginTop: '20px', padding: '12px', background: '#f0fff4', color: '#22543d', borderRadius: '6px', fontWeight: '500', fontSize: '13px', border: '1px solid #c6f6d5', textAlign: 'center' }}>
-          🚀 Has lanzado tu carta. Esperando a que {Partida.Player2.UserName} haga su movimiento...
+          🚀 Has lanzado tu carta. Esperando a que {Partida.Player2.Username} haga su movimiento...
         </div>
       )}
     </div>

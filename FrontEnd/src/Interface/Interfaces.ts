@@ -11,12 +11,12 @@ export interface Desk {
 
 export interface UserDTO {
     idUser: number;
-    UserName: string;
+    Username: string;
     DeskUser: Desk;
 }
 
 export interface MatchDTO {
-    idMatch: number;
+    IdMatch: number;
     Player1: UserDTO;
     Player2: UserDTO;
     State: string;
