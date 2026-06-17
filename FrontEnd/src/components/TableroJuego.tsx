@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import type { MatchDTO, Card, GameDTO } from './../Interface/Interfaces';
+import type { MatchDTO, Card, GameDTO} from './../Interface/Interfaces';
 import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
 
   //Obtención de la Partida
-   const [Partida] = useState<MatchDTO>(() => {
+   const [Partida,SetPartida] = useState<MatchDTO>(() => {
         const PartidoToken = localStorage.getItem('partido');
         try {
             return PartidoToken ? JSON.parse(PartidoToken) : PartidoToken;
@@ -26,7 +26,37 @@ export const TableroJuego = ()=> {
         }
     }); console.log(miJugador); 
 
+  //Perpectiva 1
+  if(Partida.Player1.Username === miJugador){
+    SetPartida({
+      IdMatch: Partida.IdMatch,
+      Player1: {
+        idUser: Partida.Player1.idUser,
+        Username: miJugador,
+        DeskUser: Partida.Player1.DeskUser,
+      },
+      Player2: Partida.Player2,
+      State: Partida.State,
+      Points1: Partida.Points1,
+      Points2: Partida.Points2,
+    });
+  }
 
+  //Perpectiva 2
+  if(Partida.Player2.Username === miJugador){
+    SetPartida({
+      IdMatch: Partida.IdMatch,
+      Player1: Partida.Player1,
+      Player2: {
+        idUser: Partida.Player2.idUser,
+        Username: miJugador,
+        DeskUser: Partida.Player2.DeskUser,
+      },
+      State: Partida.State,
+      Points1: Partida.Points1,
+      Points2: Partida.Points2,
+    });
+  }
 
 
   //Declaración de las variables

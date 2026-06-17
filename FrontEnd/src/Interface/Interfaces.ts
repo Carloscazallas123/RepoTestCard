@@ -11,7 +11,7 @@ export interface Desk {
 
 export interface UserDTO {
     idUser: number;
-    Username: string;
+    Username: String;
     DeskUser: Desk;
 }
 
