@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { MatchDTO, Card, GameDTO} from './../Interface/Interfaces';
 import './../style/TableroJuego.css';
 
@@ -6,6 +6,7 @@ export const TableroJuego = ()=> {
 
   //Declaración de las variables
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null>(null);
+  const EsperandoJugada = useRef<ReturnType<typeof setInterval> | null>(null);
 
   //Obtención de la Partida
    const [Partida,SetPartida] = useState<MatchDTO>(() => {
@@ -55,16 +56,31 @@ export const TableroJuego = ()=> {
           localStorage.setItem('Jugada', JSON.stringify(Jugada));
           PrepararJugada(carta);
         } else {
-            let Jugada:GameDTO=JSON.parse(token);
-            if(!Jugada.card1){
-            Jugada.card1 = carta;
-            localStorage.setItem('Jugada',JSON.stringify(Jugada));
-            console.log('Jugada Realizada del Primer Jugador' + Jugada); }
+           EsperandoJugada.current = setInterval(() => {
 
-          if (Jugada.card1 && !Jugada.card2){
-          RealizarJugada(carta); }
+              let Jugada:GameDTO=JSON.parse(token);
+              //Solo una carta lanzada
+              if(!Jugada.card1) {
+              Jugada.card1 = carta;
+              localStorage.setItem('Jugada',JSON.stringify(Jugada));
+              console.log('Jugada Realizada del Primer Jugador' + Jugada); }
+
+              //Las dos cartas están
+              if (Jugada.card1 && !Jugada.card2){
+              console.log("Realizando Jugada...");
+              RealizarJugada(carta); }
+
+            }, 1000);
+
       }
     }
+    
+    //Reinicar la espera
+    useEffect(() => {
+        return () => {
+          if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
+        };
+      }, []);
 
     //Metodo para realizar la Jugada
     const RealizarJugada = (carta:Card) => {
@@ -76,22 +92,24 @@ export const TableroJuego = ()=> {
       } else {
         let P1=0; let P2=0;
         const Jugada: GameDTO = JSON.parse(token);
-        Jugada.card2 = carta;
+        const Carta1: Card | null = Jugada.card1 || null ;
+        const Carta2: Card =carta;
 
         //Gana el Jugador 1
-        if(Jugada.card1 && Jugada.card1.Valour > Jugada.card2.Valour){
+        if(Carta1 && Carta1.Valour > Carta2.Valour ){
         P1=Partida.Points1 + 150;
         alert(Partida.Player1.Username + ' Ha ganado la ronda');
         }
 
         //Gana el Jugador 2
-        if(Jugada.card1 && Jugada.card2.Valour > Jugada.card1.Valour){
+        if(Carta1 &&  Carta1.Valour < Carta2.Valour ){
         P2=Partida.Points2 + 150;
         alert(Partida.Player2.Username + ' Ha ganado la ronda');
+
         }
 
         //Empate
-        if(Jugada.card1 && Jugada.card2.Valour === Jugada.card1.Valour){
+        if(Carta1 && Carta1.Valour === Carta2.Valour){
         P1=Partida.Points1 + 10;
         P2=Partida.Points2 + 10;
         alert('Empate entre ' + Partida.Player1.Username + " y " + Partida.Player2.Username);
