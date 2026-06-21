@@ -40,29 +40,121 @@ export const TableroJuego = ()=> {
       },
       Player2: Partida.Player1,
       State: Partida.State,
-      Points1: Partida.Points1,
-      Points2: Partida.Points2,
+      Points1: Partida.Points2,
+      Points2: Partida.Points1,
     });
   }
 
     //Metodo para preparar la Jugada
     const PrepararJugada = (carta:Card) =>{
       SetCartaSeleccionada(carta);
-      const Jugada='Jugada de la Partida Nº '+ Partida.IdMatch;
-      const token=localStorage.getItem(Jugada);
+      const token = localStorage.getItem('Jugada');
+      
+        if (!token) {
+          const Jugada: GameDTO = { idMatch: Partida.IdMatch, };
+          localStorage.setItem('Jugada', JSON.stringify(Jugada));
+        } else {
 
-      if(!token){
-        const Game: GameDTO = { idMatch: Partida.IdMatch, card1: carta, card2: null }
-        localStorage.setItem(Jugada, JSON.stringify(Game));
-        console.log('Esperando a que el jugador 2');
-      } else {
-        console.log('Realizando Jugada...');
-        const GameToken: GameDTO = JSON.parse(token);
-        const Game: GameDTO = { idMatch: GameToken.idMatch, card1: GameToken.card1, card2: carta }
-        console.log(Game);
+            let Jugada:GameDTO=JSON.parse(token);
+            if(!Jugada.card1){
+            Jugada.card1 = carta;
+            return console.log('Jugada Realizada' + Jugada); }
+            
+          if (Jugada.card1 && !Jugada.card2){
+          RealizarJugada(carta);
+        }
       }
     }
 
+    //Metodo para realizar la Jugada
+    const RealizarJugada = (carta:Card) => {
+      const token=localStorage.getItem('Jugada');
+
+      if(!token){
+        return console.log('Error, jugada no realizada');
+
+      } else {
+        let P1=0; let P2=0;
+        const Jugada: GameDTO = JSON.parse(token);
+        Jugada.card2 = carta;
+
+        //Gana el Jugador 1
+        if(Jugada.card1 && Jugada.card1.Valour > Jugada.card2.Valour){
+        P1=Partida.Points1 + 150;
+        alert(Partida.Player1.Username + ' Ha ganado la ronda');
+        }
+
+        //Gana el Jugador 2
+        if(Jugada.card1 && Jugada.card2.Valour > Jugada.card1.Valour){
+        P2=Partida.Points2 + 150;
+        alert(Partida.Player2.Username + ' Ha ganado la ronda');
+        }
+
+        //Empate
+        if(Jugada.card1 && Jugada.card2.Valour === Jugada.card1.Valour){
+        P1=Partida.Points1 + 10;
+        P2=Partida.Points2 + 10;
+        alert('Empate entre ' + Partida.Player1.Username + " y " + Partida.Player2.Username);
+        }
+
+        //Actualización en el Mazo
+        const nuevasCartasP2 = 
+        Partida.Player2.DeskUser.Cards.filter( C => C.IdCard !== Jugada.card2?.IdCard);
+        const nuevasCartasP1 =
+        Partida.Player1.DeskUser.Cards.filter( C => C.IdCard !== Jugada.card1?.IdCard);
+        ActualizarCartas(nuevasCartasP1,nuevasCartasP2,P1,P2);
+      }
+    }
+
+    //Metodo para Actualizar la Interfaz
+    const ActualizarCartas = (L1: Card[],L2:Card[],
+                              P1:number,P2:number)=>{
+    //Perspectiva del J2
+    if(Partida.Player2.Username === miJugador) {
+    SetPartida({
+        ...Partida,
+        Points1: P2,
+        Points2: P1,
+        State: Partida.State,
+        Player1: {
+          ...Partida.Player2,
+          DeskUser: {
+            ...Partida.Player2.DeskUser,
+            Cards:L2,
+          },
+        },
+        Player2: {
+          ...Partida.Player1,
+          DeskUser: {
+            ...Partida.Player1.DeskUser,
+            Cards: L1
+          },
+        },
+      });
+     }
+
+     //Perspectiva del J1
+     SetPartida({
+        ...Partida,
+        Points1: P1,
+        Points2: P2,
+        State: Partida.State,
+        Player1: {
+          ...Partida.Player1,
+          DeskUser: {
+            ...Partida.Player1.DeskUser,
+            Cards:L1,
+          },
+        },
+        Player2: {
+          ...Partida.Player2,
+          DeskUser: {
+            ...Partida.Player2.DeskUser,
+            Cards: L2
+          },
+        },
+      });
+    }
     
     
       
@@ -145,7 +237,6 @@ export const TableroJuego = ()=> {
                 disabled={esEstaCarta}
                 onClick={() => {
                   console.log("Carta seleccionada: ", carta);
-                  // Le pasamos el objeto completo a tu función (¡adiós errores de TypeScript!)
                   PrepararJugada(carta); 
                 }}
                 // Si es la carta jugada, le metemos la clase 'jugada' para activar el CSS
@@ -158,8 +249,6 @@ export const TableroJuego = ()=> {
           })}
         </div>
       </div>
-
-      {/* ... ALERTAS DE ESPERA ... */}
     </div>
   </div>
 );
