@@ -59,15 +59,28 @@ export const TableroJuego = ()=> {
           EsperandoJugada.current = setInterval(() => {
               let JugadaToken:GameDTO=JSON.parse(token);
 
+              //Carta 1
               if(!JugadaToken.card1) {
               const Jugada: GameDTO = { idMatch:JugadaToken.idMatch, card1: carta, };
               localStorage.setItem('Jugada',JSON.stringify(Jugada));
-              console.log('Jugada Realizada del Primer Jugador' + Jugada); }
-              //Las dos cartas están
-              if (!JugadaToken.card2 && carta.IdCard !== JugadaToken.card1?.IdCard){
-              if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
+              console.log('Jugada: ' + Jugada); }
+              
+              //Carta 2
+              if(!JugadaToken.card2){
+                if(carta === JugadaToken.card1){
+                  console.log('Esperando al Jugador...');
+                } else {
+                  const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, 
+                                           card1: JugadaToken.card1, card2: carta };
+                  localStorage.setItem('Jugada',JSON.stringify(Jugada));
+                }
+              }
+
+              //Las dos Cartas
+              if (JugadaToken.card2 && JugadaToken.card2){
+                if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
               console.log("Realizando Jugada...");
-              RealizarJugada(carta); }
+              RealizarJugada(JugadaToken); }
           }, 1000);
             
 
@@ -82,7 +95,7 @@ export const TableroJuego = ()=> {
       }, []);
 
     //Metodo para realizar la Jugada
-    const RealizarJugada = (carta:Card) => {
+    const RealizarJugada = (Jugada: GameDTO) => {
       const token=localStorage.getItem('Jugada');
 
       if(!token){
@@ -90,24 +103,23 @@ export const TableroJuego = ()=> {
 
       } else {
         let P1=0; let P2=0;
-        const Jugada: GameDTO = JSON.parse(token);
-        const Carta1: Card | null = Jugada.card1 || null ;
-        const Carta2: Card =carta;
+        const Carta1: Card | null = Jugada.card1 || null;
+        const Carta2: Card | null = Jugada.card2 || null;
 
         //Gana el Jugador 1
-        if(Carta1 && Carta1.Valour > Carta2.Valour ){
+        if(Carta1 && Carta2 && Carta1.Valour > Carta2.Valour ){
         P1=Partida.Points1 + 150;
         alert(Partida.Player1.Username + ' Ha ganado la ronda');
         }
 
         //Gana el Jugador 2
-        if(Carta1 &&  Carta1.Valour < Carta2.Valour ){
+        if(Carta1 && Carta2 &&  Carta1.Valour < Carta2.Valour ){
         P2=Partida.Points2 + 150;
         alert(Partida.Player2.Username + ' Ha ganado la ronda');
         }
 
         //Empate
-        if(Carta1 && Carta1.Valour === Carta2.Valour){
+        if(Carta1 && Carta2 && Carta1.Valour === Carta2.Valour){
         P1=Partida.Points1 + 10;
         P2=Partida.Points2 + 10;
         alert('Empate entre ' + Partida.Player1.Username + " y " + Partida.Player2.Username);

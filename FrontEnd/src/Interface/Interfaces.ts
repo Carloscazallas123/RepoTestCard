@@ -6,7 +6,7 @@ export interface Card {
 export interface Desk {
     idDesk: number;
     NameDesk: string;
-    Cards: Card[]; 
+    Cards: Card[] ; 
 }
 
 export interface UserDTO {
