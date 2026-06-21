@@ -63,9 +63,9 @@ export const TableroJuego = ()=> {
               const Jugada: GameDTO = { idMatch:JugadaToken.idMatch, card1: carta, };
               localStorage.setItem('Jugada',JSON.stringify(Jugada));
               console.log('Jugada Realizada del Primer Jugador' + Jugada); }
-
               //Las dos cartas están
-              if (!JugadaToken.card2 && carta.IdCard !!= JugadaToken.card1?.IdCard){
+              if (!JugadaToken.card2 && carta.IdCard !== JugadaToken.card1?.IdCard){
+              if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
               console.log("Realizando Jugada...");
               RealizarJugada(carta); }
           }, 1000);
