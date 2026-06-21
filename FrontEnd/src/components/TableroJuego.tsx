@@ -56,19 +56,19 @@ export const TableroJuego = ()=> {
           localStorage.setItem('Jugada', JSON.stringify(Jugada));
           PrepararJugada(carta);
         } else {
-              let Jugada:GameDTO=JSON.parse(token);
+          EsperandoJugada.current = setInterval(() => {
+              let JugadaToken:GameDTO=JSON.parse(token);
 
-              if(!Jugada.card1) {
-              EsperandoJugada.current = setInterval(() => {
-              Jugada={ idMatch:Jugada.idMatch, card1: carta, };
+              if(!JugadaToken.card1) {
+              const Jugada: GameDTO = { idMatch:JugadaToken.idMatch, card1: carta, };
               localStorage.setItem('Jugada',JSON.stringify(Jugada));
-              }, 1000);
               console.log('Jugada Realizada del Primer Jugador' + Jugada); }
+
               //Las dos cartas están
-              if (Jugada.card1 && !Jugada.card2){
+              if (!JugadaToken.card2 && carta.IdCard !!= JugadaToken.card1?.IdCard){
               console.log("Realizando Jugada...");
               RealizarJugada(carta); }
-
+          }, 1000);
             
 
       }
