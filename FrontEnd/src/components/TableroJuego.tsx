@@ -59,7 +59,7 @@ export const TableroJuego = ()=> {
             if(!Jugada.card1){
             Jugada.card1 = carta;
             localStorage.setItem('Jugada',JSON.stringify(Jugada));
-            return console.log('Jugada Realizada del Primer Jugador' + Jugada); }
+            console.log('Jugada Realizada del Primer Jugador' + Jugada); }
 
           if (Jugada.card1 && !Jugada.card2){
           RealizarJugada(carta); }
