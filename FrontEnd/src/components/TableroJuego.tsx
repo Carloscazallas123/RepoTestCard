@@ -63,7 +63,8 @@ export const TableroJuego = ()=> {
               if(!JugadaToken.card1) {
               const Jugada: GameDTO = { idMatch:JugadaToken.idMatch, card1: carta, };
               localStorage.setItem('Jugada',JSON.stringify(Jugada));
-              console.log('Jugada: ' + Jugada); }
+              console.log('Jugada: ' + Jugada); 
+              PrepararJugada(carta)}
               
               //Carta 2
               if(!JugadaToken.card2){
@@ -73,6 +74,7 @@ export const TableroJuego = ()=> {
                   const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, 
                                            card1: JugadaToken.card1, card2: carta };
                   localStorage.setItem('Jugada',JSON.stringify(Jugada));
+                  PrepararJugada(carta);
                 }
               }
 
