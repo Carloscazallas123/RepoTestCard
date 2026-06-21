@@ -55,15 +55,14 @@ export const TableroJuego = ()=> {
           localStorage.setItem('Jugada', JSON.stringify(Jugada));
           PrepararJugada(carta);
         } else {
-
             let Jugada:GameDTO=JSON.parse(token);
             if(!Jugada.card1){
             Jugada.card1 = carta;
-            return console.log('Jugada Realizada' + Jugada); }
-            
+            localStorage.setItem('Jugada',JSON.stringify(Jugada));
+            return console.log('Jugada Realizada del Primer Jugador' + Jugada); }
+
           if (Jugada.card1 && !Jugada.card2){
-          RealizarJugada(carta);
-        }
+          RealizarJugada(carta); }
       }
     }
 
