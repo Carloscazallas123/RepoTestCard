@@ -68,7 +68,7 @@ export const TableroJuego = ()=> {
               
               //Carta 2
               if(!JugadaToken.card2){
-                if(carta === JugadaToken.card1){
+                if(carta.Valour === JugadaToken.card1?.Valour){
                   console.log('Esperando al Jugador...');
                 } else {
                   const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, 
