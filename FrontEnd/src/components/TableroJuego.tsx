@@ -53,6 +53,7 @@ export const TableroJuego = ()=> {
         if (!token) {
           const Jugada: GameDTO = { idMatch: Partida.IdMatch, };
           localStorage.setItem('Jugada', JSON.stringify(Jugada));
+          PrepararJugada(carta);
         } else {
 
             let Jugada:GameDTO=JSON.parse(token);
