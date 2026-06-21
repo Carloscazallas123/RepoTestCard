@@ -56,25 +56,24 @@ export const TableroJuego = ()=> {
           localStorage.setItem('Jugada', JSON.stringify(Jugada));
           PrepararJugada(carta);
         } else {
-           EsperandoJugada.current = setInterval(() => {
-
               let Jugada:GameDTO=JSON.parse(token);
-              //Solo una carta lanzada
-              if(!Jugada.card1) {
-              Jugada.card1 = carta;
-              localStorage.setItem('Jugada',JSON.stringify(Jugada));
-              console.log('Jugada Realizada del Primer Jugador' + Jugada); }
 
+              if(!Jugada.card1) {
+              EsperandoJugada.current = setInterval(() => {
+              Jugada={ idMatch:Jugada.idMatch, card1: carta, };
+              localStorage.setItem('Jugada',JSON.stringify(Jugada));
+              }, 1000);
+              console.log('Jugada Realizada del Primer Jugador' + Jugada); }
               //Las dos cartas están
               if (Jugada.card1 && !Jugada.card2){
               console.log("Realizando Jugada...");
               RealizarJugada(carta); }
 
-            }, 1000);
+            
 
       }
     }
-    
+
     //Reinicar la espera
     useEffect(() => {
         return () => {
@@ -105,7 +104,6 @@ export const TableroJuego = ()=> {
         if(Carta1 &&  Carta1.Valour < Carta2.Valour ){
         P2=Partida.Points2 + 150;
         alert(Partida.Player2.Username + ' Ha ganado la ronda');
-
         }
 
         //Empate
