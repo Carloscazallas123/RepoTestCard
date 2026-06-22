@@ -48,12 +48,12 @@ export const TableroJuego = ()=> {
   }
 
     //Metodo para preparar la Jugada
-    const PrepararJugada = () =>{
+    const PrepararJugada = (cartaa:Card) =>{
       const token=localStorage.getItem('Jugada');
 
         if(token) {
               const JugadaToken:GameDTO=JSON.parse(token);
-              const carta: Card | null = cartaSeleccionada || null;
+              const carta: Card | null = cartaa || null;
 
               //Carta 1
               if(!JugadaToken.card1) {
@@ -80,7 +80,7 @@ export const TableroJuego = ()=> {
       } else {
           const Jugada: GameDTO = { idMatch: Partida?.IdMatch, };
           localStorage.setItem('Jugada', JSON.stringify(Jugada));
-          PrepararJugada();
+          PrepararJugada(cartaa);
       }
     }
 
@@ -191,8 +191,7 @@ export const TableroJuego = ()=> {
               <button
                 key={carta.IdCard}
                 disabled={esEstaCarta}
-                onClick={() => {
-                  console.log("Carta seleccionada: ", carta); PrepararJugada(); }}
+                onClick={() => { PrepararJugada(carta); }}
                 // Si es la carta jugada, le metemos la clase 'jugada' para activar el CSS
                 className={`card-button ${deshabilitado ? 'oculta' : ''}`} > 
                 <div style={{ fontSize: '16px' }}>🃏</div>
