@@ -57,12 +57,14 @@ export const TableroJuego = ()=> {
 
               //Carta 1
               if(!JugadaToken.card1) {
+              alert('Carta Lanzada por el jugador 1');
               SetCartaSeleccionada(carta);
               const Jugada: GameDTO = { idMatch:JugadaToken.idMatch, card1: carta, };
               localStorage.setItem('Jugada',JSON.stringify(Jugada)); }
               
               //Carta 2
               if(JugadaToken.card1 && !JugadaToken.card2){
+              alert('Carta Lanzada por el Jugador 2');
               setCartaRivalSeleccionada(carta);
               const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, card1: JugadaToken.card1, card2: carta };
               localStorage.setItem('Jugada',JSON.stringify(Jugada));  }
