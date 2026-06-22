@@ -26,6 +26,7 @@ public class PrincipalController {
 	@Autowired
 	RepoDeskCards RepoDC;
 
+	//Lista para esperar la partida
 	private static final ConcurrentLinkedQueue<String> MatchMaking = new ConcurrentLinkedQueue<>();
 
 	@MessageMapping("/CrearPartida")
@@ -80,6 +81,7 @@ public class PrincipalController {
 
 		// No han tirado carta
 		if (game.getCard1() == null || game.getCard2() == null) {
+			System.out.println("Esperar a que el jugador lanze carta");
 			ObjectMatch.setState(" Preparen sus Cartas!!!");
 			UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
 			UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
@@ -90,46 +92,45 @@ public class PrincipalController {
 			return ObjectMatch;
 		}
 
-		// Gana el Jugador 1
+		// Gana el Jugador 2
 		if (Card1.getValour() < Card2.getValour()) {
 			EntityMatch.setPoints2(EntityMatch.getPoints2() + 100);
 			ObjectMatch.setPoints2(EntityMatch.getPoints2());
 
 			EntityMatch.setState("Turn Winner: " + EntityMatch.getPlayer2().getUserName());
-			ObjectMatch.setState(EntityMatch.getState());
-
 			ObjectMatch.getPlayer2().getDeskUser().getCards().remove(Card2.getIdCard());
+			ObjectMatch.setState(EntityMatch.getState());
+			System.out.println("Ganó " + EntityMatch.getPlayer2().getUserName());
+			MatchRepo.save(EntityMatch);
 		}
 
-		// Gana el Jugador 2
+		// Gana el Jugador 1
 		if (Card1.getValour() > Card2.getValour()) {
 			EntityMatch.setPoints1(EntityMatch.getPoints1() + 100);
 			ObjectMatch.setPoints1(EntityMatch.getPoints1());
 
 			EntityMatch.setState("Turn Winner: " + EntityMatch.getPlayer1().getUserName());
-			ObjectMatch.setState(EntityMatch.getState());
-
 			ObjectMatch.getPlayer1().getDeskUser().getCards().remove(Card1.getIdCard());
+			ObjectMatch.setState(EntityMatch.getState());
+			System.out.println("Ganó " + EntityMatch.getPlayer1().getUserName());
+			MatchRepo.save(EntityMatch);
 		}
 
-		// Empate
+		// Empate Entre el jugador 1 y 2
 		if (Card1.getValour() == Card2.getValour()) {
-			EntityMatch.setState("Nothing");
+			EntityMatch.setPoints2(EntityMatch.getPoints1() + 50);
+			EntityMatch.setPoints2(EntityMatch.getPoints2() + 50);
+			EntityMatch.setState("Empate");
+			System.out.println("Empate: Mismo Valor");
+			MatchRepo.save(EntityMatch);
 		}
-
-		// Partida Terminada
-		if (ObjectMatch.getPlayer1().getDeskUser().getCards().size() == 0
-				|| ObjectMatch.getPlayer2().getDeskUser().getCards().size() == 0) {
-			ObjectMatch.setState("Partida Acabada");
-		}
-
+		
 		UserDTO Player1 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
-		UserDTO Player2 = CreateUser(EntityMatch.getPlayer1().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
+		UserDTO Player2 = CreateUser(EntityMatch.getPlayer2().getUserName(), DeskRepo, UserRepo, RepoDC, CardsRepo);
 		ObjectMatch.setPlayer1(Player1);
 		ObjectMatch.setPlayer2(Player2);
 		ObjectMatch.setPoints1(EntityMatch.getPoints1());
 		ObjectMatch.setPoints2(EntityMatch.getPoints2());
-
 		return ObjectMatch;
 
 	}

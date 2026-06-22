@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import type { MatchDTO, Card, GameDTO} from './../Interface/Interfaces';
+import JuegoService from '../service/ServiceJuego';
 import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
 
   //Declaración de las variables
+  const [cartaRivalSeleccionada,setCartaRivalSeleccionada] = useState<Card | null>(null);
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null>(null);
   const EsperandoJugada = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -47,45 +49,35 @@ export const TableroJuego = ()=> {
   }
 
     //Metodo para preparar la Jugada
-    const PrepararJugada = (carta:Card) =>{
-      SetCartaSeleccionada(carta);
-      const token = localStorage.getItem('Jugada');
-      
-        if (!token) {
-          const Jugada: GameDTO = { idMatch: Partida.IdMatch, };
-          localStorage.setItem('Jugada', JSON.stringify(Jugada));
-          PrepararJugada(carta);
-        } else {
+    const PrepararJugada = () =>{
+      const token=localStorage.getItem('Jugada');
+
+        if(token) {
           EsperandoJugada.current = setInterval(() => {
-              let JugadaToken:GameDTO=JSON.parse(token);
+              const JugadaToken:GameDTO=JSON.parse(token);
+              const carta: Card | null = cartaSeleccionada || null;
 
               //Carta 1
               if(!JugadaToken.card1) {
+              SetCartaSeleccionada(carta);
               const Jugada: GameDTO = { idMatch:JugadaToken.idMatch, card1: carta, };
-              localStorage.setItem('Jugada',JSON.stringify(Jugada));
-              console.log('Jugada: ' + Jugada); 
-              PrepararJugada(carta)}
+              localStorage.setItem('Jugada',JSON.stringify(Jugada)); }
               
               //Carta 2
               if(!JugadaToken.card2){
-                if(carta.Valour === JugadaToken.card1?.Valour){
-                  console.log('Esperando al Jugador...');
-                } else {
-                  const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, 
-                                           card1: JugadaToken.card1, card2: carta };
-                  localStorage.setItem('Jugada',JSON.stringify(Jugada));
-                  PrepararJugada(carta);
-                }
-              }
-
-              //Las dos Cartas
-              if (JugadaToken.card2 && JugadaToken.card2){
-                if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
-              console.log("Realizando Jugada...");
-              RealizarJugada(JugadaToken); }
+                if (carta?.Valour !== JugadaToken.card1?.Valour) {
+                  setCartaRivalSeleccionada(carta);
+                  const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, card1: JugadaToken.card1, card2: carta };
+                  localStorage.setItem('Jugada',JSON.stringify(Jugada)); 
+                  if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
+                  JuegoService.escucharJugada(Jugada); 
+                  setCartaRivalSeleccionada(null); SetCartaSeleccionada(null); } }
           }, 1000);
-            
 
+      } else {
+          const Jugada: GameDTO = { idMatch: Partida.IdMatch, };
+          localStorage.setItem('Jugada', JSON.stringify(Jugada));
+          PrepararJugada();
       }
     }
 
@@ -95,96 +87,6 @@ export const TableroJuego = ()=> {
           if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
         };
       }, []);
-
-    //Metodo para realizar la Jugada
-    const RealizarJugada = (Jugada: GameDTO) => {
-      const token=localStorage.getItem('Jugada');
-
-      if(!token){
-        return console.log('Error, jugada no realizada');
-
-      } else {
-        let P1=0; let P2=0;
-        const Carta1: Card | null = Jugada.card1 || null;
-        const Carta2: Card | null = Jugada.card2 || null;
-
-        //Gana el Jugador 1
-        if(Carta1 && Carta2 && Carta1.Valour > Carta2.Valour ){
-        P1=Partida.Points1 + 150;
-        alert(Partida.Player1.Username + ' Ha ganado la ronda');
-        }
-
-        //Gana el Jugador 2
-        if(Carta1 && Carta2 &&  Carta1.Valour < Carta2.Valour ){
-        P2=Partida.Points2 + 150;
-        alert(Partida.Player2.Username + ' Ha ganado la ronda');
-        }
-
-        //Empate
-        if(Carta1 && Carta2 && Carta1.Valour === Carta2.Valour){
-        P1=Partida.Points1 + 10;
-        P2=Partida.Points2 + 10;
-        alert('Empate entre ' + Partida.Player1.Username + " y " + Partida.Player2.Username);
-        }
-
-        //Actualización en el Mazo
-        const nuevasCartasP2 = 
-        Partida.Player2.DeskUser.Cards.filter( C => C.IdCard !== Jugada.card2?.IdCard);
-        const nuevasCartasP1 =
-        Partida.Player1.DeskUser.Cards.filter( C => C.IdCard !== Jugada.card1?.IdCard);
-        ActualizarCartas(nuevasCartasP1,nuevasCartasP2,P1,P2);
-      }
-    }
-
-    //Metodo para Actualizar la Interfaz
-    const ActualizarCartas = (L1: Card[],L2:Card[],
-                              P1:number,P2:number)=>{
-    //Perspectiva del J2
-    if(Partida.Player2.Username === miJugador) {
-    SetPartida({
-        ...Partida,
-        Points1: P2,
-        Points2: P1,
-        State: Partida.State,
-        Player1: {
-          ...Partida.Player2,
-          DeskUser: {
-            ...Partida.Player2.DeskUser,
-            Cards:L2,
-          },
-        },
-        Player2: {
-          ...Partida.Player1,
-          DeskUser: {
-            ...Partida.Player1.DeskUser,
-            Cards: L1
-          },
-        },
-      });
-     }
-
-     //Perspectiva del J1
-     SetPartida({
-        ...Partida,
-        Points1: P1,
-        Points2: P2,
-        State: Partida.State,
-        Player1: {
-          ...Partida.Player1,
-          DeskUser: {
-            ...Partida.Player1.DeskUser,
-            Cards:L1,
-          },
-        },
-        Player2: {
-          ...Partida.Player2,
-          DeskUser: {
-            ...Partida.Player2.DeskUser,
-            Cards: L2
-          },
-        },
-      });
-    }
     
     
       
@@ -229,28 +131,50 @@ export const TableroJuego = ()=> {
       <div className="battlefield">
         <span className="battlefield-tag">CAMPO EN JUEGO</span>
 
-        {/* Espacio Carta Rival Jugada */}
-        <div className="combat-slot">
+          {/* Espacio Carta Rival Jugada */}
+    <div className="combat-slot">
           <span className="slot-tag-rival">RIVAL</span>
-          <div className="card-placeholder rival-side">
-            {/* Aquí pintarás la carta que tiró el rival real en tu backend */}
-            EMPTY
-          </div>
+          {/* Agregamos dinámicamente la clase 'active' si el rival ya seleccionó carta */}
+      <div className={`card-placeholder rival-side ${cartaRivalSeleccionada ? 'active' : ''}`}>
+            {cartaRivalSeleccionada ? (
+        <div className="card-placed-animation rival-card">
+              <div style={{ fontSize: '18px' }}>🃏</div>
+
+              {/* Mostramos el poder de la carta del rival en un color rojo/naranja competitivo */}
+              <div style={{ fontWeight: 'bold', color: '#ef4444' }}>
+                ⚔️ {cartaRivalSeleccionada.Valour}
+              </div>
+
+              <div style={{ fontSize: '10px', opacity: 0.5 }}>
+            I   D: {cartaRivalSeleccionada.IdCard}
+              </div>
         </div>
+      ) : (
+        "ESPERANDO RIVAL..."
+      )}
+    </div>
+  </div>
 
         {/* Espacio Tu Carta Jugada */}
-        <div className="combat-slot">
-          <span className="slot-tag-player">TÚ</span>
-          <div className={`card-placeholder player-side ${cartaSeleccionada ? 'active' : ''}`}>
-            {cartaSeleccionada ? (
-            <div className="card-placed-animation">
-              <div style={{ fontSize: '18px' }}>🃏</div>
-                <div style={{ fontWeight: 'bold', color: '#4ade80' }}>⚔️ {cartaSeleccionada.Valour}</div>
-                <div style={{ fontSize: '10px', opacity: 0.5 }}>ID: {cartaSeleccionada.IdCard}</div>
-            </div> ) : ( "SELECCIONA UNA CARTA" )}
+  <div className="combat-slot">
+    <span className="slot-tag-player">TÚ</span>
+    <div className={`card-placeholder player-side ${cartaSeleccionada ? 'active' : ''}`}>
+      {cartaSeleccionada ? (
+        <div className="card-placed-animation">
+          <div style={{ fontSize: '18px' }}>🃏</div>
+          <div style={{ fontWeight: 'bold', color: '#4ade80' }}>
+            ⚔️ {cartaSeleccionada.Valour}
+          </div>
+          <div style={{ fontSize: '10px', opacity: 0.5 }}>
+            ID: {cartaSeleccionada.IdCard}
           </div>
         </div>
-      </div>
+      ) : (
+        "SELECCIONA UNA CARTA"
+      )}
+    </div>
+  </div>
+</div>
 
       {/* ================= 3. ZONA INFERIOR: TUS CARTAS EN MANO (TUS DATOS REALES) ================= */}
       <div className="player-hand-container">
@@ -267,7 +191,8 @@ export const TableroJuego = ()=> {
                 disabled={esEstaCarta}
                 onClick={() => {
                   console.log("Carta seleccionada: ", carta);
-                  PrepararJugada(carta); 
+                  SetCartaSeleccionada(carta);
+                  PrepararJugada(); 
                 }}
                 // Si es la carta jugada, le metemos la clase 'jugada' para activar el CSS
                 className={`card-button ${deshabilitado ? 'oculta' : ''}`} > 
