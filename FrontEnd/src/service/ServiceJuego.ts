@@ -7,7 +7,7 @@ let suscripcionJugada: StompSubscription | null = null;
 const JuegoService = {
     
   //Metodo para esuchar el Canal de la Jugada
-  escucharJugada: (Jugada: GameDTO) => {
+  escucharJugada (Jugada: GameDTO): MatchDTO | null {
     if (suscripcionJugada) { suscripcionJugada.unsubscribe(); }
     JuegoService.enviarJugadaRealizada(Jugada);
       suscripcionJugada = stompClient.subscribe('/topic/Jugada', (mensaje: Message) => {
@@ -16,9 +16,11 @@ const JuegoService = {
           localStorage.setItem('partido',JSON.stringify(datos));
         }
       });
-
     console.log('📡 Escuchando el flujo de la partida en: /topic/Jugada');
     console.log(suscripcionJugada);
+    const PartidoActualizado: MatchDTO | null = JuegoService.RecibirPartidoActualizado();
+    return PartidoActualizado;
+    
   },
 
   //Metodo para enviar la Jugada
@@ -48,5 +50,12 @@ const JuegoService = {
       console.error('No se pudo enviar la jugada: El WebSocket está desconectado.');
     }
   },
+
+  //Metodo para recibir el partido actualizado
+  RecibirPartidoActualizado(): MatchDTO | null {
+  const token=localStorage.getItem('partido'); let PartidoAc: MatchDTO | null = null;
+  if(token){PartidoAc =JSON.parse(token)}
+  return PartidoAc;
+  }
 };
 export default JuegoService;

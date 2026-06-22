@@ -11,7 +11,7 @@ export const TableroJuego = ()=> {
   const EsperandoJugada = useRef<ReturnType<typeof setInterval> | null>(null);
 
   //Obtención de la Partida
-   const [Partida,SetPartida] = useState<MatchDTO>(() => {
+   const [Partida,SetPartida] = useState<MatchDTO | null>(() => {
         const PartidoToken = localStorage.getItem('partido');
         try {
             return PartidoToken ? JSON.parse(PartidoToken) : PartidoToken;
@@ -19,7 +19,7 @@ export const TableroJuego = ()=> {
             console.error("Error al parsear el usuario del localStorage:", e);
             return null;
         }
-    }); console.log(Partida);
+    });
 
     //Obtención del Usuario Principal
     const [miJugador] = useState<String|null>(() => {
@@ -30,10 +30,10 @@ export const TableroJuego = ()=> {
             console.error("Error al parsear el usuario del localStorage:", e);
             return null;
         }
-    }); console.log(miJugador); 
+    }); 
 
   //Condición Para cambiar la Perpectiva 
-   if (Partida.Player2.Username === miJugador){
+   if (Partida?.Player2.Username === miJugador){
     SetPartida({
       IdMatch: Partida.IdMatch,
       Player1: {
@@ -68,14 +68,21 @@ export const TableroJuego = ()=> {
                 if (carta?.Valour !== JugadaToken.card1?.Valour) {
                   setCartaRivalSeleccionada(carta);
                   const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, card1: JugadaToken.card1, card2: carta };
-                  localStorage.setItem('Jugada',JSON.stringify(Jugada)); 
-                  if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
-                  JuegoService.escucharJugada(Jugada); 
-                  setCartaRivalSeleccionada(null); SetCartaSeleccionada(null); } }
+                  localStorage.setItem('Jugada',JSON.stringify(Jugada)); } }
+              
+              //Carta 1 || Carta 2
+              if(JugadaToken.card1 && JugadaToken.card2){
+                if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
+                const token = localStorage.getItem('Jugada');
+                if(token) {
+                const Jugada: GameDTO = JSON.parse(token); 
+                localStorage.setItem('Jugada',JSON.stringify(Jugada)); EnviarJugada()}
+                
+              }
           }, 1000);
 
       } else {
-          const Jugada: GameDTO = { idMatch: Partida.IdMatch, };
+          const Jugada: GameDTO = { idMatch: Partida?.IdMatch, };
           localStorage.setItem('Jugada', JSON.stringify(Jugada));
           PrepararJugada();
       }
@@ -87,9 +94,15 @@ export const TableroJuego = ()=> {
           if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
         };
       }, []);
-    
-    
-      
+
+      const EnviarJugada = () =>{
+      const token= localStorage.getItem('Jugada');
+      if(token){
+        const Jugada: GameDTO = JSON.parse(token);
+        const PartidaActualizada: MatchDTO | null = JuegoService.escucharJugada(Jugada);
+        SetPartida(PartidaActualizada); } }
+
+        
 
   return (
   <div className="arena-wrapper">
@@ -100,15 +113,15 @@ export const TableroJuego = ()=> {
         <div className="score-player">
           <div className="dot-status dot-player1"></div>
           <div>
-            <span className="player-label">{Partida.Player1.Username ?? "Tú"}</span>
-            <div className="pts-counter-p1">{Partida.Points1 ?? 0} <span className="pts-text">PTS</span></div>
+            <span className="player-label">{Partida?.Player1.Username ?? "Tú"}</span>
+            <div className="pts-counter-p1">{Partida?.Points1 ?? 0} <span className="pts-text">PTS</span></div>
           </div>
         </div>
         <div className="score-player rival">
           <div className="dot-status dot-player2"></div>
           <div>
-            <span className="player-label">{Partida.Player2.Username ?? "Rival"}</span>
-            <div className="pts-counter-p2">{Partida.Points2 ?? 0} <span className="pts-text">PTS</span></div>
+            <span className="player-label">{Partida?.Player2.Username ?? "Rival"}</span>
+            <div className="pts-counter-p2">{Partida?.Points2 ?? 0} <span className="pts-text">PTS</span></div>
           </div>
         </div>
       </div>
@@ -116,10 +129,10 @@ export const TableroJuego = ()=> {
       {/* ================= 1. ZONA SUPERIOR: RIVAL (SIEMPRE EL OTRO) ================= */}
       <div className="rival-zone">
         <div className="rival-label">
-          Mano de {Partida.Player2.Username ?? "Rival"} ({Partida.Player2.DeskUser.Cards.length ?? 0} cartas)
+          Mano de {Partida?.Player2.Username ?? "Rival"} ({Partida?.Player2.DeskUser.Cards.length ?? 0} cartas)
         </div>
         <div className="rival-hand-slots">
-          {Partida.Player2.DeskUser.Cards.map((carta:Card) => (
+          {Partida?.Player2.DeskUser.Cards.map((carta:Card) => (
             <div key={`rival-${carta.IdCard}`} className="rival-card-back">
               <span style={{ fontSize: '14px' }}>❓</span>
             </div>
@@ -180,7 +193,7 @@ export const TableroJuego = ()=> {
       <div className="player-hand-container">
         <h4 className="hand-label">Tu Mano Operativa:</h4>
         <div className="player-cards-grid">
-          {Partida.Player1.DeskUser.Cards.map((carta: Card) => {
+          {Partida?.Player1.DeskUser.Cards.map((carta: Card) => {
           // Comprobamos si esta carta específica es la que el jugador acaba de clickar
           // (Asegúrate de si usas carta.IdCard o carta.Card para identificarla)
           const deshabilitado = cartaSeleccionada?.IdCard === carta.IdCard;
@@ -190,10 +203,7 @@ export const TableroJuego = ()=> {
                 key={carta.IdCard}
                 disabled={esEstaCarta}
                 onClick={() => {
-                  console.log("Carta seleccionada: ", carta);
-                  SetCartaSeleccionada(carta);
-                  PrepararJugada(); 
-                }}
+                  console.log("Carta seleccionada: ", carta); PrepararJugada(); }}
                 // Si es la carta jugada, le metemos la clase 'jugada' para activar el CSS
                 className={`card-button ${deshabilitado ? 'oculta' : ''}`} > 
                 <div style={{ fontSize: '16px' }}>🃏</div>
