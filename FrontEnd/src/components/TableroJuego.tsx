@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import type { MatchDTO, Card, GameDTO} from './../Interface/Interfaces';
 import JuegoService from '../service/ServiceJuego';
 import './../style/TableroJuego.css';
@@ -8,7 +8,6 @@ export const TableroJuego = ()=> {
   //Declaración de las variables
   const [cartaRivalSeleccionada,setCartaRivalSeleccionada] = useState<Card | null>(null);
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null>(null);
-  const EsperandoJugada = useRef<ReturnType<typeof setInterval> | null>(null);
 
   //Obtención de la Partida
    const [Partida,SetPartida] = useState<MatchDTO | null>(() => {
@@ -53,7 +52,6 @@ export const TableroJuego = ()=> {
       const token=localStorage.getItem('Jugada');
 
         if(token) {
-          EsperandoJugada.current = setInterval(() => {
               const JugadaToken:GameDTO=JSON.parse(token);
               const carta: Card | null = cartaSeleccionada || null;
 
@@ -72,14 +70,12 @@ export const TableroJuego = ()=> {
               
               //Carta 1 || Carta 2
               if(JugadaToken.card1 && JugadaToken.card2){
-                if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
                 const token = localStorage.getItem('Jugada');
                 if(token) {
                 const Jugada: GameDTO = JSON.parse(token); 
                 localStorage.setItem('Jugada',JSON.stringify(Jugada)); EnviarJugada()}
                 
               }
-          }, 1000);
 
       } else {
           const Jugada: GameDTO = { idMatch: Partida?.IdMatch, };
@@ -88,13 +84,6 @@ export const TableroJuego = ()=> {
       }
     }
 
-    //Reinicar la espera
-    useEffect(() => {
-        return () => {
-          if (EsperandoJugada.current) clearInterval(EsperandoJugada.current);
-        };
-      }, []);
-
       const EnviarJugada = () =>{
       const token= localStorage.getItem('Jugada');
       if(token){
@@ -102,7 +91,7 @@ export const TableroJuego = ()=> {
         const PartidaActualizada: MatchDTO | null = JuegoService.escucharJugada(Jugada);
         SetPartida(PartidaActualizada); } }
 
-        
+
 
   return (
   <div className="arena-wrapper">
