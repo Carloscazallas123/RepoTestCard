@@ -7,7 +7,7 @@ export const TableroJuego = ()=> {
 
   //Declaración de las variables
   const [cartaRivalSeleccionada,setCartaRivalSeleccionada] = useState<Card | null>(null);
-  const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null>(null);
+  const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null >(null);
 
   //Obtención de la Partida
    const [Partida,SetPartida] = useState<MatchDTO | null>(() => {
@@ -66,17 +66,9 @@ export const TableroJuego = ()=> {
               if(JugadaToken.card1 && !JugadaToken.card2){
               alert('Carta Lanzada por el Jugador 2');
               setCartaRivalSeleccionada(carta);
+              SetCartaSeleccionada(JugadaToken.card1);
               const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, card1: JugadaToken.card1, card2: carta };
-              localStorage.setItem('Jugada',JSON.stringify(Jugada));  }
-              
-              //Carta 1 || Carta 2
-              if(JugadaToken.card1 && JugadaToken.card2){
-                const token = localStorage.getItem('Jugada');
-                if(token) {
-                const Jugada: GameDTO = JSON.parse(token); 
-                localStorage.setItem('Jugada',JSON.stringify(Jugada)); EnviarJugada()}
-                
-              }
+              localStorage.setItem('Jugada',JSON.stringify(Jugada)); EnviarJugada() }
 
       } else {
           const Jugada: GameDTO = { idMatch: Partida?.IdMatch, };
