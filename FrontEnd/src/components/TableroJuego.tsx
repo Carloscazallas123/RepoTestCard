@@ -80,7 +80,6 @@ export const TableroJuego = ()=> {
     const Carta1: Card | null | undefined = Jugada.Card1;
     const Carta2: Card | null | undefined = Jugada.Card2;
     if (!Carta1 || !Carta2) return;
-    let P1 = 0; let P2 = 0;
 
     //Caso que Gana el Jugador 1
     if (Carta1.Valour > Carta2.Valour) {
