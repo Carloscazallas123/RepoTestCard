@@ -102,6 +102,7 @@ export const TableroJuego = ()=> {
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000); }
       
+      localStorage.removeItem('Jugada');
       ActualizarMazo(Carta1, Carta2,P1,P2)
   }
 
