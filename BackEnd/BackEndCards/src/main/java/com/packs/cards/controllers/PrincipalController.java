@@ -85,6 +85,7 @@ public class PrincipalController {
 		
 		//Extraemos las que queremos
 		List<CardsDTO> CartasConcretas = Buscarcartas(carta.getIdMatch());
+		System.out.println(CartasConcretas);
 		if(CartasConcretas.size() < 2) { System.out.println("Se necesitan 2 cartas..."); return null; }
 		
 		CardsDTO carta1=CartasConcretas.get(0);
