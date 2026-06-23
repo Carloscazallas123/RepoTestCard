@@ -1,61 +1,37 @@
 import { stompClient } from './SocketCliente';
 import type { Message, StompSubscription } from '@stomp/stompjs';
-import type { MatchDTO, GameDTO } from './../Interface/Interfaces';
+import type { GameDTO, Card } from './../Interface/Interfaces';
 
 let suscripcionJugada: StompSubscription | null = null;
 
 const JuegoService = {
     
   //Metodo para esuchar el Canal de la Jugada
-  escucharJugada (Jugada: GameDTO): MatchDTO | null {
+  escucharJugada (Carta: Card): void {
     if (suscripcionJugada) { suscripcionJugada.unsubscribe(); }
-    JuegoService.enviarJugadaRealizada(Jugada);
+    JuegoService.enviarJugadaRealizada(Carta);
       suscripcionJugada = stompClient.subscribe('/topic/Jugada', (mensaje: Message) => {
         if (mensaje.body) {
-          const datos: MatchDTO = JSON.parse(mensaje.body);
-          localStorage.setItem('partido',JSON.stringify(datos));
+          const datos: GameDTO = JSON.parse(mensaje.body);
+          localStorage.setItem('Jugada',JSON.stringify(datos));
         }
       });
     console.log('📡 Escuchando el flujo de la partida en: /topic/Jugada');
     console.log(suscripcionJugada);
-    const PartidoActualizado: MatchDTO | null = JuegoService.RecibirPartidoActualizado();
-    return PartidoActualizado;
-    
   },
 
   //Metodo para enviar la Jugada
-  enviarJugadaRealizada(jugada: GameDTO): void {
-
+  enviarJugadaRealizada(Carta: Card): void {
     if (stompClient && stompClient.connected) {
     stompClient.publish({
     destination: '/app/JugadaRealizada',
-    body: JSON.stringify(jugada) });
-    console.log('Jugada Realizada: ' + jugada);
-      const valour1 = jugada.card1?.Valour;
-      const valour2 = jugada.card2?.Valour;
+    body: JSON.stringify(Carta) });
 
-      if (typeof valour1 === 'number' && 
-          typeof valour2 === 'number' && 
-          valour1 > valour2) { alert('Ganaste'); }
-
-      if (typeof valour1 === 'number' && 
-          typeof valour2 === 'number' && 
-          valour1 < valour2) { alert('Perdiste'); }
-
-      if (typeof valour1 === 'number' && 
-          typeof valour2 === 'number' && 
-          valour1 === valour2) { alert('Empate'); }
-
+    console.log('Carta añadida a la cola');
     } else {
       console.error('No se pudo enviar la jugada: El WebSocket está desconectado.');
     }
   },
 
-  //Metodo para recibir el partido actualizado
-  RecibirPartidoActualizado(): MatchDTO | null {
-  const token=localStorage.getItem('partido'); let PartidoAc: MatchDTO | null = null;
-  if(token){PartidoAc =JSON.parse(token)}
-  return PartidoAc;
-  }
 };
 export default JuegoService;

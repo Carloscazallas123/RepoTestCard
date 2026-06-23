@@ -3,10 +3,18 @@ package com.packs.cards.Dto;
 public class GameDTO {
 
 	private int IdMatch;
-	private Integer Card1;
-	private Integer Card2; 
+	private CardsDTO Card1;
+	private CardsDTO Card2; 
 	
 	
+	
+	public GameDTO(int idMatch, CardsDTO card1, CardsDTO card2) {
+		IdMatch = idMatch;
+		Card1 = card1;
+		Card2 = card2;
+	}
+
+
 	public GameDTO() { }
 
 
@@ -19,24 +27,27 @@ public class GameDTO {
 		IdMatch = idMatch;
 	}
 
-	public Integer getCard1() {
+
+	public CardsDTO getCard1() {
 		return Card1;
 	}
 
 
-	public void setCard1(Integer card1) {
+	public void setCard1(CardsDTO card1) {
 		Card1 = card1;
 	}
 
 
-	public Integer getCard2() {
+	public CardsDTO getCard2() {
 		return Card2;
 	}
 
 
-	public void setCard2(Integer card2) {
+	public void setCard2(CardsDTO card2) {
 		Card2 = card2;
 	}
+
+	
 	
 	
 }

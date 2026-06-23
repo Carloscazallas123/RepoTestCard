@@ -1,4 +1,5 @@
 export interface Card {
+    idMath?: number;
     IdCard: number;
     Valour: number; 
 }
@@ -6,17 +7,17 @@ export interface Card {
 export interface Desk {
     idDesk: number;
     NameDesk: string;
-    Cards: Card[] ; 
+    Cards: Card[] | undefined ; 
 }
 
 export interface UserDTO {
     idUser: number;
     Username: String;
-    DeskUser: Desk;
+    DeskUser: Desk | undefined;
 }
 
 export interface MatchDTO {
-    IdMatch: number;
+    IdMatch: number | undefined;
     Player1: UserDTO;
     Player2: UserDTO;
     State: string;

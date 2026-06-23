@@ -1,13 +1,9 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { MatchDTO, Card, GameDTO} from './../Interface/Interfaces';
 import JuegoService from '../service/ServiceJuego';
 import './../style/TableroJuego.css';
 
 export const TableroJuego = ()=> {
-
-  //Declaración de las variables
-  const [cartaRivalSeleccionada,setCartaRivalSeleccionada] = useState<Card | null>(null);
-  const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null >(null);
 
   //Obtención de la Partida
    const [Partida,SetPartida] = useState<MatchDTO | null>(() => {
@@ -29,60 +25,108 @@ export const TableroJuego = ()=> {
             console.error("Error al parsear el usuario del localStorage:", e);
             return null;
         }
-    }); 
-
-  //Condición Para cambiar la Perpectiva 
-   if (Partida?.Player2.Username === miJugador){
-    SetPartida({
-      IdMatch: Partida.IdMatch,
-      Player1: {
-        idUser: Partida.Player2.idUser,
-        Username: miJugador,
-        DeskUser: Partida.Player2.DeskUser,
-      },
-      Player2: Partida.Player1,
-      State: Partida.State,
-      Points1: Partida.Points2,
-      Points2: Partida.Points1,
     });
-  }
 
-    //Metodo para preparar la Jugada
-    const PrepararJugada = (cartaa:Card) =>{
-      const token=localStorage.getItem('Jugada');
-
-        if(token) {
-              const JugadaToken:GameDTO=JSON.parse(token);
-              const carta: Card | null = cartaa || null;
-
-              //Carta 1
-              if(!JugadaToken.card1) {
-              alert('Carta Lanzada por el jugador 1');
-              SetCartaSeleccionada(carta);
-              const Jugada: GameDTO = { idMatch:JugadaToken.idMatch, card1: carta, };
-              localStorage.setItem('Jugada',JSON.stringify(Jugada)); }
-              
-              //Carta 2
-              if(JugadaToken.card1 && !JugadaToken.card2){
-              alert('Carta Lanzada por el Jugador 2');
-              setCartaRivalSeleccionada(carta);
-              SetCartaSeleccionada(JugadaToken.card1);
-              const Jugada: GameDTO = {idMatch: JugadaToken.idMatch, card1: JugadaToken.card1, card2: carta };
-              localStorage.setItem('Jugada',JSON.stringify(Jugada)); EnviarJugada() }
-
-      } else {
-          const Jugada: GameDTO = { idMatch: Partida?.IdMatch, };
-          localStorage.setItem('Jugada', JSON.stringify(Jugada));
-          PrepararJugada(cartaa);
-      }
+    //Condición Para cambiar la Perpectiva 
+    if (Partida?.Player2.Username === miJugador){
+      SetPartida({
+        IdMatch: Partida.IdMatch,
+        Player1: {
+          idUser: Partida.Player2.idUser,
+          Username: miJugador,
+          DeskUser: Partida.Player2.DeskUser,
+        },
+        Player2: Partida.Player1,
+        State: Partida.State,
+        Points1: Partida.Points2,
+        Points2: Partida.Points1,
+      });
     }
 
-      const EnviarJugada = () =>{
-      const token= localStorage.getItem('Jugada');
+
+  //Varaibles
+  const EnBusqueda = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [cartaRivalSeleccionada,setCartaRivalSeleccionada] = useState<Card | null | undefined >(null);
+  const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null | undefined >(null);
+
+    //Metodo para preparar la Jugada
+    const PrepararJugada = (carta:Card) =>{
+    const CartaEnviada: Card = {
+      idMath: Partida?.IdMatch,
+      IdCard: carta.IdCard,
+      Valour: carta.Valour }
+
+    JuegoService.escucharJugada(CartaEnviada);
+      //Esperamos hasta que tengamos dos cartas
+      EnBusqueda.current = setInterval(() => {
+      const token=localStorage.getItem('Jugada');
       if(token){
         const Jugada: GameDTO = JSON.parse(token);
-        const PartidaActualizada: MatchDTO | null = JuegoService.escucharJugada(Jugada);
-        SetPartida(PartidaActualizada); } }
+        if(Jugada.card1 && Jugada.card2){
+          if (Partida?.Player2.Username === miJugador){
+          SetCartaSeleccionada(Jugada.card2);
+          setCartaRivalSeleccionada(Jugada.card1); }
+
+          SetCartaSeleccionada(Jugada.card1);
+          setCartaRivalSeleccionada(Jugada.card2);
+
+          RealizarJugada(Jugada);
+          }
+        }
+      }, 1000);
+    }
+
+    const RealizarJugada= (Jugada:GameDTO)=> {
+    const Carta1: Card | null | undefined = Jugada.card1;
+    const Carta2: Card | null | undefined = Jugada.card2;
+    if (!Carta1 || !Carta2) return;
+    let P1 = 0; let P2 = 0;
+
+    //Caso que Gana el Jugador 1
+    if (Carta1.Valour > Carta2.Valour) {
+      P1 = (Partida?.Points1 ?? 0) + 50;
+      ActualizarMazo(Carta1, Carta2);
+    }
+
+    //Caso que Gana el Jugador 2
+    if (Carta1.Valour < Carta2.Valour) {
+      P2 = (Partida?.Points2 ?? 0) + 50;
+    }
+
+    //Caso de Empate
+    if (Carta1.Valour === Carta2.Valour) {
+      P1 = (Partida?.Points1 ?? 0) + 10;
+      P2 = (Partida?.Points2 ?? 0) + 10;
+    }
+  }
+
+    const ActualizarMazo=(Carta1:Card,Carta2:Card ) =>{
+      if (!Partida) return;
+      const desk1 = Partida.Player1.DeskUser;
+      const desk2 = Partida.Player2.DeskUser;
+      if (!desk1 || !desk2) return;
+
+      const mazoActualizadoP1 = desk1.Cards?.filter(carta => carta.IdCard !== Carta1.IdCard);
+      const mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.IdCard !== Carta2.IdCard);
+
+      SetPartida({
+        ...Partida,
+        Player1: {
+          ...Partida.Player1,
+          DeskUser: {
+            ...desk1,
+            Cards: mazoActualizadoP1
+          }
+        },
+        Player2: {
+          ...Partida.Player2,
+          DeskUser: {
+            ...desk2,
+            Cards: mazoActualizadoP2
+          }
+        }
+      });
+    }
 
 
 
