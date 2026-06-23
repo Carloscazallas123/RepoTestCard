@@ -14,9 +14,8 @@ public interface RepoMatch extends JpaRepository<MatchEntity, Integer> {
 	@Query("SELECT m FROM MatchEntity m WHERE m.IdMatch=:IdMatch")
 	MatchEntity ObtenerporId(@Param("IdMatch") int IdMatch);
 	
-	@Query("SELECT m FROM MatchEntity m " +
-		       "LEFT JOIN m.Player1.DeskUser.deskCards c1 " +
-		       "LEFT JOIN m.Player2.DeskUser.deskCards c2 " +
-		       "WHERE c1.Card.IdCard = :IdCard OR c2.Card.IdCard = :IdCard")
+	@Query("SELECT m FROM MatchEntity m LEFT JOIN m.Player1.DeskUser.deskCards c1 LEFT JOIN m.Player2.DeskUser.deskCards c2  WHERE c1.Card.IdCard = :IdCard OR c2.Card.IdCard = :IdCard")
 	MatchEntity findPartidaByCartaId(@Param("IdCard") int idCard);
+	
+	
 }
