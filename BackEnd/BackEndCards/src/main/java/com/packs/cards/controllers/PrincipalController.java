@@ -96,8 +96,8 @@ public class PrincipalController {
 		EntityGame.setGameMatch(MatchRepo.findPartidaByCartaId(carta.getIdCard()));
 		System.out.println(EntityGame);
 		RepoGame.save(EntityGame);
-		GameDTO jugada=new GameDTO(EntityGame.getIdGame(), carta1,carta2); return jugada;
-
+		GameDTO jugada=new GameDTO(EntityGame.getIdGame(), carta1,carta2); 
+		ColaCartas.clear(); return jugada;
 	}
 
 	
