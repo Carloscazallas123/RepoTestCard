@@ -30,10 +30,6 @@ public class CardsEntity implements Serializable{
 	@OneToMany(mappedBy = "Card")
     private List<DeskCardEntity> DeskCards;
 
-	
-	public CardsEntity(int valour) { Valour = valour; }
-	public CardsEntity() { }
-
 
 
 	public int getIdCard() {
