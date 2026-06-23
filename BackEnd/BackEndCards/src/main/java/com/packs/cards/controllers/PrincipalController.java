@@ -193,7 +193,9 @@ public class PrincipalController {
 	// Función Externa nº5: Crear la lista de las cartas que comparten el mismo IdMatch
 	public static List<CardsDTO>Buscarcartas(int idcard){
 	List<CardsDTO>ListaCartas=new ArrayList<>();
-	for(CardsDTO carta: ColaCartas) { if(carta.getIdCard() == idcard) { ListaCartas.add(carta); }}
+	for(CardsDTO carta: ColaCartas) { if(carta.getIdCard() == idcard) { 
+	System.out.println(carta);
+	ListaCartas.add(carta); }}
 	return ListaCartas; }
 
 }
