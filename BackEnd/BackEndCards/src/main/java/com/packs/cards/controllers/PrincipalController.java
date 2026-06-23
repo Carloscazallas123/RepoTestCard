@@ -11,6 +11,8 @@ import com.packs.cards.Dto.*;
 import com.packs.cards.entitys.*;
 import com.packs.cards.repositorys.*;
 
+import jakarta.transaction.Transactional;
+
 @Controller
 @CrossOrigin(origins = "http://backend-cards-production.up.railway.app")
 public class PrincipalController {
@@ -36,6 +38,7 @@ public class PrincipalController {
 	
 	@MessageMapping("/CrearPartida")
 	@SendTo("/topic/partida")
+	@Transactional
 	public MatchDTO realizarjugada(String NameUser) {
 		MatchDTO Match = new MatchDTO();
 		UserDTO Player1 = new UserDTO();
@@ -77,6 +80,7 @@ public class PrincipalController {
 
 	@MessageMapping("/CrearJugada")
 	@SendTo("/topic/Jugada")
+	@Transactional
 	public GameDTO GameMatch(CardsDTO carta) {
 		
 		//Comprobamos las cartas
