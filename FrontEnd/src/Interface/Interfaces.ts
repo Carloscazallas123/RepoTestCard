@@ -20,8 +20,8 @@ export interface MatchDTO {
     Player1: UserDTO;
     Player2: UserDTO;
     State: string;
-    Points1: number;
-    Points2: number;
+    Points1: number | null | undefined ;
+    Points2: number | null | undefined;
 }
 
 export interface GameDTO {

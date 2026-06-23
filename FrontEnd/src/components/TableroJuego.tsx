@@ -48,7 +48,8 @@ export const TableroJuego = ()=> {
   const EnBusqueda = useRef<ReturnType<typeof setInterval> | null>(null);
   const [cartaRivalSeleccionada,setCartaRivalSeleccionada] = useState<Card | null | undefined >(null);
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null | undefined >(null);
-
+  const [PuntajeJ1 ,SetPuntajeJ1] = useState<number | null | undefined >(Partida?.Points1);
+  const [PuntajeJ2 ,SetPuntajeJ2] = useState<number | null | undefined >(Partida?.Points1);
     //Metodo para preparar la Jugada
     const PrepararJugada = (carta:Card) =>{
     SetCartaSeleccionada(carta);
@@ -84,8 +85,8 @@ export const TableroJuego = ()=> {
     //Caso que Gana el Jugador 1
     if (Carta1.Valour > Carta2.Valour) {
       if (Partida?.Player1.Username === miJugador){
-      P2 = (Partida?.Points1 ?? 0) + 50;  
-      } else { P1 = (Partida?.Points1 ?? 0) + 50; }
+      SetPuntajeJ2((PuntajeJ2 ?? 0) + 150);  
+      } else { SetPuntajeJ1((PuntajeJ1 ?? 0) + 150);   }
 
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
@@ -94,8 +95,8 @@ export const TableroJuego = ()=> {
     //Caso que Gana el Jugador 2
     if (Carta1.Valour < Carta2.Valour) {
       if (Partida?.Player1.Username === miJugador){
-      P1 = (Partida?.Points1 ?? 0) + 50;  
-      } else { P2 = (Partida?.Points2 ?? 0) + 50; }
+      SetPuntajeJ1((PuntajeJ1 ?? 0) + 150); 
+      } else { SetPuntajeJ2((PuntajeJ2 ?? 0) + 150);   }
 
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
@@ -103,18 +104,18 @@ export const TableroJuego = ()=> {
 
     //Caso de Empate
     if (Carta1.Valour === Carta2.Valour) {
-      P1 = (Partida?.Points1 ?? 0) + 10;
-      P2 = (Partida?.Points2 ?? 0) + 10; 
-      
+      SetPuntajeJ1((PuntajeJ1 ?? 0) + 150);  
+      SetPuntajeJ2((PuntajeJ2 ?? 0) + 150);  
+
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000); }
       
       localStorage.removeItem('Jugada');
-      ActualizarMazo(Carta1, Carta2,P1,P2)
+      ActualizarMazo(Carta1, Carta2)
   }
 
-    const ActualizarMazo=(Carta1:Card,Carta2:Card,P1: number,P2: number ) =>{
+    const ActualizarMazo=(Carta1:Card,Carta2:Card) =>{
       if (!Partida) return;
       let desk1 = Partida.Player1.DeskUser;
       let desk2 = Partida.Player2.DeskUser;
@@ -133,8 +134,8 @@ export const TableroJuego = ()=> {
       //Perspectiva 1
       SetPartida({
         ...Partida,
-        Points1: P1,
-        Points2: P2,
+        Points1: PuntajeJ1,
+        Points2: PuntajeJ2,
         Player1: {
           ...Partida.Player1,
           DeskUser: {
@@ -165,7 +166,7 @@ export const TableroJuego = ()=> {
               <span className="player-label">{Partida?.Player1?.Username ?? "TÚ"}</span>
             </div>
             <div className="pts-counter-p1">
-              {Partida?.Points1 ?? 0} <span className="pts-text">PTS</span>
+              {PuntajeJ1} <span className="pts-text">PTS</span>
             </div>
           </div>
 
@@ -177,7 +178,7 @@ export const TableroJuego = ()=> {
               <div className="dot-status dot-player2"></div>
             </div>
             <div className="pts-counter-p2">
-              {Partida?.Points2 ?? 0} <span className="pts-text">PTS</span>
+              {PuntajeJ2} <span className="pts-text">PTS</span>
             </div>
           </div>
         </div>
