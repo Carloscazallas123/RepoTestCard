@@ -84,23 +84,20 @@ export const TableroJuego = ()=> {
 
     //Caso que Gana el Jugador 1
     if (Carta1.Valour > Carta2.Valour) {
-      P1 = (Partida?.Points1 ?? 0) + 50;
-      ActualizarMazo(Carta1, Carta2);
-    }
+      P1 = (Partida?.Points1 ?? 0) + 50; }
 
     //Caso que Gana el Jugador 2
     if (Carta1.Valour < Carta2.Valour) {
-      P2 = (Partida?.Points2 ?? 0) + 50;
-    }
+      P2 = (Partida?.Points2 ?? 0) + 50; }
 
     //Caso de Empate
     if (Carta1.Valour === Carta2.Valour) {
       P1 = (Partida?.Points1 ?? 0) + 10;
-      P2 = (Partida?.Points2 ?? 0) + 10;
-    }
+      P2 = (Partida?.Points2 ?? 0) + 10; }
+      ActualizarMazo(Carta1, Carta2,P1,P2)
   }
 
-    const ActualizarMazo=(Carta1:Card,Carta2:Card ) =>{
+    const ActualizarMazo=(Carta1:Card,Carta2:Card,P1: number,P2: number ) =>{
       if (!Partida) return;
       const desk1 = Partida.Player1.DeskUser;
       const desk2 = Partida.Player2.DeskUser;
@@ -111,6 +108,8 @@ export const TableroJuego = ()=> {
 
       SetPartida({
         ...Partida,
+        Points1: P1,
+        Points2: P2,
         Player1: {
           ...Partida.Player1,
           DeskUser: {
@@ -155,10 +154,10 @@ export const TableroJuego = ()=> {
       {/* ================= 1. ZONA SUPERIOR: RIVAL (SIEMPRE EL OTRO) ================= */}
       <div className="rival-zone">
         <div className="rival-label">
-          Mano de {Partida?.Player2.Username ?? "Rival"} ({Partida?.Player2.DeskUser.Cards.length ?? 0} cartas)
+          Mano de {Partida?.Player2.Username ?? "Rival"} ({Partida?.Player2?.DeskUser?.Cards?.length ?? 0} cartas)
         </div>
         <div className="rival-hand-slots">
-          {Partida?.Player2.DeskUser.Cards.map((carta:Card) => (
+          {Partida?.Player2?.DeskUser?.Cards?.map((carta:Card) => (
             <div key={`rival-${carta.IdCard}`} className="rival-card-back">
               <span style={{ fontSize: '14px' }}>❓</span>
             </div>
@@ -219,7 +218,7 @@ export const TableroJuego = ()=> {
       <div className="player-hand-container">
         <h4 className="hand-label">Tu Mano Operativa:</h4>
         <div className="player-cards-grid">
-          {Partida?.Player1.DeskUser.Cards.map((carta: Card) => {
+          {Partida?.Player1?.DeskUser?.Cards?.map((carta: Card) => {
           // Comprobamos si esta carta específica es la que el jugador acaba de clickar
           // (Asegúrate de si usas carta.IdCard o carta.Card para identificarla)
           const deshabilitado = cartaSeleccionada?.IdCard === carta.IdCard;
