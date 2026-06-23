@@ -3,8 +3,12 @@ package com.packs.cards.entitys;
 import java.io.Serializable;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor 
+@AllArgsConstructor
 @Table(name = "tablegame")
 public class GameEntity implements Serializable {
 
