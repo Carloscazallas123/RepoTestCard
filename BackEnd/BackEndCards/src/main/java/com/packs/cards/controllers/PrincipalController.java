@@ -101,7 +101,7 @@ public class PrincipalController {
 		
 		
 		for(int i=0;i<ListaPartidos.size();i++) {
-		List<DeskCardEntity> Mazo = ListaPartidos.get(i).getPlayer1().getDeskUser().getDeskCards();
+		List<DeskCardEntity> Mazo = ListaPartidos.get(i).getPlayer2().getDeskUser().getDeskCards();
 			for(int e=0;e<Mazo.size();e++) {
 				if(Mazo.get(e).getCard().getIdCard() == carta.getIdCard()) {
 					EntityGame.setGameMatch(ListaPartidos.get(i));

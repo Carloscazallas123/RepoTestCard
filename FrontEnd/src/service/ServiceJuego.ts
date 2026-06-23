@@ -19,6 +19,7 @@ const JuegoService = {
     console.log('📡 Escuchando el flujo de la partida en: /topic/Jugada');
     const token=localStorage.getItem('Jugada');
     if(token){const Jugada=JSON.parse(token); console.log(Jugada);}
+    else {console.log("No Token");}
   },
 
   //Metodo para enviar la Jugada
