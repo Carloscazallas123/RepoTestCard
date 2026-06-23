@@ -1,5 +1,4 @@
 export interface Card {
-    idMath?: number;
     IdCard: number;
     Valour: number; 
 }

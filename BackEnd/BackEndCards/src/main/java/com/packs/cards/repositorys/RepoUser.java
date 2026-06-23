@@ -19,7 +19,6 @@ public interface RepoUser extends JpaRepository<UserEntity, Integer> {
 	
 	@Query("SELECT u FROM UserEntity u WHERE u.UserName=:UserName")
 	UserEntity ObtenerporNombre(@Param("UserName") String UserName);
-	
 	@Query("SELECT u FROM UserEntity u")
 	List<UserEntity> Obtenertodos();
 	

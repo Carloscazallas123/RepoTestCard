@@ -51,8 +51,8 @@ export const TableroJuego = ()=> {
 
     //Metodo para preparar la Jugada
     const PrepararJugada = (carta:Card) =>{
+    SetCartaSeleccionada(carta);
     const CartaEnviada: Card = {
-      idMath: Partida?.IdMatch,
       IdCard: carta.IdCard,
       Valour: carta.Valour }
 
@@ -64,12 +64,8 @@ export const TableroJuego = ()=> {
         const Jugada: GameDTO = JSON.parse(token);
         if(Jugada.card1 && Jugada.card2){
           if (Partida?.Player2.Username === miJugador){
-          SetCartaSeleccionada(Jugada.card2);
           setCartaRivalSeleccionada(Jugada.card1); }
-
-          SetCartaSeleccionada(Jugada.card1);
           setCartaRivalSeleccionada(Jugada.card2);
-
           RealizarJugada(Jugada);
           }
         }

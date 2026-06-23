@@ -83,21 +83,19 @@ public class PrincipalController {
 		ColaCartas.add(carta);
 		if (ColaCartas.size() < 2) { System.out.println("No hay mas cartas..."); return null; }
 		
-		//Extraemos las que queremos
-		List<CardsDTO> CartasConcretas = Buscarcartas(carta.getIdMatch());
-		System.out.println(CartasConcretas);
-		if(CartasConcretas.size() < 2) { System.out.println("Se necesitan 2 cartas..."); return null; }
+		//-----En Desarollo
 		
-		CardsDTO carta1=CartasConcretas.get(0);
+		CardsDTO carta1=ColaCartas.poll();
 		System.out.println("Carta Nº1 -->  ID:" + carta1.getIdCard() + " Valor: " + carta1.getValour());
-		CardsDTO carta2=CartasConcretas.get(1);
+		CardsDTO carta2=ColaCartas.poll();
 		System.out.println("Carta Nº1 -->  ID:" + carta2.getIdCard() + " Valor: " + carta2.getValour());
 		//Guardo la Jugada
 		GameEntity EntityGame= new GameEntity();
 		EntityGame.setCard1(CardsRepo.ObtenerporId(carta1.getIdCard()));
 		EntityGame.setCard2(CardsRepo.ObtenerporId(carta2.getIdCard()));
-		EntityGame.setGameMatch(MatchRepo.ObtenerporId(carta1.getIdMatch()));
-		RepoGame.save(EntityGame); GameDTO jugada=new GameDTO(carta.getIdMatch(), carta1,carta2); return jugada;
+		EntityGame.setGameMatch(MatchRepo.findPartidaByCartaId(carta.getIdCard()));
+		RepoGame.save(EntityGame);
+		GameDTO jugada=new GameDTO(EntityGame.getIdGame(), carta1,carta2); return jugada;
 
 	}
 
@@ -189,13 +187,5 @@ public class PrincipalController {
 		return EntityDesk;
 
 	}
-	
-	// Función Externa nº5: Crear la lista de las cartas que comparten el mismo IdMatch
-	public static List<CardsDTO>Buscarcartas(int idcard){
-	List<CardsDTO>ListaCartas=new ArrayList<>();
-	for(CardsDTO carta: ColaCartas) { if(carta.getIdCard() == idcard) { 
-	System.out.println(carta);
-	ListaCartas.add(carta); }}
-	return ListaCartas; }
 
 }

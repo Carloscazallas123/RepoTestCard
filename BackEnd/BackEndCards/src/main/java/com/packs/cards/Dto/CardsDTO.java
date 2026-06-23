@@ -1,9 +1,6 @@
 package com.packs.cards.Dto;
 
 public class CardsDTO {
-
-	//Variable Opcional
-	private int idMatch;
 	
 	private int IdCard;
 	private int Valour;
@@ -15,22 +12,6 @@ public class CardsDTO {
 		this.Valour = valour;
 	}
 	
-	
-	
-	public CardsDTO(int idMatch, int idCard, int valour) {
-		this.idMatch = idMatch;
-		IdCard = idCard;
-		Valour = valour;
-	}
-
-	public int getIdMatch() {
-		return idMatch;
-	}
-
-	public void setIdMatch(int idMatch) {
-		this.idMatch = idMatch;
-	}
-
 	public int getIdCard() {
 		return IdCard;
 	}
