@@ -7,9 +7,9 @@ public class CardsDTO {
 	
 	public CardsDTO() { }
 	
-	public CardsDTO(int idCard, int valour) {
+	public CardsDTO(int idCard, int Valour) {
 		this.idCard = idCard;
-		this.Valour = valour;
+		this.Valour = Valour;
 	}
 	
 	public int getIdCard() {
@@ -24,8 +24,8 @@ public class CardsDTO {
 		return Valour;
 	}
 
-	public void setValour(int valour) {
-		this.Valour = valour;
+	public void setValour(int Valour) {
+		this.Valour = Valour;
 	}
 
 	
