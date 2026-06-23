@@ -17,7 +17,8 @@ const JuegoService = {
         }
       });
     console.log('📡 Escuchando el flujo de la partida en: /topic/Jugada');
-    console.log(suscripcionJugada);
+    const token=localStorage.getItem('Jugada');
+    if(token){const Jugada=JSON.parse(token); console.log(Jugada);}
   },
 
   //Metodo para enviar la Jugada

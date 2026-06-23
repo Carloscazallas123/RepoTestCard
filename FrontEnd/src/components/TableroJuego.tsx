@@ -62,10 +62,12 @@ export const TableroJuego = ()=> {
       const token=localStorage.getItem('Jugada');
       if(token){
         const Jugada: GameDTO = JSON.parse(token);
+        console.log(Jugada);
         if(Jugada.card1 && Jugada.card2){
           if (Partida?.Player2.Username === miJugador){
           setCartaRivalSeleccionada(Jugada.card1); }
           setCartaRivalSeleccionada(Jugada.card2);
+          console.log('Realizando Jugada...');
           RealizarJugada(Jugada);
           }
         }
