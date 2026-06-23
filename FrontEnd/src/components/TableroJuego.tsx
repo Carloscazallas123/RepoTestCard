@@ -84,20 +84,28 @@ export const TableroJuego = ()=> {
     //Caso que Gana el Jugador 1
     if (Carta1.Valour > Carta2.Valour) {
       P1 = (Partida?.Points1 ?? 0) + 50; 
-      alert('Ganó el Jugador' + Partida?.Player1.Username); }
+      setTimeout(() => { 
+      alert('Ha ganado el Jugador ' + Partida?.Player1.Username); 
+      setCartaRivalSeleccionada(null); 
+      SetCartaSeleccionada(null); }, 3000);}
 
     //Caso que Gana el Jugador 2
     if (Carta1.Valour < Carta2.Valour) {
       P2 = (Partida?.Points2 ?? 0) + 50; 
-      alert('Ganó el Jugador' + Partida?.Player2.Username); }
+      setTimeout(() => { 
+      alert('Ha ganado el Jugador ' + Partida?.Player2.Username); 
+      setCartaRivalSeleccionada(null); 
+      SetCartaSeleccionada(null); }, 3000);}
 
     //Caso de Empate
     if (Carta1.Valour === Carta2.Valour) {
       P1 = (Partida?.Points1 ?? 0) + 10;
       P2 = (Partida?.Points2 ?? 0) + 10; 
-      alert('Empate'); }
-      setCartaRivalSeleccionada(null);
-      SetCartaSeleccionada(null);
+      setTimeout(() => { 
+      alert('Empate'); 
+      setCartaRivalSeleccionada(null); 
+      SetCartaSeleccionada(null); }, 3000); }
+      
       ActualizarMazo(Carta1, Carta2,P1,P2)
   }
 
@@ -140,15 +148,15 @@ export const TableroJuego = ()=> {
           Player1: {
             ...Partida.Player2,
             DeskUser: {
-              ...desk1,
-              Cards: mazoActualizadoP1
+              ...desk2,
+              Cards: mazoActualizadoP2
             }
           },
           Player2: {
-            ...Partida.Player2,
+            ...Partida.Player1,
             DeskUser: {
-              ...desk2,
-              Cards: mazoActualizadoP2
+              ...desk1,
+              Cards: mazoActualizadoP1
             }
           }
         });
