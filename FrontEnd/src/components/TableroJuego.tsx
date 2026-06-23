@@ -62,7 +62,7 @@ export const TableroJuego = ()=> {
       const token=localStorage.getItem('Jugada');
       if(token){
         const Jugada: GameDTO = JSON.parse(token);
-        if(Partida?.IdMatch == Jugada.idMatch){
+        if(Partida?.IdMatch == Jugada.IdMatch){
           console.log('33333333');
           setCartaRivalSeleccionada(Jugada.card2);
           if (Partida?.Player2.Username === miJugador){
