@@ -1,293 +1,320 @@
+/* Base del Tablero Estilo Cyberpunk */
 .arena-wrapper {
-  position: fixed; /* Lo desengancha de cualquier layout padre */
-  top: 0;
-  left: 0;
-  width: 100vw;    /* Fuerza a ocupar todo el ancho de la pantalla */
-  height: 100vh;   /* Fuerza a ocupar todo el alto de la pantalla */
+  background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+  min-height: 100vh;
   display: flex;
-  justify-content: center; /* Centrado horizontal */
-  align-items: center;     /* Centrado vertical */
-  background-color: #0f1319; /* Fondo exterior oscuro idéntico al de tu juego */
-  z-index: 9999;   /* Asegura que se pinte por encima de cualquier otra cosa */
-  overflow-y: auto; /* Si la pantalla es pequeña, permite hacer scroll */
-  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #f3f4f6;
   padding: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .arena-container {
   width: 100%;
-  max-width: 750px; 
-  background-color: #1a202c;
-  border: 1px solid #2d3748;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-family: system-ui, -apple-system, sans-serif;
-text-align: left;
-}
-
-/* --- BARRA SUPERIOR --- */
-.arena-header {
+  max-width: 900px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #2d3748;
-  padding-bottom: 10px;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.arena-title {
-  margin: 0;
-  color: #f7fafc;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.match-badge {
-  font-size: 11px;
-  color: #63b3ed;
-  background: #2b6cb0;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-weight: bold;
-}
-
-/* --- MARCADORES --- */
+/* MARCADOR / SCOREBOARD */
 .scoreboard {
   display: flex;
   justify-content: space-between;
-  background: #2d3748;
-  padding: 12px 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 12px 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
 }
 
 .score-player {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.score-player.rival {
-  flex-direction: row-reverse;
-  text-align: right;
+.player-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-label {
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #9ca3af;
 }
 
 .dot-status {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+.dot-player1 { color: #10b981; background-color: #10b981; }
+.dot-player2 { color: #f43f5e; background-color: #f43f5e; }
+
+.pts-counter-p1, .pts-counter-p2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-family: monospace;
+}
+.pts-counter-p1 { color: #34d399; text-shadow: 0 0 10px rgba(52, 211, 153, 0.3); }
+.pts-counter-p2 { color: #f87171; text-shadow: 0 0 10px rgba(248, 113, 113, 0.3); }
+.pts-text { font-size: 0.8rem; color: #6b7280; font-weight: normal; }
+
+.vs-badge {
+  background: linear-gradient(135deg, #f43f5e 0%, #3b82f6 100%);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-style: italic;
+  font-weight: bold;
+  letter-spacing: 2px;
+  box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
 }
 
-.dot-player1 { background-color: #4299e1; }
-.dot-player2 { background-color: #f56565; }
-
-.player-label {
-  font-size: 12px;
-  color: #a0aec0;
-}
-
-.pts-counter-p1 { font-size: 20px; font-weight: bold; color: #63b3ed; }
-.pts-counter-p2 { font-size: 20px; font-weight: bold; color: #fc8181; }
-.pts-text { font-size: 12px; }
-
-/* --- ZONA RIVAL --- */
-.rival-zone {
+/* CABECERAS DE ZONAS */
+.zone-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  background: rgba(0,0,0,0.2);
-  padding: 12px;
-  border-radius: 10px;
-}
-
-.rival-label {
-  font-size: 12px;
-  color: #cbd5e0;
   margin-bottom: 8px;
-  font-weight: 500;
 }
 
+.cyber-tag {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-radius: 4px;
+}
+.rival-tag { background: rgba(244, 63, 94, 0.15); color: #f87171; border: 1px solid rgba(244, 63, 94, 0.3); }
+.player-tag { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+.cards-count { font-size: 0.85rem; color: #6b7280; }
+
+/* MANO DEL RIVAL */
 .rival-hand-slots {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .rival-card-back {
   width: 50px;
   height: 70px;
-  background-color: #2c5282;
-  border: 2px solid #4299e1;
+  background: #1f2937;
+  border: 1px solid #f43f5e;
   border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-  background: repeating-linear-gradient(45deg, #2b6cb0, #2b6cb0 5px, #2c5282 5px, #2c5282 10px);
-}
-
-/* --- CAMPO DE BATALLA CENTRAL --- */
-.battlefield {
-  height: 140px;
-  border: 2px dashed #4a5568;
-  border-radius: 12px;
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  background: radial-gradient(circle, #2d3748 0%, #1a202c 100%);
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(0px);
+  transition: transform 0.2s;
+  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.1);
 }
 
-.battlefield-tag {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
-  font-size: 10px;
-  color: #4a5568;
-  font-weight: bold;
-  letter-spacing: 2px;
+.rival-card-back:hover {
+  transform: translateY(-5px);
 }
+
+/* CAMPO DE BATALLA Central */
+.battlefield {
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.battlefield-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.combat-slot-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.slot-indicator {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+.rival-color { color: #f87171; }
+.player-color { color: #60a5fa; }
 
 .combat-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.slot-tag-rival { font-size: 10px; color: #fc8181; }
-.slot-tag-player { font-size: 10px; color: #63b3ed; }
-
-.card-placeholder {
-  width: 60px;
-  height: 85px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  transition: all 0.2s;
-}
-
-.card-placeholder.rival-side {
-  border: 2px solid #f56565;
-  background: rgba(245, 101, 101, 0.05);
-  color: #f56565;
-}
-
-.card-placeholder.player-side {
-  border: 2px solid #4299e1;
-  background: rgba(66, 153, 225, 0.05);
-  color: #4299e1;
-}
-
-.card-placeholder.player-side.active {
-  background: rgba(66, 153, 225, 0.2);
-  font-weight: bold;
-}
-
-/* --- TU MANO INTERACTIVA (EL HOVER BONITO) --- */
-.player-hand-container {
-  background: rgba(255,255,255,0.02);
-  padding: 15px;
+  width: 100%;
+  max-width: 150px;
+  height: 210px;
   border-radius: 12px;
-  border: 1px solid #2d3748;
-}
-
-.hand-label {
-  margin: 0 0 10px 0;
-  color: #cbd5e0;
-  font-size: 13px;
-  font-weight: normal;
-}
-
-.player-cards-grid {
+  background: rgba(31, 41, 55, 0.4);
+  border: 2px dashed rgba(255, 255, 255, 0.1);
   display: flex;
-  gap: 10px;
   justify-content: center;
-  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* El botón/carta base */
+.combat-slot.active {
+  border-style: solid;
+  background: #111827;
+}
+
+.combat-slot.rival-side.active { border-color: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.2); }
+.combat-slot.player-side.active { border-color: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
+
+/* ESTILOS DE LAS CARTAS EN JUEGO */
+.card-placed {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.rival-card-style { background: linear-gradient(135deg, #1f2937 0%, #4c1d95 100%); }
+.player-card-style { background: linear-gradient(135deg, #1f2937 0%, #064e3b 100%); }
+
+.card-header-id { font-size: 0.65rem; color: #9ca3af; font-family: monospace; align-self: flex-start; }
+.card-body-icon { font-size: 2rem; margin: 10px 0; }
+.card-power { font-size: 1.5rem; font-weight: bold; }
+
+.waiting-placeholder {
+  font-size: 0.75rem;
+  color: #4b5563;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* TU MANO OPERATIVA */
+.player-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
+}
+
 .card-button {
-  padding: 12px 8px;
-  width: 85px;
-  height: 120px;
-  background-color: #2d3748;
-  color: #fff;
-  border: 2px solid #4a5568;
+  background: #1f2937;
+  border: 1px solid #3b82f6;
   border-radius: 8px;
+  padding: 12px 8px;
+  color: white;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease, box-shadow 0.3s ease;
+  gap: 6px;
   position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* 🌟 ¡EFECTO HOVER GAMING! Elevación, cambio de borde e iluminación */
-.card-button:not(:disabled):hover {
-  background-color: #3a4a63;
-  border-color: #63b3ed;
-  transform: translateY(-10px); /* Se levanta un poco al pasar el ratón */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+.card-button:hover:not(:disabled) {
+  transform: translateY(-6px);
+  border-color: #60a5fa;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  background: #2563eb;
 }
 
-.card-button.oculta {
-  display: none !important;
+.card-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: #374151;
 }
 
-.card-valour {
-  font-size: 16px;
-  font-weight: bold;
-  color: #edf2f7;
+.card-button.card-faded {
+  visibility: hidden; /* O puedes usar opacity: 0 si prefieres mantener el hueco */
 }
 
-.card-id {
-  font-size: 9px;
-  color: #a0aec0;
-}
+.card-btn-id { font-size: 0.65rem; color: #9ca3af; font-family: monospace; }
+.card-btn-icon { font-size: 1.2rem; }
+.card-btn-valour { font-size: 0.8rem; color: #93c5fd; }
+.card-btn-valour strong { font-size: 1.1rem; color: white; display: block; }
 
-/* --- ALERTAS --- */
-.wait-alert {
-  margin-top: 15px;
-  padding: 10px;
-  background: #22543d;
-  color: #c6f6d5;
-  border-radius: 8px;
-  font-size: 12px;
-  text-align: center;
-  border: 1px solid #2f855a;
+/* ANIMACIONES ANIMADAS */
+@keyframes pulseAnimation {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
 }
+.pulse { animation: pulseAnimation 2s infinite ease-in-out; }
 
-.match-state-banner {
-  background: rgba(99, 179, 237, 0.1);
-  border: 1px solid #2b6cb0;
-  border-radius: 8px;
-  padding: 10px 15px;
-  margin-bottom: 20px;
-  text-align: center;
-  box-shadow: inset 0 0 10px rgba(99, 179, 237, 0.05);
-}
+/* ==========================================================
+   DISEÑO EXCLUSIVO RESPONSIVO (MÓVILES Y TABLETS)
+========================================================== */
+@media (max-width: 600px) {
+  .arena-wrapper {
+    padding: 10px;
+  }
+  
+  .arena-container {
+    gap: 16px;
+  }
 
-.match-state-text {
-  font-size: 14px;
-  font-weight: 600;
-  color: #90cdf4;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  /* Reducimos tamaño del Marcador */
+  .scoreboard {
+    padding: 8px 14px;
+  }
+  .pts-counter-p1, .pts-counter-p2 {
+    font-size: 1.4rem;
+  }
+  .player-label {
+    font-size: 0.75rem;
+  }
+
+  /* Cartas del rival más pequeñas en pantallas chicas */
+  .rival-card-back {
+    width: 35px;
+    height: 50px;
+  }
+  .rival-card-back .cyber-icon {
+    font-size: 10px;
+  }
+
+  /* El campo de batalla se mantiene horizontal pero con ranuras reducidas */
+  .battlefield {
+    padding: 12px;
+  }
+  .combat-slot {
+    height: 160px;
+  }
+  .card-body-icon {
+    font-size: 1.4rem;
+  }
+  .card-power {
+    font-size: 1.2rem;
+  }
+
+  /* Reajuste de la mano del jugador para que quepan en Grid en móvil */
+  .player-cards-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas en móvil */
+    gap: 8px;
+  }
+  
+  .card-button {
+    padding: 8px 4px;
+  }
+  .card-btn-valour strong {
+    font-size: 0.95rem;
+  }
 }

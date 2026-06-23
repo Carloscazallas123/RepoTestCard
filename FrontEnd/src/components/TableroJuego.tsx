@@ -150,118 +150,134 @@ export const TableroJuego = ()=> {
       
     }
 
-
-
   return (
-  <div className="arena-wrapper">
-    <div className="arena-container">
+    <div className="arena-wrapper">
+      <div className="arena-container">
 
-      {/* ================= MARCADOR DE PUNTOS DINÁMICO ================= */}
-      <div className="scoreboard">
-        <div className="score-player">
-          <div className="dot-status dot-player1"></div>
-          <div>
-            <span className="player-label">{Partida?.Player1.Username ?? "Tú"}</span>
-            <div className="pts-counter-p1">{Partida?.Points1 ?? 0} <span className="pts-text">PTS</span></div>
-          </div>
-        </div>
-        <div className="score-player rival">
-          <div className="dot-status dot-player2"></div>
-          <div>
-            <span className="player-label">{Partida?.Player2.Username ?? "Rival"}</span>
-            <div className="pts-counter-p2">{Partida?.Points2 ?? 0} <span className="pts-text">PTS</span></div>
-          </div>
-        </div>
-      </div>
-
-      {/* ================= 1. ZONA SUPERIOR: RIVAL (SIEMPRE EL OTRO) ================= */}
-      <div className="rival-zone">
-        <div className="rival-label">
-          Mano de {Partida?.Player2.Username ?? "Rival"} ({Partida?.Player2?.DeskUser?.Cards?.length ?? 0} cartas)
-        </div>
-        <div className="rival-hand-slots">
-          {Partida?.Player2?.DeskUser?.Cards?.map((carta:Card) => (
-            <div key={`rival-${carta.idCard}`} className="rival-card-back">
-              <span style={{ fontSize: '14px' }}>❓</span>
+        {/* ================= MARCADOR DE PUNTOS GAMER ================= */}
+        <div className="scoreboard">
+          <div className="score-player player1-box">
+            <div className="player-avatar-wrapper">
+              <div className="dot-status dot-player1"></div>
+              <span className="player-label">{Partida?.Player1?.Username ?? "TÚ"}</span>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ================= 2. ZONA CENTRAL: CAMPO DE BATALLA ================= */}
-      <div className="battlefield">
-        <span className="battlefield-tag">CAMPO EN JUEGO</span>
-
-          {/* Espacio Carta Rival Jugada */}
-    <div className="combat-slot">
-          <span className="slot-tag-rival">RIVAL</span>
-          {/* Agregamos dinámicamente la clase 'active' si el rival ya seleccionó carta */}
-      <div className={`card-placeholder rival-side ${cartaRivalSeleccionada ? 'active' : ''}`}>
-            {cartaRivalSeleccionada ? (
-        <div className="card-placed-animation rival-card">
-              <div style={{ fontSize: '18px' }}>🃏</div>
-
-              {/* Mostramos el poder de la carta del rival en un color rojo/naranja competitivo */}
-              <div style={{ fontWeight: 'bold', color: '#ef4444' }}>
-                ⚔️ {cartaRivalSeleccionada.Valour}
-              </div>
-
-              <div style={{ fontSize: '10px', opacity: 0.5 }}>
-            I   D: {cartaRivalSeleccionada.idCard}
-              </div>
-        </div>
-      ) : (
-        "ESPERANDO RIVAL..."
-      )}
-    </div>
-  </div>
-
-        {/* Espacio Tu Carta Jugada */}
-  <div className="combat-slot">
-    <span className="slot-tag-player">TÚ</span>
-    <div className={`card-placeholder player-side ${cartaSeleccionada ? 'active' : ''}`}>
-      {cartaSeleccionada ? (
-        <div className="card-placed-animation">
-          <div style={{ fontSize: '18px' }}>🃏</div>
-          <div style={{ fontWeight: 'bold', color: '#4ade80' }}>
-            ⚔️ {cartaSeleccionada.Valour}
+            <div className="pts-counter-p1">
+              {Partida?.Points1 ?? 0} <span className="pts-text">PTS</span>
+            </div>
           </div>
-          <div style={{ fontSize: '10px', opacity: 0.5 }}>
-            ID: {cartaSeleccionada.idCard}
+
+          <div className="vs-badge">VS</div>
+
+          <div className="score-player player2-box rival">
+            <div className="player-avatar-wrapper">
+              <span className="player-label">{Partida?.Player2?.Username ?? "RIVAL"}</span>
+              <div className="dot-status dot-player2"></div>
+            </div>
+            <div className="pts-counter-p2">
+              {Partida?.Points2 ?? 0} <span className="pts-text">PTS</span>
+            </div>
           </div>
         </div>
-      ) : (
-        "SELECCIONA UNA CARTA"
-      )}
-    </div>
-  </div>
-</div>
 
-      {/* ================= 3. ZONA INFERIOR: TUS CARTAS EN MANO (TUS DATOS REALES) ================= */}
-      <div className="player-hand-container">
-        <h4 className="hand-label">Tu Mano Operativa:</h4>
-        <div className="player-cards-grid">
-          {Partida?.Player1?.DeskUser?.Cards?.map((carta: Card) => {
-          // Comprobamos si esta carta específica es la que el jugador acaba de clickar
-          // (Asegúrate de si usas carta.IdCard o carta.Card para identificarla)
-          const deshabilitado = cartaSeleccionada?.idCard === carta.idCard;
-          const esEstaCarta = cartaSeleccionada !!= null;
-            return (
-              <button
-                key={carta.idCard}
-                disabled={esEstaCarta}
-                onClick={() => { PrepararJugada(carta); }}
-                // Si es la carta jugada, le metemos la clase 'jugada' para activar el CSS
-                className={`card-button ${deshabilitado ? 'oculta' : ''}`} > 
-                <div style={{ fontSize: '16px' }}>🃏</div>
-                <div className="card-valour">⚔️ {carta.Valour}</div>
-                <div className="card-id">ID: {carta.idCard}</div>
-              </button>
-            );
-          })}
+        {/* ================= ZONA SUPERIOR: MANO DEL RIVAL ================= */}
+        <div className="rival-zone">
+          <div className="zone-header">
+            <span className="cyber-tag rival-tag">RIVAL DISPOSITIVOS</span>
+            <span className="cards-count">
+              Mano: <strong>{Partida?.Player2?.DeskUser?.Cards?.length ?? 0}</strong> u.
+            </span>
+          </div>
+          <div className="rival-hand-slots">
+            {Partida?.Player2?.DeskUser?.Cards?.map((carta) => (
+              <div key={`rival-${carta.idCard}`} className="rival-card-back">
+                <div className="card-pattern"></div>
+                <span className="cyber-icon">⚡</span>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* ================= ZONA CENTRAL: CAMPO DE BATALLA ================= */}
+        <div className="battlefield">
+          <div className="battlefield-grid">
+            
+            {/* Slot Carta Rival */}
+            <div className="combat-slot-wrapper">
+              <span className="slot-indicator rival-color">RIVAL SLOT</span>
+              <div className={`combat-slot rival-side ${cartaRivalSeleccionada ? 'active' : ''}`}>
+                {cartaRivalSeleccionada ? (
+                  <div className="card-placed rival-card-style">
+                    <div className="card-glow"></div>
+                    <div className="card-header-id">#ID: {cartaRivalSeleccionada.idCard}</div>
+                    <div className="card-body-icon">🛸</div>
+                    <div className="card-power">
+                      <span className="sword-icon">⚔️</span> {cartaRivalSeleccionada.Valour}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="waiting-placeholder pulse">
+                    <span className="loading-dots">ESPERANDO HOSTIL...</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Slot Tu Carta */}
+            <div className="combat-slot-wrapper">
+              <span className="slot-indicator player-color">YOUR SLOT</span>
+              <div className={`combat-slot player-side ${cartaSeleccionada ? 'active' : ''}`}>
+                {cartaSeleccionada ? (
+                  <div className="card-placed player-card-style">
+                    <div className="card-glow"></div>
+                    <div className="card-header-id">#ID: {cartaSeleccionada.idCard}</div>
+                    <div className="card-body-icon">🛡️</div>
+                    <div className="card-power">
+                      <span className="sword-icon">⚔️</span> {cartaSeleccionada.Valour}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="waiting-placeholder border-flash">
+                    <span>SELECCIONA TÁCTICA</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ================= ZONA INFERIOR: TU MANO OPERATIVA ================= */}
+        <div className="player-hand-container">
+          <div className="zone-header">
+            <span className="cyber-tag player-tag">MANO OPERATIVA</span>
+            <span className="cards-count">Habilidades Listas</span>
+          </div>
+          
+          <div className="player-cards-grid">
+            {Partida?.Player1?.DeskUser?.Cards?.map((carta) => {
+              const yaJugada = cartaSeleccionada?.idCard === carta.idCard;
+              const manoBloqueada = cartaSeleccionada != null;
+              
+              return (
+                <button
+                  key={carta.idCard}
+                  disabled={manoBloqueada}
+                  onClick={() => PrepararJugada(carta)}
+                  className={`card-button ${yaJugada ? 'card-faded' : ''}`}
+                >
+                  <div className="btn-glitch-effect"></div>
+                  <div className="card-btn-id">ID: {carta.idCard}</div>
+                  <div className="card-btn-icon">👾</div>
+                  <div className="card-btn-valour">
+                    <span>PWR</span> <strong>{carta.Valour}</strong>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
-);
+  );
 };
