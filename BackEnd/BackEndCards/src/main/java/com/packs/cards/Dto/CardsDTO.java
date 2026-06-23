@@ -2,22 +2,22 @@ package com.packs.cards.Dto;
 
 public class CardsDTO {
 	
-	private int IdCard;
+	private int idCard;
 	private int Valour;
 	
 	public CardsDTO() { }
 	
 	public CardsDTO(int idCard, int valour) {
-		this.IdCard = idCard;
+		this.idCard = idCard;
 		this.Valour = valour;
 	}
 	
 	public int getIdCard() {
-		return IdCard;
+		return idCard;
 	}
 
 	public void setIdCard(int idCard) {
-		IdCard = idCard;
+		this.idCard = idCard;
 	}
 
 	public int getValour() {
@@ -25,7 +25,7 @@ public class CardsDTO {
 	}
 
 	public void setValour(int valour) {
-		Valour = valour;
+		this.Valour = valour;
 	}
 
 	
