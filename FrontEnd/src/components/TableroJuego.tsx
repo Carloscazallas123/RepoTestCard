@@ -63,9 +63,9 @@ export const TableroJuego = ()=> {
       if(token){
         const Jugada: GameDTO = JSON.parse(token);
         if(Partida?.IdMatch === Jugada.idMatch){
+          setCartaRivalSeleccionada(Jugada.card2);
           if (Partida?.Player2.Username === miJugador){
           setCartaRivalSeleccionada(Jugada.card1); }
-          setCartaRivalSeleccionada(Jugada.card2);
           console.log('Realizando Jugada...');
            if (EnBusqueda.current) clearInterval(EnBusqueda.current);
           RealizarJugada(Jugada);
