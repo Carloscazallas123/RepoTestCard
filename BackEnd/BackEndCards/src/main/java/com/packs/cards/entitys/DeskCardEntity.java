@@ -1,12 +1,10 @@
 package com.packs.cards.entitys;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor 
-@AllArgsConstructor
 @Table(name = "tabledesk_card")
 public class DeskCardEntity {
 
