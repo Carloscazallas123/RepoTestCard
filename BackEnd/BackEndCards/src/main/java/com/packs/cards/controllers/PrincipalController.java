@@ -93,8 +93,18 @@ public class PrincipalController {
 		GameEntity EntityGame= new GameEntity();
 		EntityGame.setCard1(CardsRepo.ObtenerporId(carta1.getIdCard()));
 		EntityGame.setCard2(CardsRepo.ObtenerporId(carta2.getIdCard()));
-		EntityGame.setGameMatch(MatchRepo.findPartidaByCartaId(carta.getIdCard()));
-		System.out.println(EntityGame.getIdGame());
+		List<MatchEntity>ListaPartidos=MatchRepo.ObtenerTodos();
+		
+		
+		for(int i=0;i<ListaPartidos.size();i++) {
+		List<DeskCardEntity> Mazo = ListaPartidos.get(i).getPlayer1().getDeskUser().getDeskCards();
+			for(int e=0;e<Mazo.size();e++) {
+				if(Mazo.get(e).getCard().getIdCard() == carta.getIdCard()) {
+					EntityGame.setGameMatch(ListaPartidos.get(i));
+				}
+			}
+		}
+		
 		RepoGame.save(EntityGame);
 		GameDTO jugada=new GameDTO(EntityGame.getGameMatch().getIdMatch(), carta1,carta2); 
 		ColaCartas.clear(); return jugada;
