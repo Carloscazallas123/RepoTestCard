@@ -26,6 +26,6 @@ export interface MatchDTO {
 
 export interface GameDTO {
     IdMatch?: number | null;
-    card1?: Card | null;
-    card2?: Card | null;
+    Card1?: Card | null;
+    Card2?: Card | null;
 }

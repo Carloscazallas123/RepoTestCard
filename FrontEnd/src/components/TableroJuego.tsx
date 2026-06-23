@@ -64,9 +64,9 @@ export const TableroJuego = ()=> {
         const Jugada: GameDTO = JSON.parse(token);
         if(Partida?.IdMatch == Jugada.IdMatch){
           console.log('33333333');
-          setCartaRivalSeleccionada(Jugada.card2);
+          setCartaRivalSeleccionada(Jugada.Card2);
           if (Partida?.Player2.Username === miJugador){
-          setCartaRivalSeleccionada(Jugada.card1); }
+          setCartaRivalSeleccionada(Jugada.Card1); }
           console.log('Realizando Jugada...');
            if (EnBusqueda.current) clearInterval(EnBusqueda.current);
           RealizarJugada(Jugada);
@@ -76,8 +76,8 @@ export const TableroJuego = ()=> {
     }
 
     const RealizarJugada= (Jugada:GameDTO)=> {
-    const Carta1: Card | null | undefined = Jugada.card1;
-    const Carta2: Card | null | undefined = Jugada.card2;
+    const Carta1: Card | null | undefined = Jugada.Card1;
+    const Carta2: Card | null | undefined = Jugada.Card2;
     if (!Carta1 || !Carta2) return;
     let P1 = 0; let P2 = 0;
 
