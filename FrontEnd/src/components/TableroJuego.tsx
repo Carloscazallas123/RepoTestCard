@@ -65,8 +65,6 @@ export const TableroJuego = ()=> {
         if(Partida?.IdMatch == Jugada.IdMatch){
           console.log('33333333');
           setCartaRivalSeleccionada(Jugada.Card2);
-          if (Partida?.Player2.Username === miJugador){
-          setCartaRivalSeleccionada(Jugada.Card1); }
           console.log('Realizando Jugada...');
            if (EnBusqueda.current) clearInterval(EnBusqueda.current);
           RealizarJugada(Jugada);
@@ -138,29 +136,6 @@ export const TableroJuego = ()=> {
           }
         }
       });
-
-      //Perspectiva 2
-      if (Partida?.Player2.Username === miJugador){
-        SetPartida({
-          ...Partida,
-          Points1: P2,
-          Points2: P1,
-          Player1: {
-            ...Partida.Player2,
-            DeskUser: {
-              ...desk2,
-              Cards: mazoActualizadoP2
-            }
-          },
-          Player2: {
-            ...Partida.Player1,
-            DeskUser: {
-              ...desk1,
-              Cards: mazoActualizadoP1
-            }
-          }
-        });
-      }
       
     }
 
