@@ -53,7 +53,7 @@ export const TableroJuego = ()=> {
     const PrepararJugada = (carta:Card) =>{
     SetCartaSeleccionada(carta);
     const CartaEnviada: Card = {
-      IdCard: carta.IdCard,
+      idCard: carta.idCard,
       Valour: carta.Valour }
 
     JuegoService.escucharJugada(CartaEnviada);
@@ -99,8 +99,8 @@ export const TableroJuego = ()=> {
       const desk2 = Partida.Player2.DeskUser;
       if (!desk1 || !desk2) return;
 
-      const mazoActualizadoP1 = desk1.Cards?.filter(carta => carta.IdCard !== Carta1.IdCard);
-      const mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.IdCard !== Carta2.IdCard);
+      const mazoActualizadoP1 = desk1.Cards?.filter(carta => carta.idCard !== Carta1.idCard);
+      const mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.idCard !== Carta2.idCard);
 
       SetPartida({
         ...Partida,
@@ -154,7 +154,7 @@ export const TableroJuego = ()=> {
         </div>
         <div className="rival-hand-slots">
           {Partida?.Player2?.DeskUser?.Cards?.map((carta:Card) => (
-            <div key={`rival-${carta.IdCard}`} className="rival-card-back">
+            <div key={`rival-${carta.idCard}`} className="rival-card-back">
               <span style={{ fontSize: '14px' }}>❓</span>
             </div>
           ))}
@@ -180,7 +180,7 @@ export const TableroJuego = ()=> {
               </div>
 
               <div style={{ fontSize: '10px', opacity: 0.5 }}>
-            I   D: {cartaRivalSeleccionada.IdCard}
+            I   D: {cartaRivalSeleccionada.idCard}
               </div>
         </div>
       ) : (
@@ -200,7 +200,7 @@ export const TableroJuego = ()=> {
             ⚔️ {cartaSeleccionada.Valour}
           </div>
           <div style={{ fontSize: '10px', opacity: 0.5 }}>
-            ID: {cartaSeleccionada.IdCard}
+            ID: {cartaSeleccionada.idCard}
           </div>
         </div>
       ) : (
@@ -217,18 +217,18 @@ export const TableroJuego = ()=> {
           {Partida?.Player1?.DeskUser?.Cards?.map((carta: Card) => {
           // Comprobamos si esta carta específica es la que el jugador acaba de clickar
           // (Asegúrate de si usas carta.IdCard o carta.Card para identificarla)
-          const deshabilitado = cartaSeleccionada?.IdCard === carta.IdCard;
+          const deshabilitado = cartaSeleccionada?.idCard === carta.idCard;
           const esEstaCarta = cartaSeleccionada !!= null;
             return (
               <button
-                key={carta.IdCard}
+                key={carta.idCard}
                 disabled={esEstaCarta}
                 onClick={() => { PrepararJugada(carta); }}
                 // Si es la carta jugada, le metemos la clase 'jugada' para activar el CSS
                 className={`card-button ${deshabilitado ? 'oculta' : ''}`} > 
                 <div style={{ fontSize: '16px' }}>🃏</div>
                 <div className="card-valour">⚔️ {carta.Valour}</div>
-                <div className="card-id">ID: {carta.IdCard}</div>
+                <div className="card-id">ID: {carta.idCard}</div>
               </button>
             );
           })}
