@@ -63,8 +63,9 @@ export const TableroJuego = ()=> {
       if(token){
         const Jugada: GameDTO = JSON.parse(token);
         if(Partida?.IdMatch == Jugada.IdMatch){
-          console.log('33333333');
           setCartaRivalSeleccionada(Jugada.Card2);
+          if (Partida?.Player2.Username === miJugador) {
+          setCartaRivalSeleccionada(Jugada.Card1); }
           console.log('Realizando Jugada...');
            if (EnBusqueda.current) clearInterval(EnBusqueda.current);
           RealizarJugada(Jugada);
@@ -83,7 +84,6 @@ export const TableroJuego = ()=> {
     if (Carta1.Valour > Carta2.Valour) {
       P1 = (Partida?.Points1 ?? 0) + 50; 
       setTimeout(() => { 
-      alert('Ha ganado el Jugador ' + Partida?.Player1.Username); 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
@@ -91,7 +91,6 @@ export const TableroJuego = ()=> {
     if (Carta1.Valour < Carta2.Valour) {
       P2 = (Partida?.Points2 ?? 0) + 50; 
       setTimeout(() => { 
-      alert('Ha ganado el Jugador ' + Partida?.Player2.Username); 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
@@ -100,7 +99,6 @@ export const TableroJuego = ()=> {
       P1 = (Partida?.Points1 ?? 0) + 10;
       P2 = (Partida?.Points2 ?? 0) + 10; 
       setTimeout(() => { 
-      alert('Empate'); 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000); }
       
@@ -109,12 +107,20 @@ export const TableroJuego = ()=> {
 
     const ActualizarMazo=(Carta1:Card,Carta2:Card,P1: number,P2: number ) =>{
       if (!Partida) return;
-      const desk1 = Partida.Player1.DeskUser;
-      const desk2 = Partida.Player2.DeskUser;
+      let desk1 = Partida.Player1.DeskUser;
+      let desk2 = Partida.Player2.DeskUser;
+      if (Partida?.Player2.Username === miJugador) {
+      desk1 = Partida.Player2.DeskUser;
+      desk2 = Partida.Player1.DeskUser; }
+
       if (!desk1 || !desk2) return;
 
-      const mazoActualizadoP1 = desk1.Cards?.filter(carta => carta.idCard !== Carta1.idCard);
-      const mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.idCard !== Carta2.idCard);
+      let mazoActualizadoP1 = desk1.Cards?.filter(carta => carta.idCard !== Carta1.idCard);
+      let mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.idCard !== Carta2.idCard);
+
+      if (Partida?.Player2.Username === miJugador) {
+      mazoActualizadoP1 = desk1.Cards?.filter(carta => carta.idCard !== Carta2.idCard);
+      mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.idCard !== Carta1.idCard); }
 
       //Perspectiva 1
       SetPartida({
