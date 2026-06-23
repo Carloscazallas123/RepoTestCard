@@ -64,9 +64,9 @@ export const TableroJuego = ()=> {
       if(token){
         const Jugada: GameDTO = JSON.parse(token);
         if(Partida?.IdMatch == Jugada.IdMatch){
-          setCartaRivalSeleccionada(Jugada.Card2);
+          setCartaRivalSeleccionada(Jugada.Card1);
           if (Partida?.Player1.Username === miJugador) {
-          setCartaRivalSeleccionada(Jugada.Card1); }
+          setCartaRivalSeleccionada(Jugada.Card2); }
           console.log('Realizando Jugada...');
            if (EnBusqueda.current) clearInterval(EnBusqueda.current);
           RealizarJugada(Jugada);
@@ -83,18 +83,19 @@ export const TableroJuego = ()=> {
 
     //Caso que Gana el Jugador 1
     if (Carta1.Valour > Carta2.Valour) {
-      P1 = (Partida?.Points1 ?? 0) + 50; 
       if (Partida?.Player1.Username === miJugador){
       P2 = (Partida?.Points1 ?? 0) + 50;  }
+      P1 = (Partida?.Points1 ?? 0) + 50; 
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
     //Caso que Gana el Jugador 2
     if (Carta1.Valour < Carta2.Valour) {
-      P2 = (Partida?.Points2 ?? 0) + 50; 
       if (Partida?.Player1.Username === miJugador){
       P1 = (Partida?.Points1 ?? 0) + 50;  }
+
+      P2 = (Partida?.Points2 ?? 0) + 50; 
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
