@@ -85,7 +85,9 @@ public class PrincipalController {
 		
 		//Comprobamos las cartas
 		ColaCartas.add(carta);
-		if (ColaCartas.size() < 2) { System.out.println("No hay mas cartas..."); return null; }
+		if (ColaCartas.size() < 2) { 
+		System.out.println("No hay mas cartas..."); 
+		return new GameDTO(999,carta,null) ; }
 		
 		//-----En Desarollo
 		
@@ -102,9 +104,9 @@ public class PrincipalController {
 		
 		for(int i=0;i<ListaPartidos.size();i++) {
 		List<DeskCardEntity> Mazo1 = ListaPartidos.get(i).getPlayer1().getDeskUser().getDeskCards();
-		List<DeskCardEntity> Mazo2 = ListaPartidos.get(i).getPlayer2().getDeskUser().getDeskCards();
 			for(int e=0;e<Mazo1.size();e++) {
-				if(Mazo1.get(e).getCard().getIdCard() == carta.getIdCard() || Mazo2.get(e).getCard().getIdCard() ==carta.getIdCard()) {
+				if(Mazo1.get(e).getCard().getIdCard() == carta1.getIdCard() 
+				   || Mazo1.get(e).getCard().getIdCard() == carta2.getIdCard()) {
 					EntityGame.setGameMatch(ListaPartidos.get(i));
 				}
 			}
