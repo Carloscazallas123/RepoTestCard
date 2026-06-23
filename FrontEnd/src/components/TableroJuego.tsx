@@ -65,7 +65,7 @@ export const TableroJuego = ()=> {
         const Jugada: GameDTO = JSON.parse(token);
         if(Partida?.IdMatch == Jugada.IdMatch){
           setCartaRivalSeleccionada(Jugada.Card2);
-          if (Partida?.Player2.Username === miJugador) {
+          if (Partida?.Player1.Username === miJugador) {
           setCartaRivalSeleccionada(Jugada.Card1); }
           console.log('Realizando Jugada...');
            if (EnBusqueda.current) clearInterval(EnBusqueda.current);
@@ -84,7 +84,7 @@ export const TableroJuego = ()=> {
     //Caso que Gana el Jugador 1
     if (Carta1.Valour > Carta2.Valour) {
       P1 = (Partida?.Points1 ?? 0) + 50; 
-      if (Partida?.Player2.Username === miJugador){
+      if (Partida?.Player1.Username === miJugador){
       P2 = (Partida?.Points1 ?? 0) + 50;  }
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
@@ -93,7 +93,7 @@ export const TableroJuego = ()=> {
     //Caso que Gana el Jugador 2
     if (Carta1.Valour < Carta2.Valour) {
       P2 = (Partida?.Points2 ?? 0) + 50; 
-      if (Partida?.Player2.Username === miJugador){
+      if (Partida?.Player1.Username === miJugador){
       P1 = (Partida?.Points1 ?? 0) + 50;  }
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
@@ -121,10 +121,10 @@ export const TableroJuego = ()=> {
 
       if (!desk1 || !desk2) return;
 
-      let mazoActualizadoP1 = desk1.Cards?.filter(carta => carta.idCard !== Carta1.idCard || 
+      let mazoActualizadoP1 = desk1.Cards?.filter(carta => carta.idCard !== Carta1.idCard &&
                                                   carta.idCard !== Carta2.idCard );
 
-      let mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.idCard !== Carta1.idCard ||
+      let mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.idCard !== Carta1.idCard &&
                                                   carta.idCard !== Carta2.idCard );
 
       //Perspectiva 1
