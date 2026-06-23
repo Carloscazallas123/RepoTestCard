@@ -24,7 +24,7 @@ const JuegoService = {
   enviarJugadaRealizada(Carta: Card): void {
     if (stompClient && stompClient.connected) {
     stompClient.publish({
-    destination: '/app/JugadaRealizada',
+    destination: '/app/CrearJugada',
     body: JSON.stringify(Carta) });
 
     console.log('Carta añadida a la cola');
