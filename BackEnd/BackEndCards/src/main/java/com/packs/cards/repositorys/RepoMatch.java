@@ -18,5 +18,5 @@ public interface RepoMatch extends JpaRepository<MatchEntity, Integer> {
 	           "LEFT JOIN m.Player1.DeskUser.deskCards c1 " +
 	           "LEFT JOIN m.Player2.DeskUser.deskCards c2 " +
 	           "WHERE c1.IdCard = :IdCard OR c2.IdCard = :IdCard")
-	MatchEntity findPartidaByCartaId(@Param("idCard") int idCard);
+	MatchEntity findPartidaByCartaId(@Param("IdCard") int IdCard);
 }
