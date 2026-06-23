@@ -84,8 +84,9 @@ export const TableroJuego = ()=> {
     //Caso que Gana el Jugador 1
     if (Carta1.Valour > Carta2.Valour) {
       if (Partida?.Player1.Username === miJugador){
-      SetPuntajeJ2((PuntajeJ2 ?? 0) + 150);  
-      } else { SetPuntajeJ1((PuntajeJ1 ?? 0) + 150);   }
+      SetPuntajeJ1((PuntajeJ1 ?? 0) + 150);  
+      } else if (Partida?.Player1.Username !== miJugador) 
+      { SetPuntajeJ2((PuntajeJ2 ?? 0) + 150); }
 
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
@@ -94,8 +95,9 @@ export const TableroJuego = ()=> {
     //Caso que Gana el Jugador 2
     if (Carta1.Valour < Carta2.Valour) {
       if (Partida?.Player1.Username === miJugador){
-      SetPuntajeJ1((PuntajeJ1 ?? 0) + 150); 
-      } else { SetPuntajeJ2((PuntajeJ2 ?? 0) + 150);   }
+      SetPuntajeJ2((PuntajeJ2 ?? 0) + 150); 
+      } else if (Partida?.Player1.Username !== miJugador) 
+      { SetPuntajeJ1((PuntajeJ1 ?? 0) + 150); }
 
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
