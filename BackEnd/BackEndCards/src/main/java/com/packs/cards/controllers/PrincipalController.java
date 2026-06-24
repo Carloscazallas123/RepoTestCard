@@ -182,6 +182,11 @@ public class PrincipalController {
 
 	    if (idUser1 != 0) UserRepo.deleteById(idUser1);
 	    if (idUser2 != 0) UserRepo.deleteById(idUser2);
+	    
+	    // ==========================================
+	    // NUEVO PASO: Borrar el historial de jugadas/turnos
+	    // ==========================================
+	    RepoGame.borrarPorIdMatch(PartidoEntidad.getIdMatch());
 
 	    // ==========================================
 	    // PASO 5: Borrar la partida definitiva
