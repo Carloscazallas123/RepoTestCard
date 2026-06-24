@@ -94,7 +94,7 @@ export const TableroJuego = ()=> {
 
     //Caso que Gana el Jugador 
     if (Carta1.Valour > Carta2.Valour) {
-      P1 = P1 + Math.floor(Math.random()*150);
+      P1 = P1 + 40;
       setTimeout(() => { 
       alert('Ronda Ganada');
       setCartaRivalSeleccionada(null); 
@@ -102,7 +102,7 @@ export const TableroJuego = ()=> {
 
     //Caso que Gana el Oponente
     if (Carta1.Valour < Carta2.Valour) {
-      P2 = P2 + Math.floor(Math.random()*150);
+      P2 = P2 + 40;
       setTimeout(() => { 
       alert('Ronda Perdida');
       setCartaRivalSeleccionada(null); 
@@ -110,8 +110,8 @@ export const TableroJuego = ()=> {
 
     //Caso de Empate
     if (Carta1.Valour === Carta2.Valour) {
-       P1 = P1 + Math.floor(Math.random()*150); 
-       P2 = P2 + Math.floor(Math.random()*150);
+       P1 = P1 + 20; 
+       P2 = P2 + 20;
 
       setTimeout(() => { 
       alert('Ronda Empatada');
