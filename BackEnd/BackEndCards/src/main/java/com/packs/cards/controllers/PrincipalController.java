@@ -124,17 +124,21 @@ public class PrincipalController {
 	//Borrando La Partida
 	MatchRepo.deleteById(Partida.getIdMatch());
 	System.out.println(Partida.getIdMatch() + " Eliminada");
+	//Borrando los Usuarios
+	UserEntity P1 = UserRepo.ObtenerporId(Partida.getPlayer1().getIduser());
+	UserEntity P2 = UserRepo.ObtenerporId(Partida.getPlayer1().getIduser());
+	P1.setDeskUser(null); P2.setDeskUser(null); UserRepo.save(P1); UserRepo.save(P2);
+	UserRepo.deleteById(Partida.getPlayer1().getIduser());
+	UserRepo.deleteById(Partida.getPlayer2().getIduser());
+	System.out.println(Partida.getPlayer1().getUsername() + " Eliminado");
+	System.out.println(Partida.getPlayer2().getUsername() + "Eliminado");
+	
+	
 	//Borrando los Mazos
 	DeskRepo.deleteById(Partida.getPlayer1().getDeskUser().getIdDesk());
 	DeskRepo.deleteById(Partida.getPlayer2().getDeskUser().getIdDesk());
 	System.out.println(Partida.getPlayer1().getDeskUser().getNameDesk() + " Eliminado");
 	System.out.println(Partida.getPlayer2().getDeskUser().getNameDesk() + " Eliminado");
-	
-	//Borrando los Usuarios
-	UserRepo.deleteById(Partida.getPlayer1().getIduser());
-	UserRepo.deleteById(Partida.getPlayer2().getIduser());
-	System.out.println(Partida.getPlayer1().getUsername() + " Eliminado");
-	System.out.println(Partida.getPlayer2().getUsername() + "Eliminado");
 	
 	//Borrando las Cartas de Ambos Jugadores
 	for(int i=0;i<Partida.getPlayer1().getDeskUser().getCards().size()
