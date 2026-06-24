@@ -44,79 +44,71 @@ export const TableroJuego = ()=> {
     }
 
 
-  //Varaibles
+  //los Hooks
   const EnBusqueda = useRef<ReturnType<typeof setInterval> | null>(null);
   const [cartaRivalSeleccionada,setCartaRivalSeleccionada] = useState<Card | null | undefined >(null);
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null | undefined >(null);
-  const [PuntajeJ1 ,SetPuntajeJ1] = useState<number | null | undefined >(Partida?.Points1);
-  const [PuntajeJ2 ,SetPuntajeJ2] = useState<number | null | undefined >(Partida?.Points1);
+
     //Metodo para preparar la Jugada
     const PrepararJugada = (carta:Card) =>{
     SetCartaSeleccionada(carta);
-    const CartaEnviada: Card = {
-      idCard: carta.idCard,
-      Valour: carta.Valour }
 
-    JuegoService.escucharJugada(CartaEnviada);
+    JuegoService.escucharJugada(carta);
 
       //Esperamos hasta que tengamos dos cartas
       EnBusqueda.current = setInterval(() => {
       const token=localStorage.getItem('Jugada');
       if(token){
         const Jugada: GameDTO = JSON.parse(token);
-        if(Partida?.IdMatch == Jugada.IdMatch){
-          if (Partida?.Player1.Username === miJugador) {
-          setCartaRivalSeleccionada(Jugada.Card1); 
-        } else {setCartaRivalSeleccionada(Jugada.Card2);}
+        if(Partida?.IdMatch == Jugada.IdMatch) {
+
+            if(carta.idCard === Jugada.Card1?.idCard){
+              setCartaRivalSeleccionada(Jugada.Card2); }
+            if(carta.idCard === Jugada.Card2?.idCard){
+              setCartaRivalSeleccionada(Jugada.Card1); }
+
           console.log('Realizando Jugada...');
-           if (EnBusqueda.current) clearInterval(EnBusqueda.current);
-          RealizarJugada(Jugada);
+          if (EnBusqueda.current) clearInterval(EnBusqueda.current);
+          RealizarJugada();
+
           }
         }
       }, 1000);
     }
 
-    const RealizarJugada= (Jugada:GameDTO)=> {
-    const Carta1: Card | null | undefined = Jugada.Card1;
-    const Carta2: Card | null | undefined = Jugada.Card2;
+    const RealizarJugada= ()=> {
+    const Carta1: Card | null | undefined = cartaSeleccionada;
+    const Carta2: Card | null | undefined = cartaRivalSeleccionada;
+    let P1= Partida?.Points1 ?? 0 ; let P2=Partida?.Points2 ?? 0;
     if (!Carta1 || !Carta2) return;
 
-    //Caso que Gana el Jugador 1
+    //Caso que Gana el Jugador 
     if (Carta1.Valour > Carta2.Valour) {
-      if (Partida?.Player1.Username === miJugador){
-      SetPuntajeJ1((PuntajeJ1 ?? 0) + 150);  
-      } else if (Partida?.Player1.Username !== miJugador) 
-      { SetPuntajeJ2((PuntajeJ2 ?? 0) + 150); }
-
+      P1 = P1 + 150;
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
-    //Caso que Gana el Jugador 2
+    //Caso que Gana el Oponente
     if (Carta1.Valour < Carta2.Valour) {
-      if (Partida?.Player1.Username === miJugador){
-      SetPuntajeJ2((PuntajeJ2 ?? 0) + 150); 
-      } else if (Partida?.Player1.Username !== miJugador) 
-      { SetPuntajeJ1((PuntajeJ1 ?? 0) + 150); }
-
+      P2 = P2 + 150;
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
     //Caso de Empate
     if (Carta1.Valour === Carta2.Valour) {
-      SetPuntajeJ1((PuntajeJ1 ?? 0) + 150);  
-      SetPuntajeJ2((PuntajeJ2 ?? 0) + 150);  
+       P1 = P1 + 150; P2 = P2 + 150;
 
       setTimeout(() => { 
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000); }
       
       localStorage.removeItem('Jugada');
-      ActualizarMazo(Carta1, Carta2)
+      ActualizarMazo(Carta1, Carta2,P1,P2)
   }
 
-    const ActualizarMazo=(Carta1:Card,Carta2:Card) =>{
+    const ActualizarMazo=(Carta1:Card,Carta2:Card,P1:number,P2:number) =>{
       if (!Partida) return;
       let desk1 = Partida.Player1.DeskUser;
       let desk2 = Partida.Player2.DeskUser;
@@ -135,8 +127,8 @@ export const TableroJuego = ()=> {
       //Perspectiva 1
       SetPartida({
         ...Partida,
-        Points1: PuntajeJ1,
-        Points2: PuntajeJ2,
+        Points1: P1,
+        Points2: P2,
         Player1: {
           ...Partida.Player1,
           DeskUser: {
@@ -167,7 +159,7 @@ export const TableroJuego = ()=> {
               <span className="player-label">{Partida?.Player1?.Username ?? "TÚ"}</span>
             </div>
             <div className="pts-counter-p1">
-              {PuntajeJ1} <span className="pts-text">PTS</span>
+              {Partida?.Points1} <span className="pts-text">PTS</span>
             </div>
           </div>
 
@@ -179,7 +171,7 @@ export const TableroJuego = ()=> {
               <div className="dot-status dot-player2"></div>
             </div>
             <div className="pts-counter-p2">
-              {PuntajeJ2} <span className="pts-text">PTS</span>
+              {Partida?.Points2} <span className="pts-text">PTS</span>
             </div>
           </div>
         </div>
