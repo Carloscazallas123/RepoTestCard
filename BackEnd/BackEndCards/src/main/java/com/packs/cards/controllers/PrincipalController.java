@@ -122,114 +122,125 @@ public class PrincipalController {
 	@SendTo("/topic/Terminar")
 	@Transactional
 	public synchronized MatchDTO FinishMatch(MatchDTO Partida) {
-		System.out.println(
-				"\n=== [BORRADO-LOG] Iniciando proceso FinishMatch para ID Match: " + Partida.getIdMatch() + " ===");
+		System.out.println("\n=== [BORRADO-LOG] Iniciando proceso FinishMatch e incluyendo borrado de cartas generales ===");
+	    
+	    MatchEntity PartidoEntidad = MatchRepo.ObtenerporId(Partida.getIdMatch());
+	    if (PartidoEntidad == null) return Partida;
 
-		MatchEntity PartidoEntidad = MatchRepo.ObtenerporId(Partida.getIdMatch());
-		if (PartidoEntidad == null) {
-			System.out.println(
-					"=== [BORRADO-LOG] ERROR: No se encontró la partida con ID: " + Partida.getIdMatch() + " ===");
-			return Partida;
-		}
+	    // 1. CAPTURAR ENTIDADES E IDS ANTES DE BORRAR NADA
+	    UserEntity p1 = PartidoEntidad.getPlayer1();
+	    UserEntity p2 = PartidoEntidad.getPlayer2();
+	    
+	    int idUser1 = (p1 != null) ? p1.getIdUser() : 0;
+	    int idUser2 = (p2 != null) ? p2.getIdUser() : 0;
+	    
+	    int idDesk1 = (p1 != null && p1.getDeskUser() != null) ? p1.getDeskUser().getIdDesk() : 0;
+	    int idDesk2 = (p2 != null && p2.getDeskUser() != null) ? p2.getDeskUser().getIdDesk() : 0;
 
-		// 1. CAPTURAR ENTIDADES E IDS ANTES DE BORRAR NADA
-		UserEntity p1 = PartidoEntidad.getPlayer1();
-		UserEntity p2 = PartidoEntidad.getPlayer2();
+	    // Listas para guardar las IDs de las cartas físicas antes de desvincularlas
+	    List<Integer> idsCartasP1 = new ArrayList<>();
+	    List<Integer> idsCartasP2 = new ArrayList<>();
 
-		int idUser1 = (p1 != null) ? p1.getIdUser() : 0;
-		int idUser2 = (p2 != null) ? p2.getIdUser() : 0;
+	    // ==========================================
+	    // PASO 1: Desvincular escritorios en los usuarios
+	    // ==========================================
+	    if (p1 != null) {
+	        p1.setDeskUser(null);
+	        UserRepo.save(p1);
+	    }
+	    if (p2 != null) {
+	        p2.setDeskUser(null);
+	        UserRepo.save(p2);
+	    }
 
-		int idDesk1 = (p1 != null && p1.getDeskUser() != null) ? p1.getDeskUser().getIdDesk() : 0;
-		int idDesk2 = (p2 != null && p2.getDeskUser() != null) ? p2.getDeskUser().getIdDesk() : 0;
+	    // ==========================================
+	    // PASO 2: Capturar IDs de cartas y VACIAR relaciones de los tableros
+	    // ==========================================
+	    if (idDesk1 != 0) {
+	        DeskRepo.findById(idDesk1).ifPresent(desk -> {
+	            if (desk.getDeskCards() != null) {
+	                // GUARDAMOS las IDs de las cartas asignadas a este mazo antes de borrarlas
+	                desk.getDeskCards().forEach(deskCard -> {
+	                    if (deskCard.getCard() != null) {
+	                        idsCartasP1.add(deskCard.getCard().getIdCard());
+	                    }
+	                });
+	                
+	                desk.getDeskCards().clear(); // Rompe la relación intermedia en la BD
+	                DeskRepo.save(desk);
+	                System.out.println("=== [BORRADO-LOG] Pasó 2: Relaciones de mazo limpias para P1. Cartas a eliminar: " + idsCartasP1);
+	            }
+	        });
+	    }
+	    if (idDesk2 != 0) {
+	        DeskRepo.findById(idDesk2).ifPresent(desk -> {
+	            if (desk.getDeskCards() != null) {
+	                // GUARDAMOS las IDs del jugador 2
+	                desk.getDeskCards().forEach(deskCard -> {
+	                    if (deskCard.getCard() != null) {
+	                        idsCartasP2.add(deskCard.getCard().getIdCard());
+	                    }
+	                });
+	                
+	                desk.getDeskCards().clear();
+	                DeskRepo.save(desk);
+	                System.out.println("=== [BORRADO-LOG] Pasó 2: Relaciones de mazo limpias para P2. Cartas a eliminar: " + idsCartasP2);
+	            }
+	        });
+	    }
 
-		System.out.println("=== [BORRADO-LOG] IDs detectados -> P1 User: " + idUser1 + ", Desk: " + idDesk1
-				+ " | P2 User: " + idUser2 + ", Desk: " + idDesk2);
+	    // ==========================================
+	    // NUEVO PASO: Borrar las cartas físicas de la tabla general (CardsRepo)
+	    // ==========================================
+	    for (int idCard : idsCartasP1) {
+	        CardsRepo.deleteById(idCard);
+	        System.out.println("=== [BORRADO-LOG] Carta general ID: " + idCard + " eliminada de la BD (P1)");
+	    }
+	    for (int idCard : idsCartasP2) {
+	        CardsRepo.deleteById(idCard);
+	        System.out.println("=== [BORRADO-LOG] Carta general ID: " + idCard + " eliminada de la BD (P2)");
+	    }
 
-		// ==========================================
-		// PASO 1: Desvincular en Java Puro y guardar cambios
-		// ==========================================
-		if (p1 != null) {
-			p1.setDeskUser(null);
-			UserRepo.save(p1);
-			System.out.println("=== [BORRADO-LOG] Pasó 1: Desvinculado Desk de P1 (User ID: " + idUser1 + ")");
-		}
-		if (p2 != null) {
-			p2.setDeskUser(null);
-			UserRepo.save(p2);
-			System.out.println("=== [BORRADO-LOG] Pasó 1: Desvinculado Desk de P2 (User ID: " + idUser2 + ")");
-		}
+	    // ==========================================
+	    // PASO 3: Borrar los tableros físicamente
+	    // ==========================================
+	    if (idDesk1 != 0) {
+	        DeskRepo.deleteById(idDesk1);
+	        System.out.println("=== [BORRADO-LOG] Pasó 3: Eliminado físicamente Desk ID: " + idDesk1);
+	    }
+	    if (idDesk2 != 0) {
+	        DeskRepo.deleteById(idDesk2);
+	        System.out.println("=== [BORRADO-LOG] Pasó 3: Eliminado físicamente Desk ID: " + idDesk2);
+	    }
 
-		// ==========================================
-		// PASO 2: Vaciar las cartas de los tableros
-		// ==========================================
-		if (idDesk1 != 0) {
-			DeskRepo.findById(idDesk1).ifPresent(desk -> {
-				if (desk.getDeskCards() != null) {
-					int cantidadCartas = desk.getDeskCards().size();
-					desk.getDeskCards().clear();
-					DeskRepo.save(desk);
-					System.out.println("=== [BORRADO-LOG] Pasó 2: Vaciadas " + cantidadCartas + " cartas del Desk ID: "
-							+ idDesk1 + " (P1)");
-				}
-			});
-		}
-		if (idDesk2 != 0) {
-			DeskRepo.findById(idDesk2).ifPresent(desk -> {
-				if (desk.getDeskCards() != null) {
-					int cantidadCartas = desk.getDeskCards().size();
-					desk.getDeskCards().clear();
-					DeskRepo.save(desk);
-					System.out.println("=== [BORRADO-LOG] Pasó 2: Vaciadas " + cantidadCartas + " cartas del Desk ID: "
-							+ idDesk2 + " (P2)");
-				}
-			});
-		}
+	    // ==========================================
+	    // PASO 4: Desvincular usuarios de la partida y borrarlos
+	    // ==========================================
+	    PartidoEntidad.setPlayer1(null);
+	    PartidoEntidad.setPlayer2(null);
+	    MatchRepo.save(PartidoEntidad); 
 
-		// ==========================================
-		// PASO 3: Borrar los tableros físicamente
-		// ==========================================
-		if (idDesk1 != 0) {
-			DeskRepo.deleteById(idDesk1);
-			System.out.println("=== [BORRADO-LOG] Pasó 3: Eliminado físicamente Desk ID: " + idDesk1 + " (P1)");
-		}
-		if (idDesk2 != 0) {
-			DeskRepo.deleteById(idDesk2);
-			System.out.println("=== [BORRADO-LOG] Pasó 3: Eliminado físicamente Desk ID: " + idDesk2 + " (P2)");
-		}
+	    if (idUser1 != 0) {
+	        UserRepo.deleteById(idUser1);
+	        System.out.println("=== [BORRADO-LOG] Pasó 4: Eliminado físicamente User ID: " + idUser1);
+	    }
+	    if (idUser2 != 0) {
+	        UserRepo.deleteById(idUser2);
+	        System.out.println("=== [BORRADO-LOG] Pasó 4: Eliminado físicamente User ID: " + idUser2);
+	    }
+	    
+	    // ==========================================
+	    // PASO EXTRA: Borrar el historial de jugadas
+	    // ==========================================
+	    RepoGame.borrarPorIdMatch(PartidoEntidad.getIdMatch());
 
-		// ==========================================
-		// PASO 4: Desvincular usuarios de la partida y borrarlos
-		// ==========================================
-		PartidoEntidad.setPlayer1(null);
-		PartidoEntidad.setPlayer2(null);
-		MatchRepo.save(PartidoEntidad);
-		System.out.println("=== [BORRADO-LOG] Pasó 4: Desvinculados P1 y P2 de la entidad Match");
+	    // ==========================================
+	    // PASO 5: Borrar la partida definitiva
+	    // ==========================================
+	    MatchRepo.delete(PartidoEntidad);
+	    System.out.println("=== [BORRADO-LOG] Pasó 5: Partida eliminada por completo. ===");
 
-		if (idUser1 != 0) {
-			UserRepo.deleteById(idUser1);
-			System.out.println("=== [BORRADO-LOG] Pasó 4: Eliminado físicamente de la BD User ID: " + idUser1);
-		}
-		if (idUser2 != 0) {
-			UserRepo.deleteById(idUser2);
-			System.out.println("=== [BORRADO-LOG] Pasó 4: Eliminado físicamente de la BD User ID: " + idUser2);
-		}
-
-		// ==========================================
-		// NUEVO PASO: Borrar el historial de jugadas/turnos
-		// ==========================================
-		RepoGame.borrarPorIdMatch(PartidoEntidad.getIdMatch());
-		System.out.println(
-				"=== [BORRADO-LOG] Paso Extra: Eliminadas todas las jugadas asociadas en tablegame para el Match: "
-						+ PartidoEntidad.getIdMatch());
-
-		// ==========================================
-		// PASO 5: Borrar la partida definitiva
-		// ==========================================
-		MatchRepo.delete(PartidoEntidad);
-		System.out.println(
-				"=== [BORRADO-LOG] Pasó 5: Partida ID " + Partida.getIdMatch() + " eliminada por completo. ===");
-
-		return Partida;
+	    return Partida;
 	}
 
 	// Función Externa Nº1: Creacion del Usuario
