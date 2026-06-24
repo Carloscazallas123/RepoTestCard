@@ -39,7 +39,8 @@ const JuegoService = {
       suscripcionJugada = stompClient.subscribe('/topic/Terminar', (mensaje: Message) => {
         if (mensaje.body) {
           const datos: GameDTO = JSON.parse(mensaje.body);
-          localStorage.setItem('Terminado',JSON.stringify(datos));
+          localStorage.setItem('partido',JSON.stringify(datos));
+          localStorage.removeItem('partido');
         }
       });
     console.log('📡 Escuchando el flujo de la partida en: /topic/Jugada');

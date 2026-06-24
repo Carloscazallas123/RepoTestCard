@@ -27,6 +27,20 @@ public class DeskCardEntity {
 		Desk = desk;
 		Card = card;
 	}
+	
+	
+
+	public int getIdDeskCard() {
+		return idDeskCard;
+	}
+
+
+
+	public void setIdDeskCard(int idDeskCard) {
+		this.idDeskCard = idDeskCard;
+	}
+
+
 
 	public DeskEntity getDesk() {
 		return Desk;
