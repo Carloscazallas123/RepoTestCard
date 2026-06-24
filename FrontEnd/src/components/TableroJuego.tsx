@@ -169,7 +169,7 @@ export const TableroJuego = ()=> {
               alert('Has Perdido la Partida'); }
 
       
-      localStorage.clear(); navegar('/'); }, 4400);}
+      localStorage.clear(); navegar('/'); }, 4800);}
       
     }
 

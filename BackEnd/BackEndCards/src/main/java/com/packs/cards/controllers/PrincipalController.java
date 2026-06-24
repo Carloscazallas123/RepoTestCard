@@ -122,20 +122,32 @@ public class PrincipalController {
 	@Transactional
 	public synchronized MatchDTO FinishMatch(MatchDTO Partida) {
 	//Borrando La Partida
+	MatchEntity EntityMatch = MatchRepo.ObtenerporId(Partida.getIdMatch());
+	EntityMatch.setPlayer1(null); EntityMatch.setPlayer2(null);
+	EntityMatch.setPoints1(null); EntityMatch.setPoints2(null);
+	EntityMatch.setState(null); MatchRepo.save(EntityMatch);
 	MatchRepo.deleteById(Partida.getIdMatch());
 	System.out.println(Partida.getIdMatch() + " Eliminada");
 	//Borrando los Usuarios
 	UserEntity P1 = UserRepo.ObtenerporId(Partida.getPlayer1().getIduser());
 	UserEntity P2 = UserRepo.ObtenerporId(Partida.getPlayer1().getIduser());
-	P1.setDeskUser(null); P2.setDeskUser(null); UserRepo.save(P1); UserRepo.save(P2);
+	P1.setDeskUser(null); P2.setDeskUser(null); 
+	P1.setUserName(null); P2.setUserName(null);
+	UserRepo.save(P1); UserRepo.save(P2);
 	UserRepo.deleteById(Partida.getPlayer1().getIduser());
 	UserRepo.deleteById(Partida.getPlayer2().getIduser());
 	System.out.println(Partida.getPlayer1().getUsername() + " Eliminado");
 	System.out.println(Partida.getPlayer2().getUsername() + "Eliminado");
 	
 	
-	//Borrando los Mazos
-	DeskRepo.deleteById(Partida.getPlayer1().getDeskUser().getIdDesk());
+	//Borrando el Mazo 1
+	DeskEntity D1 = DeskRepo.ObtenerporId(Partida.getPlayer1().getDeskUser().getIdDesk());
+	D1.setNameDesk(null); D1.setDeskCards(null); DeskRepo.save(D1);
+	
+	//Borrando el Mazo 2
+	DeskEntity D2 = DeskRepo.ObtenerporId(Partida.getPlayer2().getDeskUser().getIdDesk());
+	D2.setNameDesk(null); D2.setDeskCards(null); DeskRepo.save(D2);
+	
 	DeskRepo.deleteById(Partida.getPlayer2().getDeskUser().getIdDesk());
 	System.out.println(Partida.getPlayer1().getDeskUser().getNameDesk() + " Eliminado");
 	System.out.println(Partida.getPlayer2().getDeskUser().getNameDesk() + " Eliminado");
