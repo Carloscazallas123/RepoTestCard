@@ -72,28 +72,24 @@ export const InicioJuego = () => {
           </div>
 
           {/* SECCIÓN DE CÓMO SE JUEGA */}
-          <div className="rules-section">
-            <h3 className="rules-title">Crónicas de Batalla (Cómo Jugar)</h3>
-            <ul className="rules-list">
-              <li>
-                <span className="rule-marker">◆</span> 
-                <strong>El Vínculo:</strong> Enciende el socket para conectar tu dispositivo al servidor del Reino.
-              </li>
-              <li>
-                <span className="rule-marker">◆</span> 
-                <strong>Registro:</strong> Introduce tu apodo de aventurero para que los bardos canten tus victorias.
-              </li>
-              <li>
-                <span className="rule-marker">◆</span> 
-                <strong>El Enfrentamiento:</strong> Entra a la arena. Cada jugador recibirá un mazo de cartas con un valor de <strong>Poder (PWR)</strong> único.
-              </li>
-              <li>
-                <span className="rule-marker">◆</span> 
-                <strong>La Victoria:</strong> Selecciona tu carta sabiamente en cada turno. ¡El duelista con el mayor poder en el campo reclamará los puntos y la gloria absoluta!
-              </li>
-            </ul>
-          </div>
+          <ul className="rules-list">
+          <li> <span className="rule-marker">◆</span>
+          <strong>El Vínculo:</strong> Enciende el socket para conectar tu 
+          dispositivo al servidor del Reino. </li>
+          <li> <span className="rule-marker">◆</span>
 
+          <strong>Registro:</strong> Introduce tu apodo de aventurero para que 
+          los bardos canten tus victorias.</li>
+
+          <li><span className="rule-marker">◆</span>
+          <strong>El Enfrentamiento:</strong> Entra a la arena. Cada jugador recibirá un mazo de cartas 
+          con un valor de <strong>Poder (PWR)</strong> único. </li>
+
+          <li><span className="rule-marker">◆</span>
+          <strong>La Victoria:</strong> Selecciona tu carta sabiamente en cada turno. 
+          ¡El duelista con el mayor poder en el campo reclamará los puntos y la gloria absoluta! </li>
+          </ul>
+          
           <div className="title-divider"></div>
           <h2 className="lobby-title">Registro de Aventurero</h2>
 

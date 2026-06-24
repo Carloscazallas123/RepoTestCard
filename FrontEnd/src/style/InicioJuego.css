@@ -80,6 +80,7 @@
   border-radius: 8px;
   padding: 15px 20px;
   margin-bottom: 30px;
+  box-sizing: border-box;
 }
 
 .rules-title {
@@ -98,37 +99,34 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .rules-list li {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: #4f4235;
-  line-height: 1.4;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  line-height: 1.5;
+  text-align: left; /* Asegura alineación estricta a la izquierda */
+  word-spacing: normal; /* Evita la justificación forzada de palabras */
 }
 
+/* Usamos un truco clásico inline-block para el marcador para que no rompa el flex */
 .rule-marker {
   color: #c5a059;
   font-size: 0.8rem;
-  margin-top: 2px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
-/* Ajuste responsive extra para el título principal */
+/* Ajuste responsive extra para que en móviles pequeños no se amontone */
 @media (max-width: 480px) {
-  .game-main-title {
-    font-size: 1.8rem;
-  }
-  .lore-text {
-    font-size: 0.85rem;
-  }
   .rules-section {
-    padding: 12px;
+    padding: 15px;
   }
   .rules-list li {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
+    line-height: 1.4;
   }
 }
 
