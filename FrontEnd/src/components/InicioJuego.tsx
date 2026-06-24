@@ -60,8 +60,42 @@ export const InicioJuego = () => {
       <div className="parchment-card">
         <div className="parchment-inner-frame">
           
-          <h2 className="lobby-title">Registro de Aventurero</h2>
+          {/* TÍTULO PRINCIPAL DEL JUEGO */}
+          <h1 className="game-main-title">Cartas Alocadas</h1>
+          <div className="title-divider-ornament">⚜️</div>
+
+          {/* SECCIÓN DE LORE / HISTORIA */}
+          <div className="lore-section">
+            <p className="lore-text">
+              "En los confines de la Vieja Taberna, los magos y pícaros más audaces se baten en duelo. No hay hechizos que valgan aquí; solo tu astucia, tu mazo de criaturas inestables y la impredecible magia del caos. Las cartas han sido barajadas, el tapete está listo... ¿Tienes el valor para desafiar al destino?"
+            </p>
+          </div>
+
+          {/* SECCIÓN DE CÓMO SE JUEGA */}
+          <div className="rules-section">
+            <h3 className="rules-title">Crónicas de Batalla (Cómo Jugar)</h3>
+            <ul className="rules-list">
+              <li>
+                <span className="rule-marker">◆</span> 
+                <strong>El Vínculo:</strong> Enciende el socket para conectar tu dispositivo al servidor del Reino.
+              </li>
+              <li>
+                <span className="rule-marker">◆</span> 
+                <strong>Registro:</strong> Introduce tu apodo de aventurero para que los bardos canten tus victorias.
+              </li>
+              <li>
+                <span className="rule-marker">◆</span> 
+                <strong>El Enfrentamiento:</strong> Entra a la arena. Cada jugador recibirá un mazo de cartas con un valor de <strong>Poder (PWR)</strong> único.
+              </li>
+              <li>
+                <span className="rule-marker">◆</span> 
+                <strong>La Victoria:</strong> Selecciona tu carta sabiamente en cada turno. ¡El duelista con el mayor poder en el campo reclamará los puntos y la gloria absoluta!
+              </li>
+            </ul>
+          </div>
+
           <div className="title-divider"></div>
+          <h2 className="lobby-title">Registro de Aventurero</h2>
 
           {/* BLOQUE DEL INPUT (ESTILO MARFIL) */}
           <div className="classic-input-group">
@@ -81,7 +115,6 @@ export const InicioJuego = () => {
           {/* PANEL DE ACCIONES / BOTONES CLÁSICOS */}
           <div className="classic-grid-actions">
             
-            {/* Botón 1: Encender */}
             <button
               type="button"
               disabled={isSocketActivo || enCola}
@@ -90,7 +123,6 @@ export const InicioJuego = () => {
               <span className="btn-icon">⚡</span> Vincular Canal
             </button>
 
-            {/* Botón 2: Apagar */}
             <button
               type="button"
               disabled={!isSocketActivo || enCola}
@@ -99,7 +131,6 @@ export const InicioJuego = () => {
               <span className="btn-icon">🛑</span> Cortar Vínculo
             </button>
 
-            {/* Botón 3: Buscar Partida */}
             <button
               type="button"
               disabled={!isSocketActivo || !nombreUsuario.trim() || enCola}
