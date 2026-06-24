@@ -16,20 +16,26 @@
   background-color: var(--bg-tabletop);
   background-image: radial-gradient(circle, #24352a 0%, #151d18 100%);
   min-height: 100vh;
+  width: 100vw; /* Fuerza a ocupar todo el ancho de la pantalla */
   padding: 20px;
-  font-family: 'Georgia', serif; /* Tipografía clásica con serifa */
+  font-family: 'Georgia', serif;
   color: var(--text-light);
+  
+  /* Sistema flex de centrado absoluto */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center;     /* Centra verticalmente */
+  box-sizing: border-box;
 }
 
 .tabletop-container {
   width: 100%;
   max-width: 1100px;
+  margin: 0 auto; /* Asegura el centrado si hay colisión con layouts globales */
   display: flex;
   flex-direction: column;
   gap: 25px;
+  box-sizing: border-box;
 }
 
 /* ==========================================================================
