@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import type { MatchDTO, Card, GameDTO} from './../Interface/Interfaces';
+import { useNavigate } from 'react-router-dom';
 import JuegoService from '../service/ServiceJuego';
 import './../style/TableroJuego.css';
 
@@ -48,6 +49,7 @@ export const TableroJuego = ()=> {
   const EnBusqueda = useRef<ReturnType<typeof setInterval> | null>(null);
   const [cartaRivalSeleccionada,setCartaRivalSeleccionada] = useState<Card | null | undefined >(null);
   const [cartaSeleccionada,SetCartaSeleccionada] = useState<Card | null | undefined >(null);
+  const navegar = useNavigate();
 
     //Metodo para preparar la Jugada
     const PrepararJugada = (carta:Card) =>{
@@ -92,26 +94,26 @@ export const TableroJuego = ()=> {
 
     //Caso que Gana el Jugador 
     if (Carta1.Valour > Carta2.Valour) {
-      P1 = P1 + 150;
+      P1 = P1 + 40;
       setTimeout(() => { 
-      alert('Has ganado');
+      alert('Ronda Ganada');
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
     //Caso que Gana el Oponente
     if (Carta1.Valour < Carta2.Valour) {
-      P2 = P2 + 150;
+      P2 = P2 + 40;
       setTimeout(() => { 
-      alert('Has Perdido');
+      alert('Ronda Perdida');
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
     //Caso de Empate
     if (Carta1.Valour === Carta2.Valour) {
-       P1 = P1 + 150; P2 = P2 + 150;
+       P1 = P1 + 20; P2 = P2 + 20;
 
       setTimeout(() => { 
-      alert('Empate');
+      alert('Ronda Empatada');
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000); }
       
@@ -134,7 +136,6 @@ export const TableroJuego = ()=> {
 
       let mazoActualizadoP2 = desk2.Cards?.filter(carta => carta.idCard !== Carta1.idCard &&
                                                   carta.idCard !== Carta2.idCard );
-
       //Perspectiva 1
       SetPartida({
         ...Partida,
@@ -156,6 +157,18 @@ export const TableroJuego = ()=> {
         }
       });
       
+      //Partida Terminada
+      if (Partida.Player1.DeskUser?.Cards?.length === 0 
+          && Partida.Player2.DeskUser?.Cards?.length === 0) {
+
+            if ((Partida.Points1 ?? 0) > (Partida.Points2 ?? 0)) {
+              alert('Has Ganado la Partida'); }
+
+            if ((Partida.Points1 ?? 0) < (Partida.Points2 ?? 0)) {
+              alert('Has Perdido la Partida'); }
+
+      JuegoService.escucharPartidaTerminada(Partida); 
+      localStorage.clear(); navegar('/'); }
     }
 
   return (

@@ -1,6 +1,6 @@
 import { stompClient } from './SocketCliente';
 import type { Message, StompSubscription } from '@stomp/stompjs';
-import type { GameDTO, Card } from './../Interface/Interfaces';
+import type { GameDTO, Card, MatchDTO } from './../Interface/Interfaces';
 
 let suscripcionJugada: StompSubscription | null = null;
 
@@ -27,6 +27,32 @@ const JuegoService = {
     body: JSON.stringify(Carta) });
 
     console.log('Carta añadida a la cola');
+    } else {
+      console.error('No se pudo enviar la jugada: El WebSocket está desconectado.');
+    }
+  },
+
+  //Metodo para esuchar el Canal de la Jugada
+  escucharPartidaTerminada (Partida: MatchDTO): void {
+    if (suscripcionJugada) { suscripcionJugada.unsubscribe(); }
+    JuegoService.EnviarJugadaTerminada(Partida);
+      suscripcionJugada = stompClient.subscribe('/topic/Terminar', (mensaje: Message) => {
+        if (mensaje.body) {
+          const datos: GameDTO = JSON.parse(mensaje.body);
+          localStorage.setItem('Terminado',JSON.stringify(datos));
+        }
+      });
+    console.log('📡 Escuchando el flujo de la partida en: /topic/Jugada');
+  },
+
+  //Metodo para enviar la Jugada
+  EnviarJugadaTerminada (Partida: MatchDTO): void {
+    if (stompClient && stompClient.connected) {
+    stompClient.publish({
+    destination: '/app/TerminarPartida',
+    body: JSON.stringify(Partida) });
+    console.log('Partida Enviada a la Cola para terminarla');
+
     } else {
       console.error('No se pudo enviar la jugada: El WebSocket está desconectado.');
     }

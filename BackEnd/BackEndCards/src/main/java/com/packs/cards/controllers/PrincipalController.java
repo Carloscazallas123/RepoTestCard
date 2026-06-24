@@ -116,6 +116,35 @@ public class PrincipalController {
 		GameDTO jugada=new GameDTO(EntityGame.getGameMatch().getIdMatch(), carta1,carta2); 
 		ColaCartas.clear(); return jugada;
 	}
+	
+	@MessageMapping("/TerminarPartida")
+	@SendTo("/topic/Terminar")
+	@Transactional
+	public MatchDTO FinishMatch(MatchDTO Partida) {
+	//Borrando La Partida
+	MatchRepo.deleteById(Partida.getIdMatch());
+	//Borrando los Mazos
+	DeskRepo.deleteById(Partida.getPlayer1().getDeskUser().getIdDesk());
+	DeskRepo.deleteById(Partida.getPlayer2().getDeskUser().getIdDesk());
+	//Borrando los Usuarios
+	UserRepo.deleteById(Partida.getPlayer1().getIduser());
+	UserRepo.deleteById(Partida.getPlayer2().getIduser());
+	
+	//Borrando las Cartas de Ambos Jugadores
+	for(int i=0;i<Partida.getPlayer1().getDeskUser().getCards().size()
+			 || i < Partida.getPlayer2().getDeskUser().getCards().size() ; i++) {
+		
+		CardsRepo.deleteById(Partida.getPlayer1().getDeskUser().getCards().get(i).getIdCard());
+		CardsRepo.deleteById(Partida.getPlayer2().getDeskUser().getCards().get(i).getIdCard());
+	}
+	
+	//Borrando las Jugada
+	RepoGame.deleteById(RepoGame.Obtenerporpartida(Partida.getIdMatch()).getIdGame());
+	MatchDTO PartidoVacio= new MatchDTO();
+	
+	PartidoVacio.setIdMatch(555); // Numero Que signfica que la partida ha terminado
+	return PartidoVacio;
+	}
 
 	
 	// Función Externa Nº1: Creacion del Usuario
