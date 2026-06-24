@@ -78,7 +78,9 @@ export const TableroJuego = ()=> {
 
     const RealizarJugada= ()=> {
     const Carta1: Card | null | undefined = cartaSeleccionada;
+    console.log('Carta Nº1: ' + Carta1);
     const Carta2: Card | null | undefined = cartaRivalSeleccionada;
+    console.log('Carta Nº2: ' + Carta2);
     let P1= Partida?.Points1 ?? 0 ; let P2=Partida?.Points2 ?? 0;
     if (!Carta1 || !Carta2) return;
 
