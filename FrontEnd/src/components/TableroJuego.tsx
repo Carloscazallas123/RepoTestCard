@@ -98,7 +98,7 @@ export const TableroJuego = ()=> {
       setTimeout(() => { 
       alert('Ronda Ganada');
       setCartaRivalSeleccionada(null); 
-      SetCartaSeleccionada(null); }, 3000);}
+      SetCartaSeleccionada(null); }, 2400);}
 
     //Caso que Gana el Oponente
     if (Carta1.Valour < Carta2.Valour) {
@@ -160,6 +160,7 @@ export const TableroJuego = ()=> {
       //Partida Terminada
       if (mazoActualizadoP1?.length === 0 
           || mazoActualizadoP2?.length === 0) {
+            setTimeout(() => {  
             console.log('Partida Terminada');
             if (P1 > P2) {
               alert('Has Ganado la Partida'); }
@@ -167,7 +168,8 @@ export const TableroJuego = ()=> {
               alert('Has Perdido la Partida'); }
 
       JuegoService.escucharPartidaTerminada(Partida); 
-      localStorage.clear(); navegar('/'); }
+      localStorage.clear(); navegar('/'); }, 3400);}
+      
     }
 
   return (
