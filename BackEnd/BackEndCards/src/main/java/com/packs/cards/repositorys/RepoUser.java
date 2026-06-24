@@ -27,7 +27,7 @@ public interface RepoUser extends JpaRepository<UserEntity, Integer> {
 	
 	@Transactional
 	@Modifying
-	@Query("UPDATE UserEntity u SET u.deskUser = null WHERE u.idUser = :idUser")
-	void desvincularTablero(@Param("idUser") int idP1);
+	@Query(value = "UPDATE tableuser SET DeskUser = NULL WHERE IdUser = :idUser", nativeQuery = true)
+	void desvincularTablero(@Param("idUser") Long idUser);
 	
 }
