@@ -123,12 +123,18 @@ public class PrincipalController {
 	public MatchDTO FinishMatch(MatchDTO Partida) {
 	//Borrando La Partida
 	MatchRepo.deleteById(Partida.getIdMatch());
+	System.out.println(Partida.getIdMatch() + " Eliminada");
 	//Borrando los Mazos
 	DeskRepo.deleteById(Partida.getPlayer1().getDeskUser().getIdDesk());
 	DeskRepo.deleteById(Partida.getPlayer2().getDeskUser().getIdDesk());
+	System.out.println(Partida.getPlayer1().getDeskUser().getNameDesk() + " Eliminado");
+	System.out.println(Partida.getPlayer2().getDeskUser().getNameDesk() + " Eliminado");
+	
 	//Borrando los Usuarios
 	UserRepo.deleteById(Partida.getPlayer1().getIduser());
 	UserRepo.deleteById(Partida.getPlayer2().getIduser());
+	System.out.println(Partida.getPlayer1().getUsername() + " Eliminado");
+	System.out.println(Partida.getPlayer2().getUsername() + "Eliminado");
 	
 	//Borrando las Cartas de Ambos Jugadores
 	for(int i=0;i<Partida.getPlayer1().getDeskUser().getCards().size()
@@ -136,12 +142,14 @@ public class PrincipalController {
 		
 		CardsRepo.deleteById(Partida.getPlayer1().getDeskUser().getCards().get(i).getIdCard());
 		CardsRepo.deleteById(Partida.getPlayer2().getDeskUser().getCards().get(i).getIdCard());
-	}
+	} System.out.println("Cartas Eliminadas");
 	
 	//Borrando las Jugadas
-	RepoGame.deleteById(RepoGame.Obtenerporpartida(Partida.getIdMatch()).getIdGame());
+	List<GameEntity>ListaJugadas=RepoGame.Obtenerporpartida(Partida.getIdMatch());
+	for(int e=0;e<ListaJugadas.size();e++) {
+	RepoGame.deleteById(ListaJugadas.get(e).getIdGame()); }
+	System.out.println("Jugadas Eliminadas");
 	
-	System.out.println("Partida Nº " + Partida.getIdMatch() + " Ha Terminado");
 	return Partida;
 	}
 

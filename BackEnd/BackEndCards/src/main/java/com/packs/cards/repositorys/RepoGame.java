@@ -1,5 +1,7 @@
 package com.packs.cards.repositorys;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,5 +14,5 @@ import com.packs.cards.entitys.GameEntity;
 public interface RepoGame extends JpaRepository<GameEntity, Integer> {
 	
 	@Query("SELECT g FROM GameEntity g WHERE g.GameMatch.IdMatch=:IdMatch")
-	GameEntity Obtenerporpartida(@Param("IdMatch") int IdMatch);
+	List<GameEntity> Obtenerporpartida(@Param("IdMatch") int IdMatch);
 }
