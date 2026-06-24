@@ -195,7 +195,7 @@ export const TableroJuego = ()=> {
           </div>
           <div className="rival-hand-slots">
             {Partida?.Player2?.DeskUser?.Cards?.map((carta) => (
-              <div key={`rival-${carta.idCard}`} className="rival-card-back">
+              <div key={`rival-${carta.IdCard}`} className="rival-card-back">
                 <div className="card-pattern"></div>
                 <span className="cyber-icon">⚡</span>
               </div>
@@ -214,7 +214,7 @@ export const TableroJuego = ()=> {
                 {cartaRivalSeleccionada ? (
                   <div className="card-placed rival-card-style">
                     <div className="card-glow"></div>
-                    <div className="card-header-id">#ID: {cartaRivalSeleccionada.idCard}</div>
+                    <div className="card-header-id">#ID: {cartaRivalSeleccionada.IdCard}</div>
                     <div className="card-body-icon">🛸</div>
                     <div className="card-power">
                       <span className="sword-icon">⚔️</span> {cartaRivalSeleccionada.Valour}
@@ -235,7 +235,7 @@ export const TableroJuego = ()=> {
                 {cartaSeleccionada ? (
                   <div className="card-placed player-card-style">
                     <div className="card-glow"></div>
-                    <div className="card-header-id">#ID: {cartaSeleccionada.idCard}</div>
+                    <div className="card-header-id">#ID: {cartaSeleccionada.IdCard}</div>
                     <div className="card-body-icon">🛡️</div>
                     <div className="card-power">
                       <span className="sword-icon">⚔️</span> {cartaSeleccionada.Valour}
@@ -261,18 +261,18 @@ export const TableroJuego = ()=> {
           
           <div className="player-cards-grid">
             {Partida?.Player1?.DeskUser?.Cards?.map((carta) => {
-              const yaJugada = cartaSeleccionada?.idCard === carta.idCard;
+              const yaJugada = cartaSeleccionada?.IdCard === carta.IdCard;
               const manoBloqueada = cartaSeleccionada != null;
               
               return (
                 <button
-                  key={carta.idCard}
+                  key={carta.IdCard}
                   disabled={manoBloqueada}
                   onClick={() => PrepararJugada(carta)}
                   className={`card-button ${yaJugada ? 'card-faded' : ''}`}
                 >
                   <div className="btn-glitch-effect"></div>
-                  <div className="card-btn-id">ID: {carta.idCard}</div>
+                  <div className="card-btn-id">ID: {carta.IdCard}</div>
                   <div className="card-btn-icon">👾</div>
                   <div className="card-btn-valour">
                     <span>PWR</span> <strong>{carta.Valour}</strong>
