@@ -167,7 +167,8 @@ export const TableroJuego = ()=> {
               alert('Has Ganado la Partida'); 
               JuegoService.escucharPartidaTerminada(Partida); }
             if (P1 < P2) {
-              alert('Has Perdido la Partida'); }
+              alert('Has Perdido la Partida'); 
+              JuegoService.escucharPartidaTerminada(Partida);}
 
       
       localStorage.clear(); navegar('/'); }, 4800);}
