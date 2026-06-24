@@ -106,7 +106,7 @@ export const TableroJuego = ()=> {
       setTimeout(() => { 
       alert('Ronda Perdida');
       setCartaRivalSeleccionada(null); 
-      SetCartaSeleccionada(null); }, 3000);}
+      SetCartaSeleccionada(null); }, 2400);}
 
     //Caso de Empate
     if (Carta1.Valour === Carta2.Valour) {
@@ -115,7 +115,7 @@ export const TableroJuego = ()=> {
       setTimeout(() => { 
       alert('Ronda Empatada');
       setCartaRivalSeleccionada(null); 
-      SetCartaSeleccionada(null); }, 3000); }
+      SetCartaSeleccionada(null); }, 2400); }
       
       localStorage.removeItem('Jugada');
       ActualizarMazo(Carta1, Carta2,P1,P2)
