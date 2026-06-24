@@ -59,31 +59,33 @@ export const TableroJuego = ()=> {
       EnBusqueda.current = setInterval(() => {
       const token=localStorage.getItem('Jugada');
       if(token){
-        const Jugada: GameDTO = JSON.parse(token);
+        let Jugada: GameDTO = JSON.parse(token);
         if(Partida?.IdMatch == Jugada.IdMatch) {
 
             if(carta.idCard === Jugada.Card1?.idCard){
               SetCartaSeleccionada(carta);
               setCartaRivalSeleccionada(Jugada.Card2); 
+              Jugada = {IdMatch: Jugada.IdMatch, Card1: carta, Card2: Jugada.Card2 };
               console.log('Realizando Jugada...');
               if (EnBusqueda.current) clearInterval(EnBusqueda.current);
-              RealizarJugada(); }
+              RealizarJugada(Jugada); }
 
             if(carta.idCard === Jugada.Card2?.idCard){
               SetCartaSeleccionada(carta);
               setCartaRivalSeleccionada(Jugada.Card1); 
+              Jugada = {IdMatch: Jugada.IdMatch, Card1: carta, Card2: Jugada.Card1 };
               console.log('Realizando Jugada...');
               if (EnBusqueda.current) clearInterval(EnBusqueda.current);
-              RealizarJugada(); }
+              RealizarJugada(Jugada); }
           }
         }
       }, 1000);
     }
 
-    const RealizarJugada= ()=> {
-    const Carta1: Card | null | undefined = cartaSeleccionada;
+    const RealizarJugada= (Jugada:GameDTO)=> {
+    const Carta1: Card | null | undefined = Jugada.Card1;
     console.log('Carta Nº1: ' + Carta1);
-    const Carta2: Card | null | undefined = cartaRivalSeleccionada;
+    const Carta2: Card | null | undefined = Jugada.Card2;
     console.log('Carta Nº2: ' + Carta2);
     let P1= Partida?.Points1 ?? 0 ; let P2=Partida?.Points2 ?? 0;
     if (!Carta1 || !Carta2) return;
