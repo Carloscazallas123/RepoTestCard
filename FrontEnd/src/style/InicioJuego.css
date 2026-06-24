@@ -5,20 +5,25 @@
   background-color: #1b261f;
   background-image: radial-gradient(circle, #24352a 0%, #151d18 100%);
   min-height: 100vh;
+  width: 100vw; /* Asegura que tome todo el ancho de la pantalla */
   padding: 20px;
   font-family: 'Georgia', serif;
   color: #f5f0e1;
+  /* Sistema de centrado absoluto */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center;     /* Centrado vertical */
+  box-sizing: border-box;
 }
 
 .lobby-container {
   width: 100%;
-  max-width: 500px; /* Al ser un menú, es más compacto que la mesa */
+  max-width: 450px; /* Reducido un pelo para que se vea más estilizado y compacto */
+  margin: 0 auto;   /* Margen de seguridad automático por si el flex tiene interferencias */
   display: flex;
   flex-direction: column;
   gap: 20px;
+  box-sizing: border-box;
 }
 
 /* ==========================================================================
