@@ -158,13 +158,11 @@ export const TableroJuego = ()=> {
       });
       
       //Partida Terminada
-      if (Partida.Player1.DeskUser?.Cards?.length === 0 
-          || Partida.Player2.DeskUser?.Cards?.length === 0) {
-
-            if ((Partida.Points1 ?? 0) > (Partida.Points2 ?? 0)) {
+      if (mazoActualizadoP1?.length === 0 
+          || mazoActualizadoP2?.length === 0) {
+            if (P1 > P2) {
               alert('Has Ganado la Partida'); }
-
-            if ((Partida.Points1 ?? 0) < (Partida.Points2 ?? 0)) {
+            if (P1 < P2) {
               alert('Has Perdido la Partida'); }
 
       JuegoService.escucharPartidaTerminada(Partida); 
