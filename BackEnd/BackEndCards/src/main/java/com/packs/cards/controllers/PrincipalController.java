@@ -138,12 +138,11 @@ public class PrincipalController {
 		CardsRepo.deleteById(Partida.getPlayer2().getDeskUser().getCards().get(i).getIdCard());
 	}
 	
-	//Borrando las Jugada
+	//Borrando las Jugadas
 	RepoGame.deleteById(RepoGame.Obtenerporpartida(Partida.getIdMatch()).getIdGame());
-	MatchDTO PartidoVacio= new MatchDTO();
 	
-	PartidoVacio.setIdMatch(555); // Numero Que signfica que la partida ha terminado
-	return PartidoVacio;
+	System.out.println("Partida Nº " + Partida.getIdMatch() + " Ha Terminado");
+	return Partida;
 	}
 
 	
