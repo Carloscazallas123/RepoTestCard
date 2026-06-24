@@ -120,7 +120,7 @@ public class PrincipalController {
 	@MessageMapping("/TerminarPartida")
 	@SendTo("/topic/Terminar")
 	@Transactional
-	public MatchDTO FinishMatch(MatchDTO Partida) {
+	public synchronized MatchDTO FinishMatch(MatchDTO Partida) {
 	//Borrando La Partida
 	MatchRepo.deleteById(Partida.getIdMatch());
 	System.out.println(Partida.getIdMatch() + " Eliminada");
