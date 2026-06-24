@@ -301,7 +301,7 @@ public class PrincipalController {
 
 		// Bucle para crear las cartas
 		for (int i = 0; i < 5; i++) {
-			int aleatorio = (int) (Math.random() * 130);
+			int aleatorio = (int) (Math.random() * 230) + 60;
 			CardsEntity nuevaCarta = new CardsEntity();
 			nuevaCarta.setValour(aleatorio);
 			Cards.add(nuevaCarta);
