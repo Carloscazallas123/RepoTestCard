@@ -1,5 +1,5 @@
 export interface Card {
-    idCard: number;
+    IdCard: number;
     Valour: number; 
 }
 
