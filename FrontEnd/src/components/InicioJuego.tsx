@@ -45,68 +45,78 @@ export const InicioJuego = () => {
   }, []);
 
   return (
+  <div className="tabletop-lobby">
     <div className="lobby-container">
       
-      {/* MONITOR DE ESTADO DEL SERVIDOR */}
-      <div className="status-monitor">
-        <span className="status-label">Estado del Servidor:</span>
-        <span className={`status-badge ${isSocketActivo ? 'online' : 'offline'}`}>
-          {isSocketActivo ? '🟢 CONECTADO' : '🔴 DESCONECTADO'}
+      {/* ================= MONITOR DE ESTADO DE LA TABERNA ================= */}
+      <div className="classic-status-monitor">
+        <span className="status-label">Conexión con el Reino:</span>
+        <span className={`status-badge ${isSocketActivo ? 'status-online' : 'status-offline'}`}>
+          {isSocketActivo ? '🟢 Sintonizado' : '🔴 Desconectado'}
         </span>
       </div>
 
-      {/* PANEL DE CONTROL CENTRAL */}
-      <div className="control-card">
-        
-        {/* BLOQUE DEL INPUT */}
-        <div className="input-group">
-          <label className="input-label">Nombre de jugador</label>
-          <input
-            type="text"
-            placeholder={isSocketActivo ? "Introduce tu apodo..." : "⚠️ Enciende el socket para poder escribir"}
-            disabled={!isSocketActivo || enCola} // Deshabilitado también si está buscando partida
-            value={nombreUsuario}
-            onChange={(e) => setNombreUsuario(e.target.value)}
-            className={`player-input ${!isSocketActivo || enCola ? 'disabled-input' : ''}`}
-          />
-        </div>
-
-        {/* PANEL DE BOTONES */}
-        <div className="grid-actions">
+      {/* ================= PERGAMINO CENTRAL DE CONTROL ================= */}
+      <div className="parchment-card">
+        <div className="parchment-inner-frame">
           
-          {/* Botón 1: Encender */}
-          <button
-            type="button"
-            disabled={isSocketActivo || enCola} // Deshabilitado en cola
-            onClick={() => encenderSocket()}
-            className="btn btn-success">
-            ⚡ Encender Socket
-          </button>
+          <h2 className="lobby-title">Registro de Aventurero</h2>
+          <div className="title-divider"></div>
 
-          {/* Botón 2: Apagar */}
-          <button
-            type="button"
-            disabled={!isSocketActivo || enCola} // Deshabilitado en cola
-            onClick={() => apagarSocket()}
-            className="btn btn-danger">
-            🛑 Apagar Socket
-          </button>
+          {/* BLOQUE DEL INPUT (ESTILO MARFIL) */}
+          <div className="classic-input-group">
+            <label className="input-label">Nombre del Jugador</label>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                placeholder={isSocketActivo ? "Escribe tu apodo aquí..." : "⚠️ Activa la conexión para escribir"}
+                disabled={!isSocketActivo || enCola}
+                value={nombreUsuario}
+                onChange={(e) => setNombreUsuario(e.target.value)}
+                className={`classic-player-input ${!isSocketActivo || enCola ? 'disabled-input' : ''}`}
+              />
+            </div>
+          </div>
 
-          {/* Botón 3: Buscar Partida */}
-          <button
-            type="button"
-            disabled={!isSocketActivo || !nombreUsuario.trim() || enCola} // Se congela al buscar
-            onClick={() => escucharcanalPartida(nombreUsuario)}
-            className="btn btn-primary btn-full">
-            {enCola ? (
-              <span className="loading-text">⏳ Buscando Rival... Reintentando</span>
-            ) : (
-              "🚀 Buscar Partida"
-            )}
-          </button>
+          {/* PANEL DE ACCIONES / BOTONES CLÁSICOS */}
+          <div className="classic-grid-actions">
+            
+            {/* Botón 1: Encender */}
+            <button
+              type="button"
+              disabled={isSocketActivo || enCola}
+              onClick={() => encenderSocket()}
+              className="classic-btn btn-stone-success">
+              <span className="btn-icon">⚡</span> Vincular Canal
+            </button>
 
+            {/* Botón 2: Apagar */}
+            <button
+              type="button"
+              disabled={!isSocketActivo || enCola}
+              onClick={() => apagarSocket()}
+              className="classic-btn btn-stone-danger">
+              <span className="btn-icon">🛑</span> Cortar Vínculo
+            </button>
+
+            {/* Botón 3: Buscar Partida */}
+            <button
+              type="button"
+              disabled={!isSocketActivo || !nombreUsuario.trim() || enCola}
+              onClick={() => escucharcanalPartida(nombreUsuario)}
+              className={`classic-btn btn-gold-action ${enCola ? 'pulse-gold' : ''}`}>
+              {enCola ? (
+                <span className="classic-loading-text">⏳ Buscando Rival...</span>
+              ) : (
+                <>🚀 Entrar a la Arena</>
+              )}
+            </button>
+
+          </div>
         </div>
       </div>
+
     </div>
-  );
+  </div>
+);
 };

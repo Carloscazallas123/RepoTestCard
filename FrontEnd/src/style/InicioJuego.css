@@ -1,185 +1,244 @@
-/* Contenedor Principal */
-html, body {
-  margin: 0;
-  padding: 0;
-  background-color: #1a1d20; /* Mismo color de fondo */
-  overflow-x: hidden;
+/* ==========================================================================
+   ESTILOS GENERALES DEL LOBBY CLÁSICO
+   ========================================================================== */
+.tabletop-lobby {
+  background-color: #1b261f;
+  background-image: radial-gradient(circle, #24352a 0%, #151d18 100%);
+  min-height: 100vh;
+  padding: 20px;
+  font-family: 'Georgia', serif;
+  color: #f5f0e1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Contenedor Principal (Fondo Gamer Oscuro) */
 .lobby-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  max-width: 500px; /* Al ser un menú, es más compacto que la mesa */
   display: flex;
   flex-direction: column;
-  align-items: center;      /* Centra horizontalmente */
-  justify-content: center;   /* Centra verticalmente */
-  min-height: 100vh;        /* Toma todo el alto de la pantalla */
-  width: 100vw;             
-  background-color: #121416; /* Fondo de pantalla negro profundo */
-  box-sizing: border-box;
-  padding: 20px;
-  margin: 0;                
+  gap: 20px;
 }
 
-/* Monitor de Estado */
-.status-monitor {
-  margin-bottom: 20px;
-  font-size: 14px;
-  background-color: #1c1e22; /* Fondo del monitor ligeramente más claro que el fondo general */
+/* ==========================================================================
+   MONITOR DE ESTADO
+   ========================================================================== */
+.classic-status-monitor {
+  background: rgba(20, 30, 24, 0.85);
+  border: 1px solid #c5a059;
+  border-radius: 6px;
   padding: 10px 20px;
-  border-radius: 30px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  border: 1px solid #2d3238; /* Borde sutil de separación */
+  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .status-label {
-  color: #98a2b3; /* Gris claro suave */
-  font-weight: 500;
+  color: #8fa397;
+  font-style: italic;
 }
 
 .status-badge {
   font-weight: bold;
-  padding: 2px 10px;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   TARJETA ESTILO PERGAMINO (PARCHMENT CARD)
+   ========================================================================== */
+.parchment-card {
+  background: #fbf8eb; /* Color crema/pergamino */
+  border: 4px solid #3a2a1a; /* Borde cuero/madera */
   border-radius: 12px;
-}
-.status-badge.online { color: #2ecc71; }
-.status-badge.offline { color: #e74c3c; }
-
-/* 🌟 Tarjeta Central (Adiós al blanco, hola al Gris Grafito) */
-.control-card {
-  background-color: #24282c; /* Gris oscuro elegante */
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada e inmersiva */
-  border: 1px solid #31373e; /* Línea de borde interna premium */
-  width: 100%;
-  max-width: 420px;
-  box-sizing: border-box;
+  padding: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
-/* Formulario */
-.input-group {
+.parchment-inner-frame {
+  border: 1px solid #c5a059; /* Línea dorada interna */
+  border-radius: 8px;
+  padding: 30px 20px;
+  background: #fdfbf7;
+  color: #2b1f14; /* Texto oscuro sobre el papel */
+  text-align: center;
+}
+
+.lobby-title {
+  margin: 0 0 10px 0;
+  font-size: 1.6rem;
+  color: #4a3319;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.title-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c5a059, transparent);
+  margin-bottom: 25px;
+}
+
+/* ==========================================================================
+   CAMPOS DE ENTRADA (INPUTS)
+   ========================================================================== */
+.classic-input-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  text-align: left;
   margin-bottom: 25px;
 }
 
 .input-label {
-  font-weight: 600;
-  color: #cbd5e1; /* Texto blanco grisáceo para leerse bien */
-  font-size: 13px;
+  font-size: 0.85rem;
+  font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  color: #5c4630;
+  letter-spacing: 0.5px;
 }
 
-.player-input {
+.classic-player-input {
+  width: 100%;
+  box-sizing: border-box;
   padding: 12px 15px;
-  border-radius: 8px;
-  border: 2px solid #3a4149;
-  background-color: #1a1d20; /* Fondo oscuro para el input */
-  color: #ffffff; /* Texto que escribes en blanco puro */
-  font-size: 15px;
+  border: 2px solid #dcd1b4;
+  border-radius: 6px;
+  background: #ffffff;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  color: #2b1f14;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.classic-player-input:focus {
   outline: none;
-  transition: all 0.2s ease;
+  border-color: #c5a059;
+  box-shadow: 0 0 8px rgba(197, 160, 89, 0.4);
 }
 
-.player-input::placeholder {
-  color: #64748b; /* Color del texto de ayuda */
-}
-
-.player-input:focus {
-  border-color: #3b82f6; /* Azul brillante al escribir */
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-}
-
-.disabled-input {
-  background-color: #16191b;
-  color: #475569;
-  border-color: #24282c;
+.classic-player-input.disabled-input {
+  background: #f0ebd8;
+  color: #8a8070;
+  border-color: #e3dcbf;
   cursor: not-allowed;
 }
 
-/* Grid de Botones */
-.grid-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* ==========================================================================
+   BOTONES ESTILO CLÁSICO
+   ========================================================================== */
+.classic-grid-actions {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
-/* Botón base */
-.btn {
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
+.classic-btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
   font-weight: bold;
-  font-size: 14px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  box-sizing: border-box;
 }
 
-.btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  filter: brightness(1.15); /* Brilla un poco más al pasar el ratón */
+.classic-btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
-.btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.btn:disabled {
-  background-color: #1e2225 !important; /* Botón deshabilitado oscuro integrado */
-  color: #475569 !important;
+.classic-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
-  border: 1px solid #2d3238;
+  box-shadow: none !important;
 }
 
-/* Colores de Botones Modernizados */
-.btn-success { background-color: #218838; color: white; }
-.btn-danger { background-color: #c82333; color: white; }
-.btn-primary { background-color: #1d4ed8; color: white; }
-
-/* Botón de Buscar Partida */
-.btn-full {
-  grid-column: span 2;
-  margin-top: 8px;
-  padding: 14px;
-  font-size: 15px;
-  box-shadow: 0 4px 15px rgba(29, 78, 216, 0.4);
-}
-.btn-full:disabled {
-  box-shadow: none;
+.btn-icon {
+  font-size: 1.1rem;
 }
 
-/* Color exclusivo para el botón del tablero */
-.btn-board {
-  background-color: #6f42c1; /* Violeta Gaming */
-  color: white;
-  margin-top: 5px;
-  box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+/* Variantes de color clásico */
+.btn-stone-success {
+  background: #2e4133;
+  color: #f5f0e1;
+  border: 2px solid #415c48;
+}
+.btn-stone-success:hover:not(:disabled) {
+  background: #395240;
+  box-shadow: 0 4px 10px rgba(57,82,64,0.3);
 }
 
-/* Efecto al pasar el ratón por encima */
-.btn-board:hover {
-  background-color: #5a32a3;
-  box-shadow: 0 6px 15px rgba(111, 66, 193, 0.5);
+.btn-stone-danger {
+  background: #5c2323;
+  color: #f5f0e1;
+  border: 2px solid #7d3232;
+}
+.btn-stone-danger:hover:not(:disabled) {
+  background: #732d2d;
+  box-shadow: 0 4px 10px rgba(115,45,45,0.3);
 }
 
-.loading-text {
-  animation: parpadeo 1.5s infinite ease-in-out;
-  font-weight: 500;
+/* Botón principal dorado de acción */
+.btn-gold-action {
+  background: #c5a059;
+  color: #151d18;
+  border: 2px solid #3a2a1a;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+}
+.btn-gold-action:hover:not(:disabled) {
+  background: #e5c17d;
+  box-shadow: 0 5px 12px rgba(197,160,89,0.4);
 }
 
-@keyframes parpadeo {
-  0% { opacity: 0.4; }
-  50% { opacity: 1; }
-  100% { opacity: 0.4; }
+/* Animación de búsqueda activa */
+.pulse-gold {
+  animation: goldBreathe 1.5s infinite ease-in-out;
+  background: #d9b873;
+}
+
+@keyframes goldBreathe {
+  0%, 100% { box-shadow: 0 0 5px rgba(197,160,89,0.4); }
+  50% { box-shadow: 0 0 18px rgba(197,160,89,0.8); }
+}
+
+/* ==========================================================================
+   RESPONSIVE PARA MÓVILES
+   ========================================================================== */
+@media (max-width: 480px) {
+  .tabletop-lobby {
+    padding: 12px;
+  }
+
+  .parchment-inner-frame {
+    padding: 20px 15px;
+  }
+
+  .lobby-title {
+    font-size: 1.3rem;
+  }
+
+  .classic-player-input {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .classic-btn {
+    font-size: 0.95rem;
+    padding: 10px 15px;
+  }
+
+  .btn-gold-action {
+    font-size: 1rem;
+  }
 }

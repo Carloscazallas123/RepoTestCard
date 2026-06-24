@@ -1,320 +1,461 @@
-/* Base del Tablero Estilo Cyberpunk */
-.arena-wrapper {
-  background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+/* ==========================================================================
+   ESTILO GLOBAL DEL TABLERO (ESTILO CLÁSICO / JUEGO DE MESA)
+   ========================================================================== */
+:root {
+  --bg-tabletop: #1b261f; /* Verde tapete oscuro / casino medieval */
+  --gold-classic: #c5a059; /* Dorado envejecido para marcos y detalles */
+  --gold-bright: #e5c17d;
+  --card-ivory: #fbf8eb; /* Color marfil/pergamino para las cartas */
+  --card-border: #3a2a1a; /* Marrón cuero para bordes de cartas */
+  --text-dark: #2b1f14;
+  --text-light: #f5f0e1;
+  --shadow-soft: rgba(0, 0, 0, 0.4);
+}
+
+.tabletop-arena {
+  background-color: var(--bg-tabletop);
+  background-image: radial-gradient(circle, #24352a 0%, #151d18 100%);
   min-height: 100vh;
+  padding: 20px;
+  font-family: 'Georgia', serif; /* Tipografía clásica con serifa */
+  color: var(--text-light);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #f3f4f6;
-  padding: 20px;
-  box-sizing: border-box;
-  overflow-x: hidden;
 }
 
-.arena-container {
+.tabletop-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 25px;
 }
 
-/* MARCADOR / SCOREBOARD */
-.scoreboard {
+/* ==========================================================================
+   MARCADOR CLÁSICO (SCOREBOARD)
+   ========================================================================== */
+.game-scoreboard {
+  background: rgba(20, 30, 24, 0.85);
+  border: 2px solid var(--gold-classic);
+  border-radius: 8px;
+  padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(17, 24, 39, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 12px 24px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 15px var(--shadow-soft);
 }
 
-.score-player {
+.scoreboard-player {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
-.player-avatar-wrapper {
+.player-one { align-items: flex-start; }
+.player-two { align-items: flex-end; }
+
+.player-meta {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.player-label {
-  font-size: 0.85rem;
+.player-name {
+  font-size: 1.1rem;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #9ca3af;
+  font-weight: bold;
+  color: var(--gold-bright);
 }
 
-.dot-status {
+.player-status-indicator {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
 }
-.dot-player1 { color: #10b981; background-color: #10b981; }
-.dot-player2 { color: #f43f5e; background-color: #f43f5e; }
+.status-online { background-color: #52c41a; box-shadow: 0 0 8px #52c41a; }
+.status-away { background-color: #faad14; box-shadow: 0 0 8px #faad14; }
 
-.pts-counter-p1, .pts-counter-p2 {
+.player-score {
   font-size: 1.8rem;
-  font-weight: 900;
-  font-family: monospace;
+  font-weight: bold;
 }
-.pts-counter-p1 { color: #34d399; text-shadow: 0 0 10px rgba(52, 211, 153, 0.3); }
-.pts-counter-p2 { color: #f87171; text-shadow: 0 0 10px rgba(248, 113, 113, 0.3); }
-.pts-text { font-size: 0.8rem; color: #6b7280; font-weight: normal; }
+.score-label {
+  font-size: 0.8rem;
+  color: #8fa397;
+}
 
-.vs-badge {
-  background: linear-gradient(135deg, #f43f5e 0%, #3b82f6 100%);
-  padding: 4px 12px;
-  border-radius: 6px;
+.scoreboard-divider {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-grow: 0.5;
+}
+
+.divider-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-classic), transparent);
+  flex-grow: 1;
+}
+
+.vs-emblem {
   font-style: italic;
   font-weight: bold;
-  letter-spacing: 2px;
-  box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+  color: var(--gold-classic);
+  border: 1px solid var(--gold-classic);
+  padding: 4px 8px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  background: #151d18;
 }
 
-/* CABECERAS DE ZONAS */
-.zone-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.cyber-tag {
-  padding: 4px 10px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  border-radius: 4px;
-}
-.rival-tag { background: rgba(244, 63, 94, 0.15); color: #f87171; border: 1px solid rgba(244, 63, 94, 0.3); }
-.player-tag { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-.cards-count { font-size: 0.85rem; color: #6b7280; }
-
-/* MANO DEL RIVAL */
-.rival-hand-slots {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.rival-card-back {
-  width: 50px;
-  height: 70px;
-  background: #1f2937;
-  border: 1px solid #f43f5e;
-  border-radius: 6px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translateY(0px);
-  transition: transform 0.2s;
-  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.1);
-}
-
-.rival-card-back:hover {
-  transform: translateY(-5px);
-}
-
-/* CAMPO DE BATALLA Central */
-.battlefield {
-  background: linear-gradient(180deg, rgba(244, 63, 94, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%);
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 24px;
-}
-
-.battlefield-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.combat-slot-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.slot-indicator {
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  font-weight: bold;
-}
-.rival-color { color: #f87171; }
-.player-color { color: #60a5fa; }
-
-.combat-slot {
-  width: 100%;
-  max-width: 150px;
-  height: 210px;
+/* ==========================================================================
+   ZONAS GENERALES (MANO RIVAL / TU MANO)
+   ========================================================================== */
+.arena-zone {
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
-  background: rgba(31, 41, 55, 0.4);
-  border: 2px dashed rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border: 1px dashed rgba(197, 160, 89, 0.3);
+}
+
+.zone-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+  padding-bottom: 5px;
+}
+
+.zone-title {
+  font-size: 1rem;
+  color: #b3c6bb;
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.cards-badge {
+  font-size: 0.85rem;
+  background: var(--gold-classic);
+  color: var(--text-dark);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+/* Mano Rival (Cartas boca abajo) */
+.hand-cards-flex {
+  display: flex;
+  justify-content: center;
+  gap: -15px; /* Efecto abanico leve superpuesto */
+}
+
+.classic-card-back {
+  width: 70px;
+  height: 100px;
+  background: #5c1e1e; /* Rojo heráldico */
+  border: 3px solid var(--card-ivory);
+  border-radius: 6px;
+  box-shadow: -2px 2px 6px rgba(0,0,0,0.4);
+  position: relative;
+  transition: transform 0.2s;
+  margin: 0 4px;
+}
+
+.card-back-ornament {
+  position: absolute;
+  top: 6px; left: 6px; right: 6px; bottom: 6px;
+  border: 1px solid var(--gold-classic);
+  border-radius: 4px;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(197,160,89,0.1) 5px, rgba(197,160,89,0.1) 10px);
+}
+
+/* ==========================================================================
+   ZONA CENTRAL: CAMPO DE BATALLA
+   ========================================================================== */
+.battlefield-zone {
+  background: rgba(43, 31, 29, 0.4); /* Tono madera sutil */
+  border: 2px solid #2d201c;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+}
+
+.battlefield-mat {
+  display: flex;
+  justify-content: space-around;
+  gap: 40px;
+}
+
+.battlefield-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-width: 1;
+  width: 100%;
+  max-width: 220px;
+}
+
+.slot-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--gold-classic);
+  letter-spacing: 1px;
+}
+
+.card-cradle {
+  width: 100%;
+  height: 240px;
+  border: 2px dashed rgba(197, 160, 89, 0.2);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.combat-slot.active {
-  border-style: solid;
-  background: #111827;
+.card-cradle.has-card {
+  border: none;
+  background: transparent;
 }
 
-.combat-slot.rival-side.active { border-color: #f43f5e; box-shadow: 0 0 20px rgba(244, 63, 94, 0.2); }
-.combat-slot.player-side.active { border-color: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
-
-/* ESTILOS DE LAS CARTAS EN JUEGO */
-.card-placed {
-  width: 100%;
-  height: 100%;
-  padding: 12px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.rival-card-style { background: linear-gradient(135deg, #1f2937 0%, #4c1d95 100%); }
-.player-card-style { background: linear-gradient(135deg, #1f2937 0%, #064e3b 100%); }
-
-.card-header-id { font-size: 0.65rem; color: #9ca3af; font-family: monospace; align-self: flex-start; }
-.card-body-icon { font-size: 2rem; margin: 10px 0; }
-.card-power { font-size: 1.5rem; font-weight: bold; }
-
-.waiting-placeholder {
-  font-size: 0.75rem;
-  color: #4b5563;
-  letter-spacing: 1px;
+/* Estilo Placeholder vacío */
+.classic-placeholder {
+  color: #556b5d;
+  font-size: 0.9rem;
+  font-style: italic;
   text-align: center;
 }
-
-/* TU MANO OPERATIVA */
-.player-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 12px;
+.pulse-effect {
+  animation: breathe 2s infinite ease-in-out;
 }
 
-.card-button {
-  background: #1f2937;
-  border: 1px solid #3b82f6;
-  border-radius: 8px;
-  padding: 12px 8px;
-  color: white;
-  cursor: pointer;
+/* ==========================================================================
+   DISEÑO CLÁSICO DE LAS CARTAS (PUESTAS EN CAMPO Y EN MANO)
+   ========================================================================== */
+.classic-card-placed, .classic-card-button {
+  width: 160px;
+  height: 230px;
+  background: var(--card-ivory);
+  border: 5px solid var(--card-border);
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 8px 16px var(--shadow-soft);
+  box-sizing: border-box;
+}
+
+.card-inner-frame, .card-button-frame {
+  height: 100%;
+  border: 1px solid var(--gold-classic);
+  border-radius: 6px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: #fdfbf7;
+}
+
+/* Diferenciador visual de bandos */
+.card-theme-rival { border-color: #7a2222; }
+.card-theme-player { border-color: #22567a; }
+
+.card-id-badge, .card-btn-header {
+  font-size: 0.75rem;
+  color: #706050;
+  border-bottom: 1px solid #e0d0b0;
+  padding-bottom: 3px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.card-art-placeholder, .card-btn-illustration {
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 15px 0;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+.card-stats-row, .card-btn-footer {
+  border-top: 1px solid #e0d0b0;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 6px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.card-button:hover:not(:disabled) {
-  transform: translateY(-6px);
-  border-color: #60a5fa;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-  background: #2563eb;
+.stat-power, .pwr-value {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #a62b2b; /* Rojo sangre clásica para ataque */
 }
 
-.card-button:disabled {
-  opacity: 0.3;
+/* Botonera de cartas en mano del jugador */
+.player-hand-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.classic-card-button {
+  cursor: pointer;
+  padding: 5px; /* Reinicio de nativos */
+  font-family: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.classic-card-button:hover:not(:disabled) {
+  transform: translateY(-15px) scale(1.03);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.6);
+  border-color: var(--gold-classic);
+}
+
+.pwr-label {
+  font-size: 0.65rem;
+  color: #706050;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+/* Estado de carta ya jugada / deshabilitada */
+.card-disabled {
+  opacity: 0.4;
+  transform: translateY(10px);
   cursor: not-allowed;
-  border-color: #374151;
+  box-shadow: none;
 }
 
-.card-button.card-faded {
-  visibility: hidden; /* O puedes usar opacity: 0 si prefieres mantener el hueco */
+/* ==========================================================================
+   ANIMACIONES
+   ========================================================================== */
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
 }
 
-.card-btn-id { font-size: 0.65rem; color: #9ca3af; font-family: monospace; }
-.card-btn-icon { font-size: 1.2rem; }
-.card-btn-valour { font-size: 0.8rem; color: #93c5fd; }
-.card-btn-valour strong { font-size: 1.1rem; color: white; display: block; }
 
-/* ANIMACIONES ANIMADAS */
-@keyframes pulseAnimation {
-  0% { opacity: 0.4; }
-  50% { opacity: 1; }
-  100% { opacity: 0.4; }
+/* ==========================================================================
+   SISTEMA DE RESPONSIVE (MÓVILES Y TABLETS)
+   ========================================================================== */
+
+/* Ajustes para pantallas Medianas (Tablets) */
+@media (max-width: 768px) {
+  .battlefield-mat {
+    gap: 20px;
+  }
+  .classic-card-placed, .classic-card-button {
+    width: 130px;
+    height: 190px;
+    border-width: 4px;
+  }
+  .card-cradle {
+    height: 200px;
+  }
+  .card-art-placeholder, .card-btn-illustration {
+    font-size: 1.8rem;
+    margin: 8px 0;
+  }
 }
-.pulse { animation: pulseAnimation 2s infinite ease-in-out; }
 
-/* ==========================================================
-   DISEÑO EXCLUSIVO RESPONSIVO (MÓVILES Y TABLETS)
-========================================================== */
-@media (max-width: 600px) {
-  .arena-wrapper {
+/* Ajustes Críticos para Móviles (Pantallas Verticales) */
+@media (max-width: 480px) {
+  .tabletop-arena {
     padding: 10px;
   }
+
+  .tabletop-container {
+    gap: 15px;
+  }
+
+  /* Marcador colapsado en vertical */
+  .game-scoreboard {
+    padding: 10px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
   
-  .arena-container {
-    gap: 16px;
+  .scoreboard-divider {
+    flex-grow: 0;
   }
-
-  /* Reducimos tamaño del Marcador */
-  .scoreboard {
-    padding: 8px 14px;
+  .divider-line {
+    display: none; /* Quitamos las líneas para ahorrar espacio */
   }
-  .pts-counter-p1, .pts-counter-p2 {
-    font-size: 1.4rem;
-  }
-  .player-label {
+  .vs-emblem {
     font-size: 0.75rem;
+    padding: 2px 5px;
   }
 
-  /* Cartas del rival más pequeñas en pantallas chicas */
-  .rival-card-back {
-    width: 35px;
-    height: 50px;
+  .player-name {
+    font-size: 0.85rem;
   }
-  .rival-card-back .cyber-icon {
-    font-size: 10px;
+  .player-score {
+    font-size: 1.3rem;
   }
 
-  /* El campo de batalla se mantiene horizontal pero con ranuras reducidas */
-  .battlefield {
-    padding: 12px;
-  }
-  .combat-slot {
-    height: 160px;
-  }
-  .card-body-icon {
-    font-size: 1.4rem;
-  }
-  .card-power {
-    font-size: 1.2rem;
+  /* El campo de batalla se vuelve vertical (Rival Arriba, Tú abajo) */
+  .battlefield-mat {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
 
-  /* Reajuste de la mano del jugador para que quepan en Grid en móvil */
-  .player-cards-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas en móvil */
+  .battlefield-zone {
+    padding: 15px;
+  }
+
+  .battlefield-slot {
+    max-width: 100%;
+  }
+
+  .card-cradle {
+    width: 140px;
+    height: 195px; /* Encaja perfectamente la carta compacta */
+  }
+
+  /* Mano del oponente escalada hacia abajo */
+  .classic-card-back {
+    width: 45px;
+    height: 65px;
+    border-width: 2px;
+    margin: 0 1px;
+  }
+
+  /* Rejilla de tu mano en móvil */
+  .player-hand-grid {
     gap: 8px;
   }
-  
-  .card-button {
-    padding: 8px 4px;
+
+  .classic-card-button {
+    width: 90px;
+    height: 130px;
+    border-width: 3px;
+    padding: 3px;
   }
-  .card-btn-valour strong {
+  
+  .card-button-frame {
+    padding: 4px;
+  }
+
+  .card-btn-header {
+    font-size: 0.55rem;
+  }
+
+  .card-btn-illustration {
+    font-size: 1.2rem;
+    margin: 4px 0;
+  }
+
+  .stat-power, .pwr-value {
     font-size: 0.95rem;
+  }
+  
+  .pwr-label {
+    font-size: 0.55rem;
   }
 }
