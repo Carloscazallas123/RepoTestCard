@@ -163,12 +163,13 @@ export const TableroJuego = ()=> {
             setTimeout(() => {  
             console.log('Partida Terminada');
             if (P1 > P2) {
-              alert('Has Ganado la Partida'); }
+              alert('Has Ganado la Partida'); 
+              JuegoService.escucharPartidaTerminada(Partida); }
             if (P1 < P2) {
               alert('Has Perdido la Partida'); }
 
-      JuegoService.escucharPartidaTerminada(Partida); 
-      localStorage.clear(); navegar('/'); }, 3400);}
+      
+      localStorage.clear(); navegar('/'); }, 4400);}
       
     }
 
