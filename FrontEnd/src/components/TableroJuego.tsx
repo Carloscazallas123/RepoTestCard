@@ -86,6 +86,7 @@ export const TableroJuego = ()=> {
     if (Carta1.Valour > Carta2.Valour) {
       P1 = P1 + 150;
       setTimeout(() => { 
+      alert('Has ganado');
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
@@ -93,6 +94,7 @@ export const TableroJuego = ()=> {
     if (Carta1.Valour < Carta2.Valour) {
       P2 = P2 + 150;
       setTimeout(() => { 
+      alert('Has Perdido');
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000);}
 
@@ -101,6 +103,7 @@ export const TableroJuego = ()=> {
        P1 = P1 + 150; P2 = P2 + 150;
 
       setTimeout(() => { 
+      alert('Empate');
       setCartaRivalSeleccionada(null); 
       SetCartaSeleccionada(null); }, 3000); }
       
