@@ -130,12 +130,15 @@ public class PrincipalController {
 	
 	//Borrando el Mazo 1
 	DeskEntity D1 = DeskRepo.ObtenerporId(Partida.getPlayer1().getDeskUser().getIdDesk());
-	D1.setNameDesk(null); D1.setDeskCards(null); DeskRepo.save(D1);
+	List<DeskCardEntity>ListCards=D1.getDeskCards();
+	D1.setNameDesk(null); ListCards.clear(); D1.setDeskCards(ListCards); DeskRepo.save(D1);
 		
 	//Borrando el Mazo 2
 	DeskEntity D2 = DeskRepo.ObtenerporId(Partida.getPlayer2().getDeskUser().getIdDesk());
-	D2.setNameDesk(null); D2.setDeskCards(null); DeskRepo.save(D2);
-		
+	List<DeskCardEntity>ListCardss=D2.getDeskCards();
+	D2.setNameDesk(null); ListCardss.clear(); D2.setDeskCards(ListCards); DeskRepo.save(D2);
+	
+	DeskRepo.deleteById(Partida.getPlayer1().getDeskUser().getIdDesk());
 	DeskRepo.deleteById(Partida.getPlayer2().getDeskUser().getIdDesk());
 	System.out.println(Partida.getPlayer1().getDeskUser().getNameDesk() + " Eliminado");
 	System.out.println(Partida.getPlayer2().getDeskUser().getNameDesk() + " Eliminado");
