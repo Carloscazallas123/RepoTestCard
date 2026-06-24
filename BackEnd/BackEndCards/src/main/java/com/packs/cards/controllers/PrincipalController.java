@@ -212,20 +212,26 @@ public class PrincipalController {
 			DeskRepo.deleteById(idDesk2);
 
 		// ==========================================
-		// PASO 6: Desvincular usuarios de la partida y borrarlos
+		// PASO 6: Borrar los usuarios físicamente
 		// ==========================================
-		PartidoEntidad.setPlayer1(null);
-		PartidoEntidad.setPlayer2(null);
-		MatchRepo.save(PartidoEntidad);
-
 		if (idUser1 != 0)
 			UserRepo.deleteById(idUser1);
 		if (idUser2 != 0)
 			UserRepo.deleteById(idUser2);
 
+		// ✨ EL TRUCO: Sincronizamos los borrados anteriores antes de la Query Nativa
+		MatchRepo.flush();
+
+		// ==========================================
+		// PASO 7: Borrar el historial de jugadas (Query Nativa)
+		// ==========================================
+		RepoGame.borrarPorIdMatch(PartidoEntidad.getIdMatch());
+		System.out.println("=== [BORRADO-LOG] Jugadas eliminadas con query nativa.");
+
 		// ==========================================
 		// PASO FINAL: Borrar la partida definitiva
 		// ==========================================
+		// Evitamos el .save() intermedio que causaba el fallo de concurrencia
 		MatchRepo.delete(PartidoEntidad);
 		System.out.println("=== [BORRADO-LOG] Final: Partida eliminada por completo limpiamente. ===");
 
