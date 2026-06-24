@@ -160,6 +160,7 @@ export const TableroJuego = ()=> {
       //Partida Terminada
       if (mazoActualizadoP1?.length === 0 
           || mazoActualizadoP2?.length === 0) {
+            console.log('Partida Terminada');
             if (P1 > P2) {
               alert('Has Ganado la Partida'); }
             if (P1 < P2) {
