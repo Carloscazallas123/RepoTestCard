@@ -258,7 +258,7 @@ public class PrincipalController {
 
 		MatchEntity EntityMatch = new MatchEntity();
 		EntityMatch.setPlayer1(UserRepo.ObtenerporId(Player1.getIduser()));
-		EntityMatch.setPlayer1(UserRepo.ObtenerporId(Player1.getIduser()));
+		EntityMatch.setPlayer2(UserRepo.ObtenerporId(Player2.getIduser()));
 		EntityMatch.setPoints1(0);
 		EntityMatch.setPoints2(0);
 		EntityMatch.setState("¡ La partida ha empezado ! ");
