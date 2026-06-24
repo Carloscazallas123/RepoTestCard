@@ -122,7 +122,7 @@ public class PrincipalController {
 	@SendTo("/topic/Terminar")
 	@Transactional
 	public synchronized MatchDTO FinishMatch(MatchDTO Partida) {
-		System.out.println("\n=== [BORRADO-LOG] Iniciando proceso FinishMatch reorganizado ===");
+		System.out.println("\n=== [BORRADO-LOG] Iniciando FinishMatch (Orden Seguro de Partida Primero) ===");
 
 		MatchEntity PartidoEntidad = MatchRepo.ObtenerporId(Partida.getIdMatch());
 		if (PartidoEntidad == null)
@@ -142,38 +142,31 @@ public class PrincipalController {
 		List<Integer> idsCartasP2 = new ArrayList<>();
 
 		// ==========================================
-		// ¡¡PASO CRÍTICO MANDATORIO SEGUNDO!!
-		// BORRAR EL HISTORIAL DE JUGADAS PRIMERO DE TODO
+		// PASO 1: Borrar el historial de jugadas primero (Query Nativa)
 		// ==========================================
 		RepoGame.borrarPorIdMatch(PartidoEntidad.getIdMatch());
-		System.out.println(
-				"=== [BORRADO-LOG] Paso 1: Eliminadas todas las jugadas en tablegame. Las FK de las cartas están libres.");
+		System.out.println("=== [BORRADO-LOG] Paso 1: Eliminado historial de jugadas en tablegame.");
 
 		// ==========================================
-		// PASO 2: Desvincular escritorios en los usuarios
+		// PASO 2: Desvincular escritorios en los usuarios (En memoria)
 		// ==========================================
-		if (p1 != null) {
+		if (p1 != null)
 			p1.setDeskUser(null);
-			UserRepo.save(p1);
-		}
-		if (p2 != null) {
+		if (p2 != null)
 			p2.setDeskUser(null);
-			UserRepo.save(p2);
-		}
 
 		// ==========================================
-		// PASO 3: Capturar IDs de cartas y VACIAR mazo
+		// PASO 3: Capturar IDs de cartas y vaciar relaciones del mazo
 		// ==========================================
 		if (idDesk1 != 0) {
 			DeskRepo.findById(idDesk1).ifPresent(desk -> {
 				if (desk.getDeskCards() != null) {
 					desk.getDeskCards().forEach(deskCard -> {
-						if (deskCard.getCard() != null) {
+						if (deskCard.getCard() != null)
 							idsCartasP1.add(deskCard.getCard().getIdCard());
-						}
 					});
 					desk.getDeskCards().clear();
-					DeskRepo.save(desk);
+					DeskRepo.saveAndFlush(desk); // Guardamos y forzamos vaciado de la intermedia
 				}
 			});
 		}
@@ -181,18 +174,17 @@ public class PrincipalController {
 			DeskRepo.findById(idDesk2).ifPresent(desk -> {
 				if (desk.getDeskCards() != null) {
 					desk.getDeskCards().forEach(deskCard -> {
-						if (deskCard.getCard() != null) {
+						if (deskCard.getCard() != null)
 							idsCartasP2.add(deskCard.getCard().getIdCard());
-						}
 					});
 					desk.getDeskCards().clear();
-					DeskRepo.save(desk);
+					DeskRepo.saveAndFlush(desk);
 				}
 			});
 		}
 
 		// ==========================================
-		// PASO 4: Borrar las cartas físicas (Ahora sí se puede)
+		// PASO 4: Borrar las cartas físicas de la tabla general
 		// ==========================================
 		for (int idCard : idsCartasP1) {
 			CardsRepo.deleteById(idCard);
@@ -210,31 +202,28 @@ public class PrincipalController {
 			DeskRepo.deleteById(idDesk1);
 		if (idDesk2 != 0)
 			DeskRepo.deleteById(idDesk2);
+		System.out.println("=== [BORRADO-LOG] Paso 5: Tableros eliminados.");
 
 		// ==========================================
-		// PASO 6: Borrar los usuarios físicamente
+		// PASO 6: BORRAR LA PARTIDA PRIMERO (Rompe la FK que retenía a los usuarios)
 		// ==========================================
-		if (idUser1 != 0)
-			UserRepo.deleteById(idUser1);
-		if (idUser2 != 0)
-			UserRepo.deleteById(idUser2);
-
-		// ✨ EL TRUCO: Sincronizamos los borrados anteriores antes de la Query Nativa
-		MatchRepo.flush();
-
-		// ==========================================
-		// PASO 7: Borrar el historial de jugadas (Query Nativa)
-		// ==========================================
-		RepoGame.borrarPorIdMatch(PartidoEntidad.getIdMatch());
-		System.out.println("=== [BORRADO-LOG] Jugadas eliminadas con query nativa.");
-
-		// ==========================================
-		// PASO FINAL: Borrar la partida definitiva
-		// ==========================================
-		// Evitamos el .save() intermedio que causaba el fallo de concurrencia
 		MatchRepo.delete(PartidoEntidad);
-		System.out.println("=== [BORRADO-LOG] Final: Partida eliminada por completo limpiamente. ===");
+		MatchRepo.flush(); // Forzamos a MySQL a impactar la eliminación de la partida YA mismo
+		System.out.println("=== [BORRADO-LOG] Paso 6: Registro de la partida eliminado de tablematch.");
 
+		// ==========================================
+		// PASO 7: Borrar los usuarios físicamente (Ahora están libres)
+		// ==========================================
+		if (idUser1 != 0) {
+			UserRepo.deleteById(idUser1);
+			System.out.println("=== [BORRADO-LOG] Paso 7: Usuario 1 eliminado.");
+		}
+		if (idUser2 != 0) {
+			UserRepo.deleteById(idUser2);
+			System.out.println("=== [BORRADO-LOG] Paso 7: Usuario 2 eliminado.");
+		}
+
+		System.out.println("=== [BORRADO-LOG] ¡Éxito rotundo! Todo limpio. ===");
 		return Partida;
 	}
 
