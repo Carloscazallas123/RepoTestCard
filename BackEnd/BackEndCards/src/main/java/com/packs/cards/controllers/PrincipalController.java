@@ -121,52 +121,53 @@ public class PrincipalController {
 	@SendTo("/topic/Terminar")
 	@Transactional
 	public synchronized MatchDTO FinishMatch(MatchDTO Partida) {
-		
-	//Borrando las Cartas de Ambos Jugadores
-	for(int i=0;i<Partida.getPlayer1().getDeskUser().getCards().size() || i < Partida.getPlayer2().getDeskUser().getCards().size() ; i++) {
-			CardsRepo.deleteById(Partida.getPlayer1().getDeskUser().getCards().get(i).getIdCard());
-			CardsRepo.deleteById(Partida.getPlayer2().getDeskUser().getCards().get(i).getIdCard());
-	} System.out.println("Cartas Eliminadas");
-	
-	//Borrando el Mazo 1
-	DeskEntity D1 = DeskRepo.ObtenerporId(Partida.getPlayer1().getDeskUser().getIdDesk());
-	List<DeskCardEntity>ListCards=D1.getDeskCards();
-	D1.setNameDesk(null); ListCards.clear(); D1.setDeskCards(ListCards); DeskRepo.save(D1);
-		
-	//Borrando el Mazo 2
-	DeskEntity D2 = DeskRepo.ObtenerporId(Partida.getPlayer2().getDeskUser().getIdDesk());
-	List<DeskCardEntity>ListCardss=D2.getDeskCards();
-	D2.setNameDesk(null); ListCardss.clear(); D2.setDeskCards(ListCards); DeskRepo.save(D2);
-	
-	DeskRepo.deleteById(Partida.getPlayer1().getDeskUser().getIdDesk());
-	DeskRepo.deleteById(Partida.getPlayer2().getDeskUser().getIdDesk());
-	System.out.println(Partida.getPlayer1().getDeskUser().getNameDesk() + " Eliminado");
-	System.out.println(Partida.getPlayer2().getDeskUser().getNameDesk() + " Eliminado");
-	
-	//Borrando los Usuarios
-	UserEntity P1 = UserRepo.ObtenerporId(Partida.getPlayer1().getIduser());
-	UserEntity P2 = UserRepo.ObtenerporId(Partida.getPlayer1().getIduser());
-	P1.setDeskUser(null); P2.setDeskUser(null); 
-	P1.setUserName(null); P2.setUserName(null);
-	UserRepo.save(P1); UserRepo.save(P2);
-	UserRepo.deleteById(Partida.getPlayer1().getIduser());
-	UserRepo.deleteById(Partida.getPlayer2().getIduser());
-	System.out.println(Partida.getPlayer1().getUsername() + " Eliminado");
-	System.out.println(Partida.getPlayer2().getUsername() + "Eliminado");
-	
-	//Borrando La Partida
-	MatchEntity EntityMatch = MatchRepo.ObtenerporId(Partida.getIdMatch());
-	EntityMatch.setPlayer1(null); EntityMatch.setPlayer2(null);
-	EntityMatch.setPoints1(null); EntityMatch.setPoints2(null);
-	EntityMatch.setState(null); MatchRepo.save(EntityMatch);
-	MatchRepo.deleteById(Partida.getIdMatch());
-	System.out.println(Partida.getIdMatch() + " Eliminada");
-	
-	//Borrando las Jugadas
-	List<GameEntity>ListaJugadas=RepoGame.Obtenerporpartida(Partida.getIdMatch());
-	for(int e=0;e<ListaJugadas.size();e++) {
-	RepoGame.deleteById(ListaJugadas.get(e).getIdGame()); }
-	System.out.println("Jugadas Eliminadas");
+		// 1. Obtenemos la partida fresca
+		MatchEntity match = MatchRepo.findById(Partida.getIdMatch()).orElse(null);
+
+		if (match != null) {
+		    // 2. Guardamos las IDs de los usuarios
+		    int idP1 = match.getPlayer1() != null ? match.getPlayer1().getIdUser() : 0;
+		    int idP2 = match.getPlayer2() != null ? match.getPlayer2().getIdUser() : 0;
+		    
+		    // Guardamos las IDs de los tableros
+		    int idDeskP1 = (match.getPlayer1() != null && match.getPlayer1().getDeskUser() != null) ? match.getPlayer1().getDeskUser().getIdDesk() : null;
+		    int idDeskP2 = (match.getPlayer2() != null && match.getPlayer2().getDeskUser() != null) ? match.getPlayer2().getDeskUser().getIdDesk() : null;
+
+		    // 3. Desvinculamos a los usuarios antes de borrarlos para evitar colisiones de FK
+		    UserRepo.desvincularTablero(idP1);
+		    UserRepo.desvincularTablero(idP2);
+
+		    // 4. BORRAR CARTAS: Si tus tableros manejan cartas con orphanRemoval o Cascade en la lista 'deskCards', 
+		    // al borrar el tablero se borrarán sus cartas automáticamente. 
+		    // Si no es así, las vaciamos explícitamente desde el repositorio de cartas o el del tablero:
+		    if (idDeskP1 != 0) {
+		    	DeskRepo.findById(idDeskP1).ifPresent(desk -> {
+		            if (desk.getDeskCards() != null) {
+		                desk.getDeskCards().clear(); // Si tiene orphanRemoval, esto borra las cartas de la BD
+		                DeskRepo.save(desk);
+		            }
+		        });
+		    }
+		    if (idDeskP2 != 0) {
+		    	DeskRepo.findById(idDeskP2).ifPresent(desk -> {
+		            if (desk.getDeskCards() != null) {
+		                desk.getDeskCards().clear();
+		                DeskRepo.save(desk);
+		            }
+		        });
+		    }
+
+		    // 5. BORRAR TABLEROS: Ahora que están vacíos de cartas y desvinculados de usuarios
+		    if (idDeskP1 != 0) DeskRepo.deleteById(idDeskP1);
+		    if (idDeskP2 != 0) DeskRepo.deleteById(idDeskP2);
+
+		    // 6. BORRAR USUARIOS: Los eliminamos de la BD una vez sus dependencias están limpias
+		    if (idP1 != 0) UserRepo.deleteById(idP1);
+		    if (idP2 != 0) UserRepo.deleteById(idP2);
+
+		    // 7. Por último, borramos la partida
+		    MatchRepo.delete(match);
+		}
 	
 	return Partida;
 	}
