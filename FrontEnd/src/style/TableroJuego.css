@@ -1,12 +1,9 @@
-/* ==========================================================================
-   ESTILO GLOBAL DEL TABLERO (ESTILO CLÁSICO / JUEGO DE MESA)
-   ========================================================================== */
 :root {
-  --bg-tabletop: #1b261f; /* Verde tapete oscuro / casino medieval */
-  --gold-classic: #c5a059; /* Dorado envejecido para marcos y detalles */
+  --bg-tabletop: #1b261f; 
+  --gold-classic: #c5a059; 
   --gold-bright: #e5c17d;
-  --card-ivory: #fbf8eb; /* Color marfil/pergamino para las cartas */
-  --card-border: #3a2a1a; /* Marrón cuero para bordes de cartas */
+  --card-ivory: #fbf8eb; 
+  --card-border: #3a2a1a; 
   --text-dark: #2b1f14;
   --text-light: #f5f0e1;
   --shadow-soft: rgba(0, 0, 0, 0.4);
@@ -16,31 +13,26 @@
   background-color: var(--bg-tabletop);
   background-image: radial-gradient(circle, #24352a 0%, #151d18 100%);
   min-height: 100vh;
-  width: 100vw; /* Fuerza a ocupar todo el ancho de la pantalla */
+  width: 100vw; 
   padding: 20px;
   font-family: 'Georgia', serif;
   color: var(--text-light);
-  
-  /* Sistema flex de centrado absoluto */
   display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center;     /* Centra verticalmente */
+  justify-content: center; 
+  align-items: center;     
   box-sizing: border-box;
 }
 
 .tabletop-container {
   width: 100%;
   max-width: 1100px;
-  margin: 0 auto; /* Asegura el centrado si hay colisión con layouts globales */
+  margin: 0 auto; 
   display: flex;
   flex-direction: column;
   gap: 25px;
   box-sizing: border-box;
 }
 
-/* ==========================================================================
-   MARCADOR CLÁSICO (SCOREBOARD)
-   ========================================================================== */
 .game-scoreboard {
   background: rgba(20, 30, 24, 0.85);
   border: 2px solid var(--gold-classic);
@@ -116,9 +108,6 @@
   background: #151d18;
 }
 
-/* ==========================================================================
-   ZONAS GENERALES (MANO RIVAL / TU MANO)
-   ========================================================================== */
 .arena-zone {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
@@ -152,17 +141,17 @@
   font-weight: bold;
 }
 
-/* Mano Rival (Cartas boca abajo) */
+
 .hand-cards-flex {
   display: flex;
   justify-content: center;
-  gap: -15px; /* Efecto abanico leve superpuesto */
+  gap: -15px; 
 }
 
 .classic-card-back {
   width: 70px;
   height: 100px;
-  background: #5c1e1e; /* Rojo heráldico */
+  background: #5c1e1e; 
   border: 3px solid var(--card-ivory);
   border-radius: 6px;
   box-shadow: -2px 2px 6px rgba(0,0,0,0.4);
@@ -179,9 +168,6 @@
   background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(197,160,89,0.1) 5px, rgba(197,160,89,0.1) 10px);
 }
 
-/* ==========================================================================
-   ZONA CENTRAL: CAMPO DE BATALLA
-   ========================================================================== */
 .battlefield-zone {
   background: rgba(43, 31, 29, 0.4); /* Tono madera sutil */
   border: 2px solid #2d201c;
@@ -241,9 +227,6 @@
   animation: breathe 2s infinite ease-in-out;
 }
 
-/* ==========================================================================
-   DISEÑO CLÁSICO DE LAS CARTAS (PUESTAS EN CAMPO Y EN MANO)
-   ========================================================================== */
 .classic-card-placed, .classic-card-button {
   width: 160px;
   height: 230px;
@@ -267,7 +250,6 @@
   background: #fdfbf7;
 }
 
-/* Diferenciador visual de bandos */
 .card-theme-rival { border-color: #7a2222; }
 .card-theme-player { border-color: #22567a; }
 
@@ -298,10 +280,9 @@
 .stat-power, .pwr-value {
   font-size: 1.3rem;
   font-weight: bold;
-  color: #a62b2b; /* Rojo sangre clásica para ataque */
+  color: #a62b2b; 
 }
 
-/* Botonera de cartas en mano del jugador */
 .player-hand-grid {
   display: flex;
   justify-content: center;
@@ -311,7 +292,7 @@
 
 .classic-card-button {
   cursor: pointer;
-  padding: 5px; /* Reinicio de nativos */
+  padding: 5px; 
   font-family: inherit;
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -329,7 +310,6 @@
   font-weight: bold;
 }
 
-/* Estado de carta ya jugada / deshabilitada */
 .card-disabled {
   opacity: 0.4;
   transform: translateY(10px);
@@ -337,20 +317,11 @@
   box-shadow: none;
 }
 
-/* ==========================================================================
-   ANIMACIONES
-   ========================================================================== */
 @keyframes breathe {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 0.8; }
 }
 
-
-/* ==========================================================================
-   SISTEMA DE RESPONSIVE (MÓVILES Y TABLETS)
-   ========================================================================== */
-
-/* Ajustes para pantallas Medianas (Tablets) */
 @media (max-width: 768px) {
   .battlefield-mat {
     gap: 20px;
@@ -369,7 +340,6 @@
   }
 }
 
-/* Ajustes Críticos para Móviles (Pantallas Verticales) */
 @media (max-width: 480px) {
   .tabletop-arena {
     padding: 10px;
@@ -379,7 +349,7 @@
     gap: 15px;
   }
 
-  /* Marcador colapsado en vertical */
+ 
   .game-scoreboard {
     padding: 10px;
     flex-direction: row;
@@ -390,7 +360,7 @@
     flex-grow: 0;
   }
   .divider-line {
-    display: none; /* Quitamos las líneas para ahorrar espacio */
+    display: none;
   }
   .vs-emblem {
     font-size: 0.75rem;
@@ -403,8 +373,7 @@
   .player-score {
     font-size: 1.3rem;
   }
-
-  /* El campo de batalla se vuelve vertical (Rival Arriba, Tú abajo) */
+   
   .battlefield-mat {
     flex-direction: column;
     align-items: center;
@@ -421,18 +390,16 @@
 
   .card-cradle {
     width: 140px;
-    height: 195px; /* Encaja perfectamente la carta compacta */
+    height: 195px; 
   }
-
-  /* Mano del oponente escalada hacia abajo */
+   
   .classic-card-back {
     width: 45px;
     height: 65px;
     border-width: 2px;
     margin: 0 1px;
   }
-
-  /* Rejilla de tu mano en móvil */
+   
   .player-hand-grid {
     gap: 8px;
   }
