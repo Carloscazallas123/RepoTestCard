@@ -1,6 +1,3 @@
-/* ==========================================================================
-   ESTILOS GENERALES DEL LOBBY CLÁSICO
-   ========================================================================== */
 .tabletop-lobby {
   background-color: #1b261f;
   background-image: radial-gradient(circle, #24352a 0%, #151d18 100%);
@@ -25,12 +22,9 @@
   gap: 20px;
   box-sizing: border-box;
 }
-/* ==========================================================================
-   NUEVOS ESTILOS: LORE, TÍTULO Y REGLAS
-   ========================================================================== */
 .game-main-title {
   font-size: 2.4rem;
-  color: #5c1e1e; /* Rojo heráldico medieval */
+  color: #5c1e1e;
   margin: 0;
   font-family: 'Georgia', serif;
   font-weight: 900;
@@ -106,11 +100,9 @@
   font-size: 0.92rem;
   color: #4f4235;
   line-height: 1.5;
-  text-align: left; /* Asegura alineación estricta a la izquierda */
-  word-spacing: normal; /* Evita la justificación forzada de palabras */
+  text-align: left; 
+  word-spacing: normal;
 }
-
-/* Usamos un truco clásico inline-block para el marcador para que no rompa el flex */
 .rule-marker {
   color: #c5a059;
   font-size: 0.8rem;
@@ -119,7 +111,6 @@
   vertical-align: middle;
 }
 
-/* Ajuste responsive extra para que en móviles pequeños no se amontone */
 @media (max-width: 480px) {
   .rules-section {
     padding: 15px;
@@ -130,9 +121,6 @@
   }
 }
 
-/* ==========================================================================
-   MONITOR DE ESTADO
-   ========================================================================== */
 .classic-status-monitor {
   background: rgba(20, 30, 24, 0.85);
   border: 1px solid #c5a059;
@@ -156,9 +144,6 @@
   letter-spacing: 0.5px;
 }
 
-/* ==========================================================================
-   TARJETA ESTILO PERGAMINO (PARCHMENT CARD)
-   ========================================================================== */
 .parchment-card {
   background: #fbf8eb; /* Color crema/pergamino */
   border: 4px solid #3a2a1a; /* Borde cuero/madera */
@@ -168,11 +153,11 @@
 }
 
 .parchment-inner-frame {
-  border: 1px solid #c5a059; /* Línea dorada interna */
+  border: 1px solid #c5a059; 
   border-radius: 8px;
   padding: 30px 20px;
   background: #fdfbf7;
-  color: #2b1f14; /* Texto oscuro sobre el papel */
+  color: #2b1f14; 
   text-align: center;
 }
 
@@ -190,9 +175,6 @@
   margin-bottom: 25px;
 }
 
-/* ==========================================================================
-   CAMPOS DE ENTRADA (INPUTS)
-   ========================================================================== */
 .classic-input-group {
   display: flex;
   flex-direction: column;
@@ -235,9 +217,6 @@
   cursor: not-allowed;
 }
 
-/* ==========================================================================
-   BOTONES ESTILO CLÁSICO
-   ========================================================================== */
 .classic-grid-actions {
   display: flex;
   flex-direction: column;
@@ -274,7 +253,7 @@
   font-size: 1.1rem;
 }
 
-/* Variantes de color clásico */
+
 .btn-stone-success {
   background: #2e4133;
   color: #f5f0e1;
@@ -295,7 +274,7 @@
   box-shadow: 0 4px 10px rgba(115,45,45,0.3);
 }
 
-/* Botón principal dorado de acción */
+
 .btn-gold-action {
   background: #c5a059;
   color: #151d18;
@@ -321,9 +300,6 @@
   50% { box-shadow: 0 0 18px rgba(197,160,89,0.8); }
 }
 
-/* ==========================================================================
-   RESPONSIVE PARA MÓVILES
-   ========================================================================== */
 @media (max-width: 480px) {
   .tabletop-lobby {
     padding: 12px;
